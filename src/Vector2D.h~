@@ -1,0 +1,60 @@
+#ifndef _VECTOR2D_H_
+#define _VECTOR2D_H_
+
+#include "Data/Definitions.h"
+#include "Data/Vector.h"
+#include "Data/Point2D.h"
+
+using namespace Data;
+
+namespace Data
+{
+	class Vector2D : public Data::Vector
+	{
+	public:
+
+		Vector2D(Real x = 0.0, Real y = 0.0, LongInt id = 0);
+		Vector2D(const Point2D &p1, const Point2D &p2);
+		Vector2D(const Vector &v);
+		Vector2D(const Vector *v);
+		virtual ~Vector2D();
+
+		virtual void setPosition(Real x, Real y);
+
+		virtual void setX(Real x);
+		virtual Real getX() const;
+
+		virtual void setY(Real y);
+		virtual Real getY() const;
+
+		virtual UInt dimension() const;
+
+		virtual Real cross(const Vector2D &v) const;
+		virtual Real cross(const Vector2D *v) const;
+
+		virtual Real scaledCross(const Vector2D &v) const;
+		virtual Real scaledCross(const Vector2D *v) const;
+
+		virtual Real orientedAngle() const;
+		virtual Real orientedAngle(const Vector2D &v) const;
+		virtual Real orientedAngle(const Vector2D *v) const;
+
+		virtual bool left(const Vector2D &v) const;
+		virtual bool left(const Vector2D *v) const;
+
+		virtual bool left(const Point2D &p) const;
+		virtual bool left(const Point2D *p) const;
+
+		virtual bool right(const Vector2D &v) const;
+		virtual bool right(const Vector2D *v) const;
+
+		virtual bool right(const Point2D &p) const;
+		virtual bool right(const Point2D *p) const;
+
+#if USE_OPENGL
+		virtual void draw() const;
+#endif //#if USE_OPENGL
+	};
+}
+
+#endif //#ifndef _VECTOR2D_H_

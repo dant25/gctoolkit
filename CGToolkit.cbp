@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="GCToolkit" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Lohner" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="`wx-config --cflags`" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs --gl-libs`" />
+					<Add option="-lglut" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="`wx-config --cflags`" />
+		</Compiler>
+		<Linker>
+			<Add option="`wx-config --libs --gl-libs`" />
+			<Add option="-lGLU" />
+		</Linker>
+		<Unit filename="src/Delaunay.cpp" />
+		<Unit filename="src/Delaunay.h" />
+		<Unit filename="src/Edge.cpp" />
+		<Unit filename="src/Edge.h" />
+		<Unit filename="src/Edge2D.cpp" />
+		<Unit filename="src/Edge2D.h" />
+		<Unit filename="src/Graham2D.cpp" />
+		<Unit filename="src/Graham2D.h" />
+		<Unit filename="src/MergeHull3D.cpp" />
+		<Unit filename="src/MergeHull3D.h" />
+		<Unit filename="src/Point.cpp" />
+		<Unit filename="src/Point.h" />
+		<Unit filename="src/Point2D.cpp" />
+		<Unit filename="src/Point2D.h" />
+		<Unit filename="src/ResourceManager.cpp" />
+		<Unit filename="src/ResourceManager.h" />
+		<Unit filename="src/Triangle.cpp" />
+		<Unit filename="src/Triangle.h" />
+		<Unit filename="src/Triangle2D.cpp" />
+		<Unit filename="src/Triangle2D.h" />
+		<Unit filename="src/Vector.cpp" />
+		<Unit filename="src/Vector.h" />
+		<Unit filename="src/Vector2D.cpp" />
+		<Unit filename="src/Vector2D.h" />
+		<Unit filename="src/interface/GLCanvas.cpp" />
+		<Unit filename="src/interface/GLCanvas.h" />
+		<Unit filename="src/interface/LohnerFrame.cpp" />
+		<Unit filename="src/interface/LohnerFrame.h" />
+		<Unit filename="src/interface/PrincipalApp.cpp" />
+		<Unit filename="src/interface/PrincipalApp.h" />
+		<Unit filename="src/interface/PrincipalFrame.cpp" />
+		<Unit filename="src/interface/PrincipalFrame.h" />
+		<Unit filename="src/math/Mat4x4.cpp" />
+		<Unit filename="src/math/Mat4x4.h" />
+		<Unit filename="src/math/Point.h" />
+		<Unit filename="src/math/Vec3.cpp" />
+		<Unit filename="src/math/Vec3.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -68,6 +68,9 @@ bool ResourceManager::loadFromFile(std::string fileName)
         case DELAUNAY:
             delaunay = new Delaunay(pointList);
         break;
+        case MERGEHULL3D:
+            //delaunay = new Delaunay(pointList);
+        break;
     }
 
 
@@ -82,6 +85,9 @@ bool ResourceManager::saveToFile(std::string fileName)
             return graham->save(fileName);
         break;
         case DELAUNAY:
+            return delaunay->save(fileName);
+        break;
+        case MERGEHULL3D:
             return delaunay->save(fileName);
         break;
     }
@@ -131,6 +137,10 @@ void ResourceManager::render()
         case 1:
             if(delaunay != NULL)
                 delaunay->draw();
+        break;
+        case 2:
+            if(mergehull3d != NULL)
+                mergehull3d->draw();
         break;
     }
 }

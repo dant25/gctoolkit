@@ -35,6 +35,10 @@
 		<Unit filename="src/Edge.h" />
 		<Unit filename="src/Edge2D.cpp" />
 		<Unit filename="src/Edge2D.h" />
+		<Unit filename="src/Edge3D.cpp" />
+		<Unit filename="src/Edge3D.h" />
+		<Unit filename="src/GeometricShape.cpp" />
+		<Unit filename="src/GeometricShape.h" />
 		<Unit filename="src/Graham2D.cpp" />
 		<Unit filename="src/Graham2D.h" />
 		<Unit filename="src/MergeHull3D.cpp" />
@@ -43,6 +47,10 @@
 		<Unit filename="src/Point.h" />
 		<Unit filename="src/Point2D.cpp" />
 		<Unit filename="src/Point2D.h" />
+		<Unit filename="src/Point3D.cpp" />
+		<Unit filename="src/Point3D.h" />
+		<Unit filename="src/Polygon.cpp" />
+		<Unit filename="src/Polygon.h" />
 		<Unit filename="src/ResourceManager.cpp" />
 		<Unit filename="src/ResourceManager.h" />
 		<Unit filename="src/Triangle.cpp" />
@@ -53,6 +61,8 @@
 		<Unit filename="src/Vector.h" />
 		<Unit filename="src/Vector2D.cpp" />
 		<Unit filename="src/Vector2D.h" />
+		<Unit filename="src/Vector3D.cpp" />
+		<Unit filename="src/Vector3D.h" />
 		<Unit filename="src/interface/GLCanvas.cpp" />
 		<Unit filename="src/interface/GLCanvas.h" />
 		<Unit filename="src/interface/LohnerFrame.cpp" />

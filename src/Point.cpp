@@ -25,6 +25,22 @@ Point::Point(const Point *p)
     b = 0;
 }
 
+Point::Point(const Vector &v)
+{
+	this->setCoords(v.getCoords());
+    r = 0;
+    g = 0;
+    b = 0;
+}
+
+Point::Point(const Vector *v)
+{
+	this->setCoords(v->getCoords());
+    r = 0;
+    g = 0;
+    b = 0;
+}
+
 Point::~Point()
 {
 	this->coords.clear();

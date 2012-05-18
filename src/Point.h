@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include "Vector.h"
+
+class Vector;
 
 class Point
 {
@@ -12,6 +15,8 @@ public:
     Point(std::vector<float> coords, long int id = 0);
 
     Point(const Point *p);
+    Point(const Vector &v);
+    Point(const Vector *v);
 
     ~Point();
 

@@ -10,6 +10,8 @@ class Point2D : public Point
 public:
 
     Point2D(float x = 0.0, float y = 0.0, long int id = 0);
+    Point2D(const Point &p);
+    Point2D(const Point *p);
 
     virtual ~Point2D();
 

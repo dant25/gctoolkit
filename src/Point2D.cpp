@@ -13,6 +13,18 @@ Point2D::Point2D(float x, float y, long int id) :
 
 }
 
+Point2D::Point2D(const Point &p) :
+	Point(2)
+{
+	this->setPosition(p.getCoord(0), p.getCoord(1));
+}
+
+Point2D::Point2D(const Point *p) :
+	Point(2)
+{
+	this->setPosition(p->getCoord(0), p->getCoord(1));
+}
+
 Point2D::~Point2D()
 {
 

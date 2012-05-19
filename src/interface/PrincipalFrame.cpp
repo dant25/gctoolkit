@@ -196,6 +196,7 @@ PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer611->Add( m_staticline111, 0, wxEXPAND | wxALL, 5 );
 
 	pointsMergeHull3D_checkBox1 = new wxCheckBox( mergehull3d_panel, wxID_POINTSMERGEHULL3D, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
+	pointsMergeHull3D_checkBox1->SetValue(true);
 	bSizer611->Add( pointsMergeHull3D_checkBox1, 0, wxALL, 5 );
 
 	facesMergeHull3D_checkBox = new wxCheckBox( mergehull3d_panel, wxID_TRIANGLESMERGEHULL3D, wxT("Faces"), wxDefaultPosition, wxDefaultSize, 0 );

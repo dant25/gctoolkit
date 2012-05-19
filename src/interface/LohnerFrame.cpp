@@ -25,6 +25,7 @@ void LohnerFrame::newModel( wxCommandEvent& event )
 
 void LohnerFrame::openModel( wxCommandEvent& event )
 {
+/*
     // TODO: Implement openModel
     static const wxChar *FILETYPES  = _("TXT files (*.txt)|*.txt|"
                                         "All files (*.*)|*.*");
@@ -48,6 +49,8 @@ void LohnerFrame::openModel( wxCommandEvent& event )
             wxMessageBox( _("Could not open file: Invalid format."),_("File error"), wxOK | wxICON_ERROR );
             return;
         }
+*/
+canvas->manager.loadFromFile( std::string( "" ) );
 
         switch(options_notebook->GetSelection())
         {
@@ -64,12 +67,16 @@ void LohnerFrame::openModel( wxCommandEvent& event )
                 trianglesDelaunay_checkBox->SetValue(false);
                 circumferenceDelaunay_checkBox->SetValue(false);
             break;
+            case 2:
+                pointsMergeHull3D_checkBox1->SetValue(true);
+                facesMergeHull3D_checkBox->SetValue(false);
+            break;
         }
 
         canvas->fitCam();
 
         Refresh();
-    }
+    //}
 }
 
 void LohnerFrame::saveModel( wxCommandEvent& event )
@@ -133,6 +140,10 @@ void LohnerFrame::setPage( wxNotebookEvent& event )
         case 1:
             canvas->manager.setType(1);
             operations_menu->FindItemByPosition(1)->Check( true );
+        break;
+        case 2:
+            canvas->manager.setType(2);
+            operations_menu->FindItemByPosition(2)->Check( true );
         break;
     }
 
@@ -292,11 +303,20 @@ void LohnerFrame::setMergeHull3D( wxCommandEvent& event )
 
 void LohnerFrame::setPointsMergeHull3d( wxCommandEvent& event )
 {
-
+    if(canvas->manager.mergehull3d != NULL)
+    {
+        canvas->manager.mergehull3d->setPoint();
+        Refresh();
+    }
 }
 
 void LohnerFrame::setFacesMergeHull3d( wxCommandEvent& event )
 {
+    if(canvas->manager.mergehull3d != NULL)
+    {
+        canvas->manager.mergehull3d->setFace();
+        Refresh();
+    }
 
 }
 

@@ -5,7 +5,10 @@
 
 MergeHull3D::MergeHull3D(std::list<Point*> pointList)
 {
-    //ctor
+    renderPointList = true;
+    renderFacesList = false;
+
+    this->pointList = pointList;
 }
 
 MergeHull3D::~MergeHull3D()
@@ -15,7 +18,11 @@ MergeHull3D::~MergeHull3D()
 
 void MergeHull3D::draw()
 {
-    //dtor
+   if(renderPointList == true)
+    {
+        for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
+            (*it)->draw();
+    }
 }
 
 bool MergeHull3D::save(std::string fileName)
@@ -33,6 +40,16 @@ bool MergeHull3D::save(std::string fileName)
     }
 
     return true;
+}
+
+void MergeHull3D::setPoint()
+{
+       renderPointList = !renderPointList;
+}
+
+void MergeHull3D::setFace()
+{
+       renderFacesList = !renderFacesList;
 }
 
 void MergeHull3D::clear()

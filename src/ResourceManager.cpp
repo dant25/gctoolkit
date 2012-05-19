@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include <float.h>
 
 
 ResourceManager::ResourceManager()
@@ -7,10 +8,12 @@ ResourceManager::ResourceManager()
     boxXmax = 1.0;
     boxYmin = -1.0;
     boxYmax = 1.0;
-
+    boxZmin = -1.0;
+    boxZmax = 1.0;
     graham = NULL;
     delaunay = NULL;
-    type = DELAUNAY;
+    mergehull3d = NULL;
+    type = MERGEHULL3D;
 }
 
 ResourceManager::~ResourceManager()
@@ -22,8 +25,8 @@ bool ResourceManager::loadFromFile(std::string fileName)
 {
     //std::cout << fileName.c_str() << std::endl;
 
-    std::ifstream file( fileName.c_str(), std::ifstream::in);
-    //std::ifstream file( "entrada.txt", std::ifstream::in);
+    //std::ifstream file( fileName.c_str(), std::ifstream::in);
+    std::ifstream file( "entrada.txt", std::ifstream::in);
 
     if( !file )
         return false;
@@ -33,10 +36,12 @@ bool ResourceManager::loadFromFile(std::string fileName)
     file >> numPoint;
     float x, y, z;
 
-    boxXmin = 999.9;
-    boxXmax = -999.9;
-    boxYmin = 999.9;
-    boxYmax = -999.9;
+    boxXmin = DBL_MAX;
+    boxXmax = -DBL_MAX;
+    boxYmin = DBL_MAX;
+    boxYmax = -DBL_MAX;
+    boxZmin = DBL_MAX;
+    boxZmax = -DBL_MAX;
 
     for(int i=0; i<numPoint; i++)
     {
@@ -56,6 +61,12 @@ bool ResourceManager::loadFromFile(std::string fileName)
         if(boxYmax < y)
             boxYmax = y;
 
+        if(boxZmin > z)
+            boxZmin = z;
+
+        if(boxZmax < z)
+            boxZmax = z;
+
         Point *point = new Point2D(x, y, i+1);
         pointList.push_back(point);
     }
@@ -69,7 +80,7 @@ bool ResourceManager::loadFromFile(std::string fileName)
             delaunay = new Delaunay(pointList);
         break;
         case MERGEHULL3D:
-            //delaunay = new Delaunay(pointList);
+            mergehull3d = new MergeHull3D(pointList);
         break;
     }
 

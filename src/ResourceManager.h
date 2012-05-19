@@ -39,6 +39,10 @@ class ResourceManager
         float getBoxYmin() { return boxYmin; };
         float getBoxYmax() { return boxYmax; };
 
+        float getBoxZmin() { return boxZmin; };
+        float getBoxZmax() { return boxZmax; };
+
+
     private:
         enumType type;
 
@@ -46,6 +50,8 @@ class ResourceManager
         float boxXmax;
         float boxYmin;
         float boxYmax;
+        float boxZmin;
+        float boxZmax;
         long int numPoint;
         std::list<Point*> pointList;
 

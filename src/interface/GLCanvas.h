@@ -31,7 +31,7 @@ private:
     void onEraseBackground(wxEraseEvent& event);
     void onEnterWindow(wxMouseEvent& event);
 
-    void resizeOrtho(float xMin, float xMax, float yMin, float yMax);
+    void resizeOrtho(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax);
 
     void onMouseLeftDown(wxMouseEvent& event);
     void onMouseLeftUp(wxMouseEvent& event);
@@ -44,7 +44,7 @@ private:
     wxGLContext *glContext;
     ResourceManager manager;
 
-    float xMin, xMax, yMin, yMax;
+    float xMin, xMax, yMin, yMax, zMin, zMax;
     wxPoint lastPos;
 
     //Textura usada para desenhar a cena

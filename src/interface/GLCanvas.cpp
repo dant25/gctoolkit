@@ -79,29 +79,33 @@ glEnable(GL_LINE_SMOOTH);
     glViewport(0, 0, (GLint) w , (GLint) h );
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    //glFrustum(-100, 100, -100, 100, 0, 1);
+    glFrustum(-100, 100, -100, 100, 0, 1);
     //gluOrtho2D(-200,200,-200,200);
-    gluOrtho2D(0,1,0,1);  //JONAS
+    //gluOrtho2D(0,1,0,1);  //JONAS
 }
 
-void GLCanvas::resizeOrtho(float xMin, float xMax, float yMin, float yMax)
+void GLCanvas::resizeOrtho(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(xMin, xMax, yMin, yMax);
+    //gluOrtho2D(xMin, xMax, yMin, yMax);
+    glFrustum(xMin, xMax, yMin, yMax, zMin, zMax);
 }
 
 void GLCanvas::fitCam()
 {
     float fatorX = (manager.getBoxXmax() - manager.getBoxXmin())*0.05;
     float fatorY = (manager.getBoxYmax() - manager.getBoxYmin())*0.05;
+    float fatorZ = (manager.getBoxZmax() - manager.getBoxZmin())*0.05;
 
     xMin = manager.getBoxXmin()-fatorX;
     xMax = manager.getBoxXmax()+fatorX;
     yMin = manager.getBoxYmin()-fatorY;
     yMax = manager.getBoxYmax()+fatorY;
+    zMin = manager.getBoxZmin()-fatorZ;
+    zMax = manager.getBoxZmax()+fatorZ;
 
-    this->resizeOrtho(xMin, xMax, yMin, yMax);
+    this->resizeOrtho(xMin, xMax, yMin, yMax, zMin, zMax);
 }
 
 void GLCanvas::render()
@@ -111,6 +115,7 @@ void GLCanvas::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    gluLookAt(xMin, xMax, yMin, yMax, zMin, zMax);
     //renderBackground();
 
 
@@ -251,7 +256,7 @@ std::cout << "DOWN" << std::endl;
 
 void GLCanvas::onMouseLeftUp(wxMouseEvent& event)
 {
-/*
+
 std::cout << "UP" << std::endl;
     wxPoint mouse;
     event.GetPosition( &mouse.x, &mouse.y );
@@ -272,13 +277,13 @@ std::cout << "UP" << std::endl;
         yMin += currPos.y;
         yMax += currPos.y;
 
-        this->resizeOrtho(xMin, xMax, yMin, yMax);
+        this->resizeOrtho(xMin, xMax, yMin, yMax, zMin, zMax);
 
         Refresh();
 //Vector3 offset = lastPos - currPos;
 //Vector3 distance =  SPEED * ( lastPos - currPos );
 //mesh->move( distance );
-*/
+
 }
 
 void GLCanvas::onMouseWheel(wxMouseEvent& event)
@@ -290,6 +295,8 @@ void GLCanvas::onMouseWheel(wxMouseEvent& event)
         xMax = xMax*0.9;
         yMin = yMin*0.9;
         yMax = yMax*0.9;
+        zMin = zMin*0.9;
+        zMax = zMax*0.9;
     }
     else
     {
@@ -297,9 +304,11 @@ void GLCanvas::onMouseWheel(wxMouseEvent& event)
         xMax = xMax*1.2;
         yMin = yMin*1.2;
         yMax = yMax*1.2;
+        zMin = zMin*1.2;
+        zMax = zMax*1.2;
     }
 
-    this->resizeOrtho(xMin, xMax, yMin, yMax);
+    this->resizeOrtho(xMin, xMax, yMin, yMax, zMin, zMax);
 
     Refresh();
 }

@@ -5,6 +5,7 @@
 #include "wx/glcanvas.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include "../Camera.h"
 
 #include "../ResourceManager.h"
 
@@ -37,12 +38,17 @@ private:
     void onMouseLeftUp(wxMouseEvent& event);
     void onMouseWheel(wxMouseEvent& event);
 
+    void onMouseMove(wxMouseEvent& event);
+
+
     DECLARE_EVENT_TABLE()
 
 
 private:
     wxGLContext *glContext;
     ResourceManager manager;
+
+    Camera camera;
 
     float xMin, xMax, yMin, yMax, zMin, zMax;
     wxPoint lastPos;

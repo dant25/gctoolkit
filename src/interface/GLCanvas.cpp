@@ -8,9 +8,9 @@ BEGIN_EVENT_TABLE(GLCanvas, wxGLCanvas)
     EVT_ENTER_WINDOW( GLCanvas::onEnterWindow )
     EVT_LEFT_DOWN( GLCanvas::onMouseLeftDown )
     EVT_LEFT_UP( GLCanvas::onMouseLeftUp )
+    EVT_MOTION( GLCanvas::onMouseMove )
     EVT_MOUSEWHEEL( GLCanvas::onMouseWheel )
 END_EVENT_TABLE()
-
 
 
 GLCanvas::GLCanvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name, int* attribList) :
@@ -79,9 +79,11 @@ glEnable(GL_LINE_SMOOTH);
     glViewport(0, 0, (GLint) w , (GLint) h );
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-100, 100, -100, 100, 0, 1);
     //gluOrtho2D(-200,200,-200,200);
     //gluOrtho2D(0,1,0,1);  //JONAS
+    //camera.fit(manager.getBoundingBox());
+    camera.fit( BoundingBox(Vector3(-10, -10, -50), Vector3(50, 50, 50)) );
+
 }
 
 void GLCanvas::resizeOrtho(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax)
@@ -115,10 +117,10 @@ void GLCanvas::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(xMin, xMax, yMin, yMax, zMin, zMax);
+    //gluLookAt(xMin, xMax, yMin, yMax, zMin, zMax);
     //renderBackground();
 
-
+    camera.render();
     manager.render();
 
 /*
@@ -228,6 +230,18 @@ void GLCanvas::onSize(wxSizeEvent& event)
     int w, h;
     GetClientSize(&w, &h);
 
+	glViewport(0, 0, (GLint) w , (GLint) h );
+
+    // Redraw window
+    Refresh();
+/*
+    // Necessary to update the context in some plataforms
+    wxGLCanvas::OnSize(event);
+
+    // Reset the viewport
+    int w, h;
+    GetClientSize(&w, &h);
+
     glViewport(0, 0, (GLint) w , (GLint) h );
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -237,6 +251,7 @@ void GLCanvas::onSize(wxSizeEvent& event)
     //renderer.setImgSize(h, w);
     // Redraw window
     Refresh();
+    */
 }
 
 void GLCanvas::onEraseBackground(wxEraseEvent& event)
@@ -256,38 +271,20 @@ std::cout << "DOWN" << std::endl;
 
 void GLCanvas::onMouseLeftUp(wxMouseEvent& event)
 {
-
-std::cout << "UP" << std::endl;
-    wxPoint mouse;
-    event.GetPosition( &mouse.x, &mouse.y );
-
-    wxPoint windowSize;
-    GetClientSize( &windowSize.x, &windowSize.y );
-    static wxString msg;
-
-        //temp = manipulator->update( mouse.x, mouse.y, windowSize.x, windowSize.y );
-
-        wxPoint currPos;
-        currPos.x = ( this->lastPos.x - ( ( 2.0 * mouse.x - windowSize.x ) / windowSize.x ) );
-        currPos.y = ( this->lastPos.y - ( ( windowSize.y - 2.0 * mouse.y ) / windowSize.y ) );
-
-
-        xMin += currPos.x;
-        xMax += currPos.x;
-        yMin += currPos.y;
-        yMax += currPos.y;
-
-        this->resizeOrtho(xMin, xMax, yMin, yMax, zMin, zMax);
-
-        Refresh();
-//Vector3 offset = lastPos - currPos;
-//Vector3 distance =  SPEED * ( lastPos - currPos );
-//mesh->move( distance );
-
+    camera.reset();
 }
 
 void GLCanvas::onMouseWheel(wxMouseEvent& event)
 {
+    if ( event.ControlDown() )
+    {
+        int wheel = event.GetWheelRotation();
+        if ( wheel > 0 )
+            camera.zoom( 0.8 );
+        else
+            camera.zoom( 1.2 );
+    }
+    /*
     int wheel = event.GetWheelRotation();
     if ( wheel > 0 )
     {
@@ -309,6 +306,35 @@ void GLCanvas::onMouseWheel(wxMouseEvent& event)
     }
 
     this->resizeOrtho(xMin, xMax, yMin, yMax, zMin, zMax);
-
+*/
     Refresh();
 }
+
+
+void GLCanvas::onMouseMove(wxMouseEvent &event)
+{
+    wxPoint mouse;
+    event.GetPosition( &mouse.x, &mouse.y );
+
+    wxPoint windowSize;
+    GetClientSize( &windowSize.x, &windowSize.y );
+    //static wxString msg;
+
+    if ( event.Dragging() )
+    {
+        camera.updateRotatation(mouse.x,mouse.y, windowSize.x, windowSize.y);
+        //static std::string temp;
+        //temp = manipulator->update( mouse.x, mouse.y, windowSize.x, windowSize.y );
+        //msg = wxString::FromAscii( temp.c_str() );
+        //parent->SetStatusText( msg, 1 );
+    }
+    //else
+    //{
+    //    msg.Printf(_("Mouse Position: ( %d, %d )"), mouse.x, mouse.y );
+    //    parent->SetStatusText( msg, 1 );
+    //}
+
+    Refresh();
+    event.Skip();
+}
+

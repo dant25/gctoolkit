@@ -29,6 +29,9 @@
 			<Add option="`wx-config --libs --gl-libs`" />
 			<Add option="-lGLU" />
 		</Linker>
+		<Unit filename="src/BoundingBox.h" />
+		<Unit filename="src/Camera.cpp" />
+		<Unit filename="src/Camera.h" />
 		<Unit filename="src/Delaunay.cpp" />
 		<Unit filename="src/Delaunay.h" />
 		<Unit filename="src/Edge.cpp" />
@@ -74,8 +77,12 @@
 		<Unit filename="src/math/Mat4x4.cpp" />
 		<Unit filename="src/math/Mat4x4.h" />
 		<Unit filename="src/math/Point.h" />
+		<Unit filename="src/math/Quaternion.cpp" />
+		<Unit filename="src/math/Quaternion.h" />
 		<Unit filename="src/math/Vec3.cpp" />
 		<Unit filename="src/math/Vec3.h" />
+		<Unit filename="src/math/Vector3.cpp" />
+		<Unit filename="src/math/Vector3.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

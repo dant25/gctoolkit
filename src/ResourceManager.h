@@ -7,6 +7,7 @@
 
 #include "Point.h"
 #include "Point2D.h"
+#include "BoundingBox.h"
 
 #include "Graham2D.h"
 #include "Delaunay.h"
@@ -42,9 +43,12 @@ class ResourceManager
         float getBoxZmin() { return boxZmin; };
         float getBoxZmax() { return boxZmax; };
 
+        BoundingBox getBoundingBox() { return bBox; };
+
 
     private:
         enumType type;
+        BoundingBox bBox;
 
         float boxXmin;
         float boxXmax;

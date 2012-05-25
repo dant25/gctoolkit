@@ -26,6 +26,10 @@ class MergeHull3D
         void clear();
         void execute();
 
+        Polygon* initialFace(std::list<Point*> pointList);
+
+        static bool compareY(Point* first, Point* second);
+
 
     protected:
 

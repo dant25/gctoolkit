@@ -61,3 +61,16 @@ void MergeHull3D::execute()
 {
     //dtor
 }
+
+Polygon* MergeHull3D::initialFace(std::list<Point*> pointList)
+{
+    pointList.sort(compareY);
+}
+
+bool MergeHull3D::compareY(Point* first, Point* second)
+{
+    if(first->getCoord(1) <= second->getCoord(1))
+        return true;
+    else
+        return false;
+}

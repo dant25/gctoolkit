@@ -74,31 +74,29 @@ glEnable(GL_LINE_SMOOTH);
 
     //Inicialização do viewport
     int w, h;
-    //float ratio = (float) w/(float) h;
+    //double ratio = (double) w/(double) h;
     GetClientSize(&w, &h);
     glViewport(0, 0, (GLint) w , (GLint) h );
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+
     //gluOrtho2D(-200,200,-200,200);
     //gluOrtho2D(0,1,0,1);  //JONAS
-    //camera.fit(manager.getBoundingBox());
-    camera.fit( BoundingBox(Vector3(-10, -10, -50), Vector3(50, 50, 50)) );
-
+    camera.fit(manager.getBoundingBox());
 }
 
-void GLCanvas::resizeOrtho(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax)
+void GLCanvas::resizeOrtho(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax)
 {
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+    //glMatrixMode(GL_PROJECTION);
+    //glLoadIdentity();
     //gluOrtho2D(xMin, xMax, yMin, yMax);
-    glFrustum(xMin, xMax, yMin, yMax, zMin, zMax);
+    //glFrustum(xMin, xMax, yMin, yMax, zMin, zMax);
+    camera.fit(manager.getBoundingBox());
 }
 
 void GLCanvas::fitCam()
 {
-    float fatorX = (manager.getBoxXmax() - manager.getBoxXmin())*0.05;
-    float fatorY = (manager.getBoxYmax() - manager.getBoxYmin())*0.05;
-    float fatorZ = (manager.getBoxZmax() - manager.getBoxZmin())*0.05;
+    double fatorX = (manager.getBoxXmax() - manager.getBoxXmin())*0.05;
+    double fatorY = (manager.getBoxYmax() - manager.getBoxYmin())*0.05;
+    double fatorZ = (manager.getBoxZmax() - manager.getBoxZmin())*0.05;
 
     xMin = manager.getBoxXmin()-fatorX;
     xMax = manager.getBoxXmax()+fatorX;
@@ -107,7 +105,8 @@ void GLCanvas::fitCam()
     zMin = manager.getBoxZmin()-fatorZ;
     zMax = manager.getBoxZmax()+fatorZ;
 
-    this->resizeOrtho(xMin, xMax, yMin, yMax, zMin, zMax);
+    //this->resizeOrtho(xMin, xMax, yMin, yMax, zMin, zMax);
+    camera.fit(manager.getBoundingBox());
 }
 
 void GLCanvas::render()
@@ -121,36 +120,26 @@ void GLCanvas::render()
     //renderBackground();
 
     camera.render();
+
+    BoundingBox octBBox = manager.getBoundingBox();
+    Vector3 center((octBBox.pMin.x + octBBox.pMax.x)*0.5,
+                   (octBBox.pMin.y + octBBox.pMax.y)*0.5,
+                   (octBBox.pMin.z + octBBox.pMax.z)*0.5);
+
+
+    glPushAttrib( GL_TRANSFORM_BIT );
+    glMatrixMode( GL_MODELVIEW );
+    glPushMatrix();
+
+    glTranslatef(-center.x, -center.y, -center.z);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glEdgeFlag(GL_FALSE);
+
     manager.render();
 
-/*
-glPointSize(7);
-glColor3f(1, 0, 0);
-glBegin(GL_POINTS);
-    glVertex2f(-1, 0);
-    glVertex2f(0, -1);
-    glVertex2f(-1, -1);
-    glVertex2f(0, 0);
-    glVertex2f(0, 1);
-    glVertex2f(1, 0);
-    glVertex2f(1, 1);
-    glVertex2f(10, 10);
-glEnd();
-std::cout << "asdasdasdasdas" << std::endl;
-*/
-/*
-    glBindTexture(GL_TEXTURE_2D, texID);
-
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, texID);
-    glBegin(GL_QUADS);
-        glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, 0.0);
-        glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, 0.0);
-        glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, 0.0);
-        glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, 0.0);
-    glEnd();
-*/
     //glFlush();
     SwapBuffers();
     //Refresh();

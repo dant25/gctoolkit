@@ -55,7 +55,7 @@ class Graham2D
 
         Point* centroid;
 
-        static std::map<Point*,float> pointMap;
+        static std::map<Point*,double> pointMap;
 };
 
 

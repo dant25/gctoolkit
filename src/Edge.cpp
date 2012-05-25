@@ -59,17 +59,17 @@ Point *Edge::getPoint(unsigned int i) const
 	return (i < this->points.size()) ? points[i] : NULL;
 }
 
-float Edge::length() const
+double Edge::length() const
 {
 	return this->vector().norm();
 }
 
-float Edge::size() const
+double Edge::size() const
 {
 	return this->length();
 }
 
-float Edge::orientedSize() const
+double Edge::orientedSize() const
 {
 	return this->size();
 }
@@ -83,8 +83,8 @@ Vector Edge::vector() const
 
 bool Edge::in(const Point &p) const
 {
-	float d1 = p.distance(this->getP1());
-	float d2 = p.distance(this->getP2());
+	double d1 = p.distance(this->getP1());
+	double d2 = p.distance(this->getP2());
 
 	return ((fabs(d1 + d2 - this->length()) < 0.0001));
 }
@@ -114,12 +114,12 @@ bool Edge::out(const Point *p) const
 	return this->out(*p);
 }
 
-float Edge::angle(const Point &p) const
+double Edge::angle(const Point &p) const
 {
 	return this->angle(&p);
 }
 
-float Edge::angle(const Point *p) const
+double Edge::angle(const Point *p) const
 {
 	Vector v1(p, this->getP1());
 	Vector v2(p, this->getP2());
@@ -171,12 +171,12 @@ bool Edge::equal(const Point *p1, const Point *p2) const
 }
 
 
-void Edge::setWidth(float width) const
+void Edge::setWidth(double width) const
 {
 	this->width = width;
 }
 
-float Edge::getWidth() const
+double Edge::getWidth() const
 {
 	return this->width;
 }

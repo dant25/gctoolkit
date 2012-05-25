@@ -22,9 +22,9 @@ Polygon::~Polygon()
 
 }
 
-float Polygon::perimeter() const
+double Polygon::perimeter() const
 {
-	float d = 0;
+	double d = 0;
 
 	if (this->numPoints() > 2)
 	{
@@ -39,7 +39,7 @@ float Polygon::perimeter() const
 	return d;
 }
 
-float Polygon::orientedSize() const
+double Polygon::orientedSize() const
 {
 	return this->orientedSurface();
 }

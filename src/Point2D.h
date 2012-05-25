@@ -9,7 +9,7 @@ class Point2D : public Point
 {
 public:
 
-    Point2D(float x = 0.0, float y = 0.0, long int id = 0);
+    Point2D(double x = 0.0, double y = 0.0, long int id = 0);
     Point2D(const Point &p);
     Point2D(const Point *p);
 
@@ -17,21 +17,21 @@ public:
 
     virtual unsigned int dimension() const;
 
-    virtual void setPosition(float x, float y);
+    virtual void setPosition(double x, double y);
 
-    virtual float surface(const Point2D &p1, const Point2D &p2) const;
-    virtual float surface(const Point2D *p1, const Point2D *p2) const;
+    virtual double surface(const Point2D &p1, const Point2D &p2) const;
+    virtual double surface(const Point2D *p1, const Point2D *p2) const;
 
-    virtual float orientedSurface(const Point2D &p1, const Point2D &p2) const;
-    virtual float orientedSurface(const Point2D *p1, const Point2D *p2) const;
+    virtual double orientedSurface(const Point2D &p1, const Point2D &p2) const;
+    virtual double orientedSurface(const Point2D *p1, const Point2D *p2) const;
 
-    virtual void setX(float x);
-    virtual float getX() const;
+    virtual void setX(double x);
+    virtual double getX() const;
 
-    virtual void setY(float y);
-    virtual float getY() const;
+    virtual void setY(double y);
+    virtual double getY() const;
 
-    virtual bool equal(float x, float y) const;
+    virtual bool equal(double x, double y) const;
 
     virtual void draw() const;
 };

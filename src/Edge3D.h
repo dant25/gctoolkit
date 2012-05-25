@@ -17,24 +17,24 @@ public:
     virtual bool intercept(const Point3D &p1, const Point3D &p2) const;
     virtual bool intercept(const Point3D *p1, const Point3D *p2) const;
 
-    virtual float distance(const Point3D &p) const;
-    virtual float distance(const Point3D *p) const;
-    virtual float distance(float x, float y) const;
+    virtual double distance(const Point3D &p) const;
+    virtual double distance(const Point3D *p) const;
+    virtual double distance(double x, double y) const;
 
-    virtual float straightDistance(const Point3D &p) const;
-    virtual float straightDistance(const Point3D *p) const;
-    virtual float straightDistance(float x, float y) const;
+    virtual double straightDistance(const Point3D &p) const;
+    virtual double straightDistance(const Point3D *p) const;
+    virtual double straightDistance(double x, double y) const;
 
-    virtual float height(const Point3D &p) const;
-    virtual float height(const Point3D *p) const;
-    virtual float height(float x, float y) const;
+    virtual double height(const Point3D &p) const;
+    virtual double height(const Point3D *p) const;
+    virtual double height(double x, double y) const;
 
-    virtual float angle(const Point3D &p1, const Point3D &p2) const;
-    virtual float angle(const Point3D *p1, const Point3D *p2) const;
-    virtual float angle(const Edge3D &e) const;
-    virtual float angle(const Edge3D *e) const;
-    virtual float angle(const Point3D &p) const;
-    virtual float angle(const Point3D *p) const;
+    virtual double angle(const Point3D &p1, const Point3D &p2) const;
+    virtual double angle(const Point3D *p1, const Point3D *p2) const;
+    virtual double angle(const Edge3D &e) const;
+    virtual double angle(const Edge3D *e) const;
+    virtual double angle(const Point3D &p) const;
+    virtual double angle(const Point3D *p) const;
 
     virtual void draw(bool fill) const;
 };

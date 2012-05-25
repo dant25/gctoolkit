@@ -10,7 +10,7 @@ class Vector
 public:
 
     Vector(unsigned int dimension = 1, long int id = 0);
-    Vector(std::vector<float> coords, long int id = 0);
+    Vector(std::vector<double> coords, long int id = 0);
     Vector(const Vector &v);
     Vector(const Vector *v);
     Vector(const Point &p);
@@ -23,34 +23,34 @@ public:
 
     virtual unsigned int dimension() const;
 
-    virtual void setCoords(std::vector<float> coords);
-    virtual std::vector<float> getCoords() const;
+    virtual void setCoords(std::vector<double> coords);
+    virtual std::vector<double> getCoords() const;
 
-    virtual void setCoord(unsigned int i, float c);
-    virtual float getCoord(unsigned int i) const;
+    virtual void setCoord(unsigned int i, double c);
+    virtual double getCoord(unsigned int i) const;
 
     virtual void sum(const Vector &v);
     virtual void sum(const Vector *v);
 
-    virtual void multiply(float d);
+    virtual void multiply(double d);
 
     virtual void invert();
 
-    virtual float dot(const Vector &v) const;
-    virtual float dot(const Vector *v) const;
+    virtual double dot(const Vector &v) const;
+    virtual double dot(const Vector *v) const;
 
-    virtual float norm() const;
+    virtual double norm() const;
 
-    virtual float angle(const Vector &v) const;
-    virtual float angle(const Vector *v) const;
+    virtual double angle(const Vector &v) const;
+    virtual double angle(const Vector *v) const;
 
-    virtual float cosAngle(const Vector &v) const;
-    virtual float cosAngle(const Vector *v) const;
+    virtual double cosAngle(const Vector &v) const;
+    virtual double cosAngle(const Vector *v) const;
 
     virtual void normalize();
 
     //matrix should be (dimension + 1) x (dimension + 1)
-    virtual void transform(float **matrix);
+    virtual void transform(double **matrix);
 
     virtual bool match(const Vector &v) const;
     virtual bool match(const Vector *v) const;
@@ -70,7 +70,7 @@ protected:
 
     //UInt dimension;
 
-    std::vector<float> coords;
+    std::vector<double> coords;
 };
 
 #endif //#ifndef _VECTOR_H_

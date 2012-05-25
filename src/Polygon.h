@@ -12,11 +12,11 @@ public:
     Polygon(unsigned int numPoints);
     virtual ~Polygon();
 
-    virtual float perimeter() const;
-    virtual float surface() const = 0;
-    virtual float orientedSurface() const = 0;
+    virtual double perimeter() const;
+    virtual double surface() const = 0;
+    virtual double orientedSurface() const = 0;
 
-    virtual float orientedSize() const;
+    virtual double orientedSize() const;
 
     virtual Vector3D normal() const;
 

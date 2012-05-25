@@ -3,7 +3,7 @@
 #include <fstream>
 #include <GL/gl.h>
 
-std::map<Point*,float> Graham2D::pointMap;
+std::map<Point*,double> Graham2D::pointMap;
 
 Graham2D::Graham2D(std::list<Point*> pointList)
 {
@@ -45,8 +45,8 @@ bool Graham2D::save(std::string fileName)
 
 void Graham2D::findCentroid()
 {
-    float Ox = 0.0;
-    float Oy = 0.0;
+    double Ox = 0.0;
+    double Oy = 0.0;
 
     for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
     {
@@ -108,10 +108,10 @@ void Graham2D::coincidentPoint()
 {
     std::list<Point*>::iterator it;
     std::list<Point*>::iterator it2;
-    std::map<Point*, float>::iterator map_it;
+    std::map<Point*, double>::iterator map_it;
 
-    float Ox = centroid->getCoord(0);
-    float Oy = centroid->getCoord(1);
+    double Ox = centroid->getCoord(0);
+    double Oy = centroid->getCoord(1);
 
     for (it=pointList.begin() ; it != --pointList.end();  )
     {
@@ -120,9 +120,9 @@ void Graham2D::coincidentPoint()
 
         if( fabs( pointMap[(*it)] - pointMap[(*it2)] ) <= 0.001 )
         {
-            float dist1 = sqrt( pow((*it)->getCoord(0)-Ox, 2.0) + pow((*it)->getCoord(1)-Oy, 2.0) );
+            double dist1 = sqrt( pow((*it)->getCoord(0)-Ox, 2.0) + pow((*it)->getCoord(1)-Oy, 2.0) );
 
-            float dist2 = sqrt( pow((*it2)->getCoord(0)-Ox, 2.0) + pow((*it2)->getCoord(1)-Oy, 2.0) );
+            double dist2 = sqrt( pow((*it2)->getCoord(0)-Ox, 2.0) + pow((*it2)->getCoord(1)-Oy, 2.0) );
 
             if(dist1 <= dist2)
             {
@@ -255,10 +255,10 @@ void Graham2D::sortPoints()
     Point *point = new Point2D(((Point2D*)centroid)->getX()+10, ((Point2D*)centroid)->getY(), 0);
     Edge *edge = new Edge2D((Point2D*)centroid, (Point2D*)point, 0);
 
-    float angle;
+    double angle;
 
-    float xMax = -999.9;
-    float yMin = 999.9;
+    double xMax = -999.9;
+    double yMin = 999.9;
     Point *pMaxMin = NULL;
 
     pointMap.clear();

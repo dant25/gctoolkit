@@ -25,8 +25,8 @@ public:
 
     virtual unsigned int dimension() const;
 
-    virtual float size() const;
-    virtual float orientedSize() const = 0;
+    virtual double size() const;
+    virtual double orientedSize() const = 0;
 
 
     virtual Point mid() const;

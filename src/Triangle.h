@@ -41,16 +41,16 @@ public:
 
     int numPoints;
 
-    void setColorR(float color) {r = color;};
-    void setColorG(float color) {g = color;};
-    void setColorB(float color) {b = color;};
+    void setColorR(double color) {r = color;};
+    void setColorG(double color) {g = color;};
+    void setColorB(double color) {b = color;};
 
     virtual void draw(bool fill) const = 0;
 
     protected:
-    float r;
-    float g;
-    float b;
+    double r;
+    double g;
+    double b;
 
     bool highlighted;
     std::vector<Point*> points;

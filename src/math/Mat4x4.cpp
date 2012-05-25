@@ -18,7 +18,7 @@ void Mat4x4::loadIdentity() {
                 mat[i][j] = 0;
 }
 
-float& Mat4x4::operator()(int i, int j) {
+double& Mat4x4::operator()(int i, int j) {
     return mat[i][j];
 }
 

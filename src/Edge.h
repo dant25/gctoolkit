@@ -25,10 +25,10 @@ public:
     virtual void setPoint(unsigned int i, Point *p);
     virtual Point *getPoint(unsigned int i) const;
 
-    virtual float length() const;
+    virtual double length() const;
 
-    virtual float size() const;
-    virtual float orientedSize() const;
+    virtual double size() const;
+    virtual double orientedSize() const;
 
     virtual Vector vector() const;
 
@@ -41,8 +41,8 @@ public:
     virtual bool out(const Point &p) const;
     virtual bool out(const Point *p) const;
 
-    virtual float angle(const Point &p) const;
-    virtual float angle(const Point *p) const;
+    virtual double angle(const Point &p) const;
+    virtual double angle(const Point *p) const;
 
     virtual bool match(const Edge &e) const;
     virtual bool match(const Edge *e) const;
@@ -55,15 +55,15 @@ public:
     virtual bool equal(const Point *p1, const Point *p2) const;
 
 
-    virtual void setWidth(float width) const;
-    virtual float getWidth() const;
+    virtual void setWidth(double width) const;
+    virtual double getWidth() const;
 
     virtual void highlight() const;
     virtual void unhighlight() const;
 
-    void setColorR(float color) {r = color;};
-    void setColorG(float color) {g = color;};
-    void setColorB(float color) {b = color;};
+    void setColorR(double color) {r = color;};
+    void setColorG(double color) {g = color;};
+    void setColorB(double color) {b = color;};
 
     virtual void draw(bool fill) const = 0;
 
@@ -73,11 +73,11 @@ protected:
 
     mutable bool highlightEdge;
 
-    mutable float width;
+    mutable double width;
 
-    float r;
-    float g;
-    float b;
+    double r;
+    double g;
+    double b;
 
     long int id;
 

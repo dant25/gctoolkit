@@ -4,19 +4,12 @@
 
 ResourceManager::ResourceManager()
 {
-    boxXmin = -1.0;
-    boxXmax = 1.0;
-    boxYmin = -1.0;
-    boxYmax = 1.0;
-    boxZmin = -1.0;
-    boxZmax = 1.0;
     graham = NULL;
     delaunay = NULL;
     mergehull3d = NULL;
     type = MERGEHULL3D;
 
-    this->bBox = BoundingBox(Vector3(-50, -50, -300), Vector3(50, 50, 400));
-
+    this->bBox = BoundingBox(Vector3(-10, -10, -10), Vector3(10, 10, 10));
 }
 
 ResourceManager::~ResourceManager()
@@ -29,7 +22,7 @@ bool ResourceManager::loadFromFile(std::string fileName)
     //std::cout << fileName.c_str() << std::endl;
 
     //std::ifstream file( fileName.c_str(), std::ifstream::in);
-    std::ifstream file( "crab 3.txt", std::ifstream::in);
+    std::ifstream file( "entrada.txt", std::ifstream::in);
 
     if( !file )
         return false;
@@ -37,7 +30,7 @@ bool ResourceManager::loadFromFile(std::string fileName)
     pointList.clear();
 
     file >> numPoint;
-    float x, y, z;
+    double x, y, z;
 
     boxXmin = DBL_MAX;
     boxXmax = -DBL_MAX;
@@ -70,9 +63,17 @@ bool ResourceManager::loadFromFile(std::string fileName)
         if(boxZmax < z)
             boxZmax = z;
 
-        Point *point = new Point2D(x, y, i+1);
+        Point *point;
+
+        if(this->type != MERGEHULL3D)
+            point = new Point2D(x, y, i+1);
+        else
+            point = new Point3D(x,y,z);
+
         pointList.push_back(point);
     }
+
+    this->bBox = BoundingBox(Vector3(boxXmin, boxYmin, boxZmin), Vector3(boxXmax, boxYmax, boxZmax));
 
     switch(this->type)
     {

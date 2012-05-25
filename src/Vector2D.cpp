@@ -1,7 +1,7 @@
 #include "Vector2D.h"
 #include <GL/gl.h>
 
-Vector2D::Vector2D(float x, float y, long int id) :
+Vector2D::Vector2D(double x, double y, long int id) :
 	Vector(2, id)
 {
 	this->setPosition(x, y);
@@ -30,28 +30,28 @@ Vector2D::~Vector2D()
 
 }
 
-void Vector2D::setPosition(float x, float y)
+void Vector2D::setPosition(double x, double y)
 {
 	this->setX(x);
 	this->setY(y);
 }
 
-void Vector2D::setX(float x)
+void Vector2D::setX(double x)
 {
 	this->setCoord(0, x);
 }
 
-float Vector2D::getX() const
+double Vector2D::getX() const
 {
 	return this->getCoord(0);
 }
 
-void Vector2D::setY(float y)
+void Vector2D::setY(double y)
 {
 	this->setCoord(1, y);
 }
 
-float Vector2D::getY() const
+double Vector2D::getY() const
 {
 	return this->getCoord(1);
 }
@@ -61,17 +61,17 @@ unsigned int Vector2D::dimension() const
 	return 2;
 }
 
-float Vector2D::cross(const Vector2D &v) const
+double Vector2D::cross(const Vector2D &v) const
 {
 	return (this->getX()*v.getY() - this->getY()*v.getX());
 }
 
-float Vector2D::cross(const Vector2D *v) const
+double Vector2D::cross(const Vector2D *v) const
 {
 	return this->cross(*v);
 }
 
-float Vector2D::scaledCross(const Vector2D &v) const
+double Vector2D::scaledCross(const Vector2D &v) const
 {
 	double norm = this->norm();
 
@@ -111,26 +111,26 @@ float Vector2D::scaledCross(const Vector2D &v) const
 	return this->cross(v);
 }
 
-float Vector2D::scaledCross(const Vector2D *v) const
+double Vector2D::scaledCross(const Vector2D *v) const
 {
 	return this->scaledCross(*v);
 }
 
-float Vector2D::orientedAngle() const
+double Vector2D::orientedAngle() const
 {
 	static const Vector2D v(1.0, 0.0);
 
-    float ang = this->angle(v);
+    double ang = this->angle(v);
 
     return (this->getY() >= 0.0) ? ang : 2.0*M_PI - ang;
 }
 
-float Vector2D::orientedAngle(const Vector2D &v) const
+double Vector2D::orientedAngle(const Vector2D &v) const
 {
 	return (v.orientedAngle() - this->orientedAngle());
 }
 
-float Vector2D::orientedAngle(const Vector2D *v) const
+double Vector2D::orientedAngle(const Vector2D *v) const
 {
 	return this->orientedAngle(*v);
 }

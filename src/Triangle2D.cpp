@@ -47,13 +47,13 @@ Point Triangle2D::circumcenter() const
 	Vector2D b(*p1, *p2);
 	Vector2D c(*p1, *p3);
 
-	float bdot = b.dot(b);
-	float cdot = c.dot(c);
+	double bdot = b.dot(b);
+	double cdot = c.dot(c);
 
-	float d = 2.0*b.cross(c);
+	double d = 2.0*b.cross(c);
 
-	float x = (c.getY()*bdot - b.getY()*cdot)/d;
-	float y = (b.getX()*cdot - c.getX()*bdot)/d;
+	double x = (c.getY()*bdot - b.getY()*cdot)/d;
+	double y = (b.getX()*cdot - c.getX()*bdot)/d;
 
 	Point2D p(x + p1->getX(), y + p1->getY());
 
@@ -74,14 +74,14 @@ Point Triangle2D::incenter() const
 
 	//found in http://en.wikipedia.org/wiki/Incircle
 
-	float a = p1->distance(p2);
-    float b = p2->distance(p3);
-    float c = p3->distance(p1);
+	double a = p1->distance(p2);
+    double b = p2->distance(p3);
+    double c = p3->distance(p1);
 
-    float sum = a + b + c;
+    double sum = a + b + c;
 
-    float x = (a*p3->getX() + b*p1->getX() + c*p2->getX())/sum;
-    float y = (a*p3->getY() + b*p1->getY() + c*p2->getY())/sum;
+    double x = (a*p3->getX() + b*p1->getX() + c*p2->getX())/sum;
+    double y = (a*p3->getY() + b*p1->getY() + c*p2->getY())/sum;
 
     Point2D p(x, y);
 

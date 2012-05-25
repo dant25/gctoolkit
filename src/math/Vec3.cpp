@@ -9,7 +9,7 @@ Vec3::Vec3(const Point& p) {
     this->y = p.y;
     this->z = p.z;
 }
-Vec3::Vec3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {
+Vec3::Vec3(double _x, double _y, double _z) : x(_x), y(_y), z(_z) {
 
 }
 
@@ -24,16 +24,16 @@ Vec3& Vec3::operator+=(const Vec3& v){
 
 //
 
-Vec3 Vec3::operator*(float f) const{
+Vec3 Vec3::operator*(double f) const{
 	return Vec3(x*f, y*f, z*f);
 }
 
-Vec3& Vec3::operator*=(float f) {
+Vec3& Vec3::operator*=(double f) {
 	x *= f; y*= f; z*= f;
 	return *this;
 }
 
-Vec3 Vec3::operator/(float f) const{
+Vec3 Vec3::operator/(double f) const{
 	if (fabs(f) < 0.0004) {
 		//TODO tratar esse erro
 		return *this;
@@ -41,7 +41,7 @@ Vec3 Vec3::operator/(float f) const{
 	return Vec3(x/f, y/f, z/f);
 }
 
-Vec3& Vec3::operator/=(float f) {
+Vec3& Vec3::operator/=(double f) {
 	if (fabs(f) < 0.0004) {
 		//TODO tratar isso
 		return *this;
@@ -51,16 +51,16 @@ Vec3& Vec3::operator/=(float f) {
 	return *this;
 }
 
-float Vec3::length() {
+double Vec3::length() {
 	return sqrt(x*x + y*y + z*z );
 }
 
 void Vec3::normalize() {
-	float len = this->length();
+	double len = this->length();
 	x/=len; y /= len; z /= len;
 }
 
-float Dot(const Vec3& v1, const Vec3& v2) {
+double Dot(const Vec3& v1, const Vec3& v2) {
 	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 

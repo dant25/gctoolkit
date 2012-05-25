@@ -9,7 +9,7 @@ Point::Point(long int id)
     b = 0;
 }
 
-Point::Point(std::vector<float> coords, long int id)
+Point::Point(std::vector<double> coords, long int id)
 {
 	this->setCoords(coords);
     r = 0;
@@ -51,19 +51,19 @@ unsigned int Point::dimension() const
 	return this->coords.size();
 }
 
-void Point::setCoords(std::vector<float> coords)
+void Point::setCoords(std::vector<double> coords)
 {
 	this->coords = coords;
 
 	//this->dimension = this->coords.size();
 }
 
-std::vector<float> Point::getCoords() const
+std::vector<double> Point::getCoords() const
 {
 	return this->coords;
 }
 
-void Point::setCoord(unsigned int i, float c)
+void Point::setCoord(unsigned int i, double c)
 {
 	if (i < this->dimension())
 	{
@@ -75,7 +75,7 @@ void Point::setCoord(unsigned int i, float c)
 	}
 }
 
-float Point::getCoord(unsigned int i) const
+double Point::getCoord(unsigned int i) const
 {
     if(i < this->dimension())
         return (this->coords[i]);
@@ -86,9 +86,9 @@ float Point::getCoord(unsigned int i) const
     }
 }
 
-float Point::distance(const Point &p) const
+double Point::distance(const Point &p) const
 {
-    float norm = 0.0;
+    double norm = 0.0;
 
 	for (unsigned int i = 0; i < 2; i++)
 	{

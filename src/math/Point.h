@@ -7,7 +7,7 @@ class Point {
     public:
 
         Point() { } ;
-        Point(float _x, float _y, float _z) : x(_x), y(_y), z(_z) { };
+        Point(double _x, double _y, double _z) : x(_x), y(_y), z(_z) { };
 
         Point operator+(const Vec3& v) const {
             return Point(x + v.x, y + v.y, z + v.z);
@@ -31,19 +31,19 @@ class Point {
             return *this;
         }
 
-        Point operator/(float div) const {
+        Point operator/(double div) const {
             return Point(x/div, y/div, z/div);
         }
-        Point& operator/=(float div) {
+        Point& operator/=(double div) {
             x /= div; y/= div; z /= div;
             return *this;
         }
 
 
-        float x, y, z;
+        double x, y, z;
 };
 
-//float Distance (const Point& p1, const Point& p2) {
+//double Distance (const Point& p1, const Point& p2) {
 //	return (p1 - p2).Length();
 //}
 

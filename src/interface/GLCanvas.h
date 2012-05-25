@@ -32,7 +32,7 @@ private:
     void onEraseBackground(wxEraseEvent& event);
     void onEnterWindow(wxMouseEvent& event);
 
-    void resizeOrtho(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax);
+    void resizeOrtho(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax);
 
     void onMouseLeftDown(wxMouseEvent& event);
     void onMouseLeftUp(wxMouseEvent& event);
@@ -50,7 +50,7 @@ private:
 
     Camera camera;
 
-    float xMin, xMax, yMin, yMax, zMin, zMax;
+    double xMin, xMax, yMin, yMax, zMin, zMax;
     wxPoint lastPos;
 
     //Textura usada para desenhar a cena

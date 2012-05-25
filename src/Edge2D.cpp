@@ -31,7 +31,7 @@ bool Edge2D::intercept(const Edge2D *e) const
 
 bool Edge2D::intercept(const Point2D &p1, const Point2D &p2) const
 {
-	float min, max, pmin, pmax;
+	double min, max, pmin, pmax;
 
 	//if the bounding boxes of the two edges do not intercept, then
 	//	the two edges do not intercept
@@ -110,7 +110,7 @@ bool Edge2D::intercept(const Point2D *p1, const Point2D *p2) const
 	return this->intercept(*p1, *p2);
 }
 
-float Edge2D::distance(const Point2D &p) const
+double Edge2D::distance(const Point2D &p) const
 {
 	Vector2D vec = Vector2D(this->vector());
 	Vector2D ac(*(Point2D *)(this->getP1()), p);
@@ -155,36 +155,36 @@ float Edge2D::distance(const Point2D &p) const
     return this->height(p);*/
 }
 
-float Edge2D::distance(const Point2D *p) const
+double Edge2D::distance(const Point2D *p) const
 {
 	return this->distance(*p);
 }
 
-float Edge2D::distance(float x, float y) const
+double Edge2D::distance(double x, double y) const
 {
 	Point2D p(x, y);
 
 	return this->distance(p);
 }
 
-float Edge2D::straightDistance(const Point2D &p) const
+double Edge2D::straightDistance(const Point2D &p) const
 {
 	return this->height(p);
 }
 
-float Edge2D::straightDistance(const Point2D *p) const
+double Edge2D::straightDistance(const Point2D *p) const
 {
 	return this->straightDistance(*p);
 }
 
-float Edge2D::straightDistance(float x, float y) const
+double Edge2D::straightDistance(double x, double y) const
 {
 	Point2D p(x, y);
 
 	return this->straightDistance(p);
 }
 
-float Edge2D::height(const Point2D &p) const
+double Edge2D::height(const Point2D &p) const
 {
 	Point2D *p1 = (Point2D *)this->getP1();
 	Point2D *p2 = (Point2D *)this->getP2();
@@ -192,12 +192,12 @@ float Edge2D::height(const Point2D &p) const
 	return (2.0*p1->surface(*p2, p)/this->length());
 }
 
-float Edge2D::height(const Point2D *p) const
+double Edge2D::height(const Point2D *p) const
 {
 	return this->height(*p);
 }
 
-float Edge2D::height(float x, float y) const
+double Edge2D::height(double x, double y) const
 {
 	Point2D p(x, y);
 
@@ -216,7 +216,7 @@ bool Edge2D::left(const Point2D *p) const
 	return this->left(*p);
 }
 
-bool Edge2D::left(float x, float y) const
+bool Edge2D::left(double x, double y) const
 {
 	Point2D p(x, y);
 
@@ -235,7 +235,7 @@ bool Edge2D::right(const Point2D *p) const
 	return this->right(*p);
 }
 
-bool Edge2D::right(float x, float y) const
+bool Edge2D::right(double x, double y) const
 {
 	Point2D p(x, y);
 
@@ -247,7 +247,7 @@ bool Edge2D::accordingToNormal(const Point2D &p, bool insideTest) const
 	return (insideTest) ? !this->right(p) : this->left(p);
 }
 
-float Edge2D::angle(const Point2D &p1, const Point2D &p2) const
+double Edge2D::angle(const Point2D &p1, const Point2D &p2) const
 {
 	Vector2D ab = this->vector();
 	Vector2D ac;
@@ -278,22 +278,22 @@ float Edge2D::angle(const Point2D &p1, const Point2D &p2) const
     return ab.angle(ac);
 }
 
-float Edge2D::angle(const Point2D *p1, const Point2D *p2) const
+double Edge2D::angle(const Point2D *p1, const Point2D *p2) const
 {
 	return this->angle(*p1, *p2);
 }
 
-float Edge2D::angle(const Edge2D &e) const
+double Edge2D::angle(const Edge2D &e) const
 {
 	return this->angle((Point2D *)e.getP1(), (Point2D *)e.getP2());
 }
 
-float Edge2D::angle(const Edge2D *e) const
+double Edge2D::angle(const Edge2D *e) const
 {
 	return this->angle(*e);
 }
 
-float Edge2D::angle(const Point2D &p) const
+double Edge2D::angle(const Point2D &p) const
 {
 	/*
 	             *   p
@@ -314,19 +314,19 @@ float Edge2D::angle(const Point2D &p) const
 	return v1.angle(v2);
 }
 
-float Edge2D::angle(const Point2D *p) const
+double Edge2D::angle(const Point2D *p) const
 {
 	return this->angle(*p);
 }
 
-float Edge2D::orientedAngle(const Point2D &p, bool insideTest) const
+double Edge2D::orientedAngle(const Point2D &p, bool insideTest) const
 {
 	return this->orientedAngle(&p, insideTest);
 }
 
-float Edge2D::orientedAngle(const Point2D *p, bool insideTest) const
+double Edge2D::orientedAngle(const Point2D *p, bool insideTest) const
 {
-	float angle = this->angle(p);
+	double angle = this->angle(p);
 
 	if (this->accordingToNormal(*p, insideTest))
 	{

@@ -1,10 +1,13 @@
 #include "Point3D.h"
+#include <GL/gl.h>
 
 //#include "State.h"
 
-Point3D::Point3D(float x, float y, float z) :
+Point3D::Point3D(double x, double y, double z) :
 	Point(3)
 {
+    this->coords.resize(3, 0.0);
+
 	this->setPosition(x, y, z);
 }
 
@@ -49,44 +52,44 @@ Point3D::~Point3D()
 
 }
 
-void Point3D::setPosition(float x, float y, float z)
+void Point3D::setPosition(double x, double y, double z)
 {
 	this->setX(x);
 	this->setY(y);
 	this->setZ(z);
 }
 
-void Point3D::setX(float x)
+void Point3D::setX(double x)
 {
 	//this->setCoord(0, x);
 	this->coords[0] = x;
 }
 
-float Point3D::getX() const
+double Point3D::getX() const
 {
 	//return this->getCoord(0);
 	return this->coords[0];
 }
 
-void Point3D::setY(float y)
+void Point3D::setY(double y)
 {
 	//this->setCoord(1, y);
 	this->coords[1] = y;
 }
 
-float Point3D::getY() const
+double Point3D::getY() const
 {
 	//return this->getCoord(1);
 	return this->coords[1];
 }
 
-void Point3D::setZ(float z)
+void Point3D::setZ(double z)
 {
 	//this->setCoord(2, z);
 	this->coords[2] = z;
 }
 
-float Point3D::getZ() const
+double Point3D::getZ() const
 {
 	//return this->getCoord(2);
 	return this->coords[2];
@@ -97,12 +100,12 @@ unsigned int Point3D::dimension() const
 	return 3;
 }
 
-float Point3D::surface(const Point3D &p1, const Point3D &p2) const
+double Point3D::surface(const Point3D &p1, const Point3D &p2) const
 {
 	return surface(&p1, &p2);
 }
 
-float Point3D::surface(const Point3D *p1, const Point3D *p2) const
+double Point3D::surface(const Point3D *p1, const Point3D *p2) const
 {
 	Vector3D ab(this, p1);
 	Vector3D ac(this, p2);
@@ -110,22 +113,22 @@ float Point3D::surface(const Point3D *p1, const Point3D *p2) const
 	return 0.5*ab.cross(ac).norm();
 }
 
-float Point3D::volume(const Point3D &p1, const Point3D &p2, const Point3D &p3) const
+double Point3D::volume(const Point3D &p1, const Point3D &p2, const Point3D &p3) const
 {
 	return this->volume(&p1, &p2, &p3);
 }
 
-float Point3D::volume(const Point3D *p1, const Point3D *p2, const Point3D *p3) const
+double Point3D::volume(const Point3D *p1, const Point3D *p2, const Point3D *p3) const
 {
 	return fabs(this->orientedVolume(p1, p2, p3));
 }
 
-float Point3D::orientedVolume(const Point3D &p1, const Point3D &p2, const Point3D &p3) const
+double Point3D::orientedVolume(const Point3D &p1, const Point3D &p2, const Point3D &p3) const
 {
 	return this->orientedVolume(&p1, &p2, &p3);
 }
 
-float Point3D::orientedVolume(const Point3D *p1, const Point3D *p2, const Point3D *p3) const
+double Point3D::orientedVolume(const Point3D *p1, const Point3D *p2, const Point3D *p3) const
 {
 	Vector3D ab(this, p1);
 	Vector3D ac(this, p2);
@@ -134,32 +137,22 @@ float Point3D::orientedVolume(const Point3D *p1, const Point3D *p2, const Point3
 	return ad.dot(ab.cross(ac))/6.0;
 }
 
-bool Point3D::match(float x, float y, float z)
+bool Point3D::match(double x, double y, double z)
 {
 	return Point::match(Point3D(x, y, z));
 }
 
-bool Point3D::equal(float x, float y, float z)
+bool Point3D::equal(double x, double y, double z)
 {
 	return Point::equal(Point3D(x, y, z));
 }
 
-#if USE_GUI
+
 void Point3D::draw() const
 {
-	if (!getState().isInVisibleSpace(this))
-	{
-		return;
-	}
+	glPointSize(6);
 
-	//glPointSize(static_cast<GLfloat>(this->getSize()));
-#if USE_SCREENSHOT
-	glPointSize(static_cast<GLfloat>(this->isHighlighted() ? 5.0 : 1.0));
-#else
-	glPointSize(static_cast<GLfloat>(this->isHighlighted() ? 5.0 : 2.0));
-#endif //#if USE_SCREENSHOT
-
-	glColor(this->getR(), this->getG(), this->getB());
+	glColor3f(r, g, b);
 
 	bool lighting = false;
 
@@ -171,11 +164,8 @@ void Point3D::draw() const
 	}
 
 	glPushMatrix();
-		this->explodeAndShrink(this, true);
-
 		glBegin(GL_POINTS);
-			//glVertex(this->coords[0], this->coords[1], this->coords[2]);
-			glVertex(0.0, 0.0, 0.0);
+			glVertex3f(this->coords[0], this->coords[1], this->coords[2]);
 		glEnd();
 	glPopMatrix();
 
@@ -183,11 +173,9 @@ void Point3D::draw() const
 	{
 		glEnable(GL_LIGHTING);
 	}
-
-	//glPointSize(1.0);
 }
-
-UInt Point3D::fill(GLfloat *coord, GLfloat *color, GLfloat */*normal*/) const
+/*
+unsigned int Point3D::fill(GLdouble *coord, GLdouble *color, GLdouble *) const
 {
 	if (!getState().isInVisibleSpace(this))
 	{
@@ -196,17 +184,17 @@ UInt Point3D::fill(GLfloat *coord, GLfloat *color, GLfloat */*normal*/) const
 
 	if (color)
 	{
-		color[0] = static_cast<GLfloat>(this->getR());
-		color[1] = static_cast<GLfloat>(this->getG());
-		color[2] = static_cast<GLfloat>(this->getB());
+		color[0] = static_cast<GLdouble>(this->getR());
+		color[1] = static_cast<GLdouble>(this->getG());
+		color[2] = static_cast<GLdouble>(this->getB());
 	}
 
-	coord[0] = static_cast<GLfloat>(0.0);
-	coord[1] = static_cast<GLfloat>(0.0);
-	coord[2] = static_cast<GLfloat>(0.0);
+	coord[0] = static_cast<GLdouble>(0.0);
+	coord[1] = static_cast<GLdouble>(0.0);
+	coord[2] = static_cast<GLdouble>(0.0);
 
 	this->explodeAndShrink(coord, *this, true);
 
 	return 1;
 }
-#endif //#if USE_GUI
+*/

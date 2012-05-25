@@ -6,7 +6,7 @@ Vector::Vector(unsigned int dimension, long int id)
 	this->setDimension(dimension);
 }
 
-Vector::Vector(std::vector<float> coords, long int id)
+Vector::Vector(std::vector<double> coords, long int id)
 {
     this->id = id;
 	this->setCoords(coords);
@@ -81,19 +81,19 @@ unsigned int Vector::dimension() const
 	return this->coords.size();
 }
 
-void Vector::setCoords(std::vector<float> coords)
+void Vector::setCoords(std::vector<double> coords)
 {
 	this->coords = coords;
 
 	//this->dimension = this->coords.size();
 }
 
-std::vector<float> Vector::getCoords() const
+std::vector<double> Vector::getCoords() const
 {
 	return this->coords;
 }
 
-void Vector::setCoord(unsigned int i, float c)
+void Vector::setCoord(unsigned int i, double c)
 {
 	if (i < this->dimension())
 	{
@@ -101,7 +101,7 @@ void Vector::setCoord(unsigned int i, float c)
 	}
 }
 
-float Vector::getCoord(unsigned int i) const
+double Vector::getCoord(unsigned int i) const
 {
 	return (i < this->dimension()) ? coords[i] : 0.0;
 }
@@ -131,7 +131,7 @@ void Vector::sum(const Vector *v)
 	this->sum(*v);
 }
 
-void Vector::multiply(float d)
+void Vector::multiply(double d)
 {
 	unsigned int dim = this->dimension();
 
@@ -146,9 +146,9 @@ void Vector::invert()
 	this->multiply(-1.0);
 }
 
-float Vector::dot(const Vector &v) const
+double Vector::dot(const Vector &v) const
 {
-	float dot = 0.0;
+	double dot = 0.0;
 
 	unsigned int dim = std::min(this->dimension(), v.dimension());
 
@@ -160,17 +160,17 @@ float Vector::dot(const Vector &v) const
 	return dot;
 }
 
-float Vector::dot(const Vector *v) const
+double Vector::dot(const Vector *v) const
 {
 	return this->dot(*v);
 }
 
-float Vector::norm() const
+double Vector::norm() const
 {
 	return sqrt(this->dot(this));
 }
 
-float Vector::angle(const Vector &v) const
+double Vector::angle(const Vector &v) const
 {
 	double cos = this->cosAngle(v);
 
@@ -187,34 +187,34 @@ float Vector::angle(const Vector &v) const
 	return acos(cos);
 }
 
-float Vector::angle(const Vector *v) const
+double Vector::angle(const Vector *v) const
 {
 	return this->angle(*v);
 }
 
-float Vector::cosAngle(const Vector &v) const
+double Vector::cosAngle(const Vector &v) const
 {
 	return this->dot(v)/(this->norm()*v.norm());
 }
 
-float Vector::cosAngle(const Vector *v) const
+double Vector::cosAngle(const Vector *v) const
 {
 	return this->cosAngle(*v);
 }
 
 void Vector::normalize()
 {
-	float n = this->norm();
+	double n = this->norm();
 
 	//if (std::fabs(n - 1.0) > Shape::getTolerance()) this->multiply(1.0/n);
 	if (n > 0.0001) this->multiply(1.0/n);
 }
 
-void Vector::transform(float **matrix)
+void Vector::transform(double **matrix)
 {
 	unsigned int dim = this->dimension();
 
-	float values[dim];
+	double values[dim];
 
 	for (unsigned int i = 0; i < dim; i++)
 	{

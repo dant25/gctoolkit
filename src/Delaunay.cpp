@@ -79,8 +79,8 @@ Edge* Delaunay::initialEdge()
 {
     Point* initialPoint;
     Point *secondPoint;
-    float Xmax = -9999.99;
-    float angleMin = 360.0;
+    double Xmax = -9999.99;
+    double angleMin = 360.0;
 
     for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
     {
@@ -94,7 +94,7 @@ Edge* Delaunay::initialEdge()
     Point *point = new Point2D( ((Point2D*)initialPoint)->getX() + 20, ((Point2D*)initialPoint)->getY(), 0);
     Edge *aux_edge = new Edge2D((Point2D*)initialPoint, (Point2D*)point, 0);
 
-    float angle = 0.0;
+    double angle = 0.0;
 
     for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
     {
@@ -119,8 +119,8 @@ Edge* Delaunay::initialEdge()
 Point* Delaunay::bestPoint(Edge* e)
 {
     Point *point = NULL;
-    float maxAngle = 0.0;
-    float angle;
+    double maxAngle = 0.0;
+    double angle;
 
     for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
     {
@@ -189,7 +189,7 @@ void Delaunay::execute()
     triangulate();
 
     Point center;
-    float radius;
+    double radius;
     Point *p1;
     Point *p2;
 
@@ -201,7 +201,7 @@ void Delaunay::execute()
 
         circumferencePointList.push_back( new Point2D(center.getCoord(0), center.getCoord(1)) );
 
-        for(float i = 0.0; i < 2.0*M_PI; )
+        for(double i = 0.0; i < 2.0*M_PI; )
         {
             p1 =  new Point2D( radius*cos(i) + center.getCoord(0), radius*sin(i) + center.getCoord(1));
 

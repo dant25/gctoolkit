@@ -7,6 +7,7 @@
 
 #include "Point.h"
 #include "Point2D.h"
+#include "Point3D.h"
 #include "BoundingBox.h"
 
 #include "Graham2D.h"
@@ -34,14 +35,14 @@ class ResourceManager
         Delaunay *delaunay;
         MergeHull3D * mergehull3d;
 
-        float getBoxXmin() { return boxXmin; };
-        float getBoxXmax() { return boxXmax; };
+        double getBoxXmin() { return boxXmin; };
+        double getBoxXmax() { return boxXmax; };
 
-        float getBoxYmin() { return boxYmin; };
-        float getBoxYmax() { return boxYmax; };
+        double getBoxYmin() { return boxYmin; };
+        double getBoxYmax() { return boxYmax; };
 
-        float getBoxZmin() { return boxZmin; };
-        float getBoxZmax() { return boxZmax; };
+        double getBoxZmin() { return boxZmin; };
+        double getBoxZmax() { return boxZmax; };
 
         BoundingBox getBoundingBox() { return bBox; };
 
@@ -50,12 +51,12 @@ class ResourceManager
         enumType type;
         BoundingBox bBox;
 
-        float boxXmin;
-        float boxXmax;
-        float boxYmin;
-        float boxYmax;
-        float boxZmin;
-        float boxZmax;
+        double boxXmin;
+        double boxXmax;
+        double boxYmin;
+        double boxYmax;
+        double boxZmin;
+        double boxZmax;
         long int numPoint;
         std::list<Point*> pointList;
 

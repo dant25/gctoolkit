@@ -8,11 +8,11 @@ class Mat4x4 {
     public:
         Mat4x4();
         void loadIdentity();
-        float& operator()(int, int);
+        double& operator()(int, int);
 
         //TODO Funções para inverter a matriz e retornar
         //a transposta
-        float mat[4][4];
+        double mat[4][4];
 };
 
 Mat4x4 operator*(const Mat4x4& m1, const Mat4x4& m2);

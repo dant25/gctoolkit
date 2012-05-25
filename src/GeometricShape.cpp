@@ -106,7 +106,7 @@ unsigned int GeometricShape::dimension() const
 #endif //#if USE_ARRAY
 }
 
-float GeometricShape::size() const
+double GeometricShape::size() const
 {
 	return fabs(this->orientedSize());
 }
@@ -120,7 +120,7 @@ Point GeometricShape::mid() const
 		v.sum(this->points[i]);
 	}
 
-	v.multiply(1.0/static_cast<float>(this->numPoints()));
+	v.multiply(1.0/static_cast<double>(this->numPoints()));
 
 	return Point(v);
 }

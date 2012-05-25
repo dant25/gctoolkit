@@ -8,7 +8,7 @@ class Vector3D : public Vector
 {
 public:
 
-    Vector3D(float x = 0.0, float y = 0.0, float z = 0.0);
+    Vector3D(double x = 0.0, double y = 0.0, double z = 0.0);
     Vector3D(const Vector &v);
     Vector3D(const Vector *v);
     Vector3D(const Point &p);
@@ -17,16 +17,16 @@ public:
     Vector3D(const Point *p1, const Point *p2);
     virtual ~Vector3D();
 
-    virtual void setPosition(float x, float y, float z);
+    virtual void setPosition(double x, double y, double z);
 
-    virtual void setX(float x);
-    virtual float getX() const;
+    virtual void setX(double x);
+    virtual double getX() const;
 
-    virtual void setY(float y);
-    virtual float getY() const;
+    virtual void setY(double y);
+    virtual double getY() const;
 
-    virtual void setZ(float z);
-    virtual float getZ() const;
+    virtual void setZ(double z);
+    virtual double getZ() const;
 
     virtual unsigned int dimension() const;
 

@@ -31,7 +31,7 @@ bool Edge3D::intercept(const Edge3D *e) const
 
 bool Edge3D::intercept(const Point3D &p1, const Point3D &p2) const
 {
-	float min, max, pmin, pmax;
+	double min, max, pmin, pmax;
 
 	//if the bounding boxes of the two edges do not intercept, then
 	//	the two edges do not intercept
@@ -115,7 +115,7 @@ bool Edge3D::intercept(const Point3D *p1, const Point3D *p2) const
 	return this->intercept(*p1, *p2);
 }
 
-float Edge3D::distance(const Point3D &p) const
+double Edge3D::distance(const Point3D &p) const
 {
 	Vector3D vec = Vector3D(this->vector());
 	Vector3D ac(*(Point3D *)(this->getP1()), p);
@@ -160,36 +160,36 @@ float Edge3D::distance(const Point3D &p) const
     return this->height(p);*/
 }
 
-float Edge3D::distance(const Point3D *p) const
+double Edge3D::distance(const Point3D *p) const
 {
 	return this->distance(*p);
 }
 
-float Edge3D::distance(float x, float y) const
+double Edge3D::distance(double x, double y) const
 {
 	Point3D p(x, y);
 
 	return this->distance(p);
 }
 
-float Edge3D::straightDistance(const Point3D &p) const
+double Edge3D::straightDistance(const Point3D &p) const
 {
 	return this->height(p);
 }
 
-float Edge3D::straightDistance(const Point3D *p) const
+double Edge3D::straightDistance(const Point3D *p) const
 {
 	return this->straightDistance(*p);
 }
 
-float Edge3D::straightDistance(float x, float y) const
+double Edge3D::straightDistance(double x, double y) const
 {
 	Point3D p(x, y);
 
 	return this->straightDistance(p);
 }
 
-float Edge3D::height(const Point3D &p) const
+double Edge3D::height(const Point3D &p) const
 {
 	Point3D *p1 = (Point3D *)this->getP1();
 	Point3D *p2 = (Point3D *)this->getP2();
@@ -197,19 +197,19 @@ float Edge3D::height(const Point3D &p) const
 	return (2.0*p1->surface(*p2, p)/this->length());
 }
 
-float Edge3D::height(const Point3D *p) const
+double Edge3D::height(const Point3D *p) const
 {
 	return this->height(*p);
 }
 
-float Edge3D::height(float x, float y) const
+double Edge3D::height(double x, double y) const
 {
 	Point3D p(x, y);
 
 	return this->height(p);
 }
 
-float Edge3D::angle(const Point3D &p1, const Point3D &p2) const
+double Edge3D::angle(const Point3D &p1, const Point3D &p2) const
 {
 	Vector3D ab = this->vector();
 	Vector3D ac;
@@ -240,22 +240,22 @@ float Edge3D::angle(const Point3D &p1, const Point3D &p2) const
     return ab.angle(ac);
 }
 
-float Edge3D::angle(const Point3D *p1, const Point3D *p2) const
+double Edge3D::angle(const Point3D *p1, const Point3D *p2) const
 {
 	return this->angle(*p1, *p2);
 }
 
-float Edge3D::angle(const Edge3D &e) const
+double Edge3D::angle(const Edge3D &e) const
 {
 	return this->angle((Point3D *)e.getP1(), (Point3D *)e.getP2());
 }
 
-float Edge3D::angle(const Edge3D *e) const
+double Edge3D::angle(const Edge3D *e) const
 {
 	return this->angle(*e);
 }
 
-float Edge3D::angle(const Point3D &p) const
+double Edge3D::angle(const Point3D &p) const
 {
 	/*
 	             *   p
@@ -276,7 +276,7 @@ float Edge3D::angle(const Point3D &p) const
 	return v1.angle(v2);
 }
 
-float Edge3D::angle(const Point3D *p) const
+double Edge3D::angle(const Point3D *p) const
 {
 	return this->angle(*p);
 }

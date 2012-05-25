@@ -2,7 +2,7 @@
 
 #include "Point3D.h"
 
-Vector3D::Vector3D(float x, float y, float z) :
+Vector3D::Vector3D(double x, double y, double z) :
 	Vector(3)
 {
 	this->setPosition(x, y, z);
@@ -49,44 +49,44 @@ Vector3D::~Vector3D()
 
 }
 
-void Vector3D::setPosition(float x, float y, float z)
+void Vector3D::setPosition(double x, double y, double z)
 {
 	this->setX(x);
 	this->setY(y);
 	this->setZ(z);
 }
 
-void Vector3D::setX(float x)
+void Vector3D::setX(double x)
 {
 	//this->setCoord(0, x);
 	this->coords[0] = x;
 }
 
-float Vector3D::getX() const
+double Vector3D::getX() const
 {
 	//return this->getCoord(0);
 	return this->coords[0];
 }
 
-void Vector3D::setY(float y)
+void Vector3D::setY(double y)
 {
 	//this->setCoord(1, y);
 	this->coords[1] = y;
 }
 
-float Vector3D::getY() const
+double Vector3D::getY() const
 {
 	//return this->getCoord(1);
 	return this->coords[1];
 }
 
-void Vector3D::setZ(float z)
+void Vector3D::setZ(double z)
 {
 	//this->setCoord(2, z);
 	this->coords[2] = z;
 }
 
-float Vector3D::getZ() const
+double Vector3D::getZ() const
 {
 	//return this->getCoord(2);
 	return this->coords[2];

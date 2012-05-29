@@ -322,10 +322,21 @@ void LohnerFrame::setFacesMergeHull3d( wxCommandEvent& event )
 
 void LohnerFrame::clearMergeHull3D( wxCommandEvent& event )
 {
+    if(canvas->manager.mergehull3d != NULL)
+    {
+        canvas->manager.mergehull3d->clear();
+        delete canvas->manager.mergehull3d;
+        canvas->manager.mergehull3d = NULL;
 
+        Refresh();
+    }
 }
 
 void LohnerFrame::executeMergeHull3D( wxCommandEvent& event )
 {
-
+    if(canvas->manager.mergehull3d != NULL)
+    {
+        canvas->manager.mergehull3d->execute();
+        Refresh();
+    }
 }

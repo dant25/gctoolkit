@@ -10,6 +10,7 @@
 #include "Point3D.h"
 #include "Edge3D.h"
 #include "Polygon.h"
+#include "math/Vector3.h"
 
 class MergeHull3D
 {

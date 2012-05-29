@@ -5,6 +5,8 @@
 #include "Vector2D.h"
 #include "Vector3D.h"
 
+#include <GL/gl.h>
+
 Polygon::Polygon() :
 	GeometricShape()
 {
@@ -214,6 +216,76 @@ Vector3D Polygon::normal() const
 	}
 
 	return Vector3D();
+}
+
+double Polygon::surface() const
+{
+    return 0;
+}
+
+double Polygon::orientedSurface() const
+{
+    return 0;
+}
+
+bool Polygon::in(const Point &p) const
+{
+    return 0;
+}
+
+bool Polygon::in(const Point *p) const
+{
+    return 0;
+}
+
+bool Polygon::on(const Point &p) const
+{
+    return 0;
+}
+
+bool Polygon::on(const Point *p) const
+{
+    return 0;
+}
+
+bool Polygon::out(const Point &p) const
+{
+    return 0;
+}
+
+bool Polygon::out(const Point *p) const
+{
+    return 0;
+}
+
+void Polygon::draw(bool fill) const
+{
+	glColor3f(r, g, b);
+
+	if (fill)
+	{
+		glBegin(GL_POLYGON);
+	}
+	else
+	{
+		glBegin(GL_LINE_LOOP);
+	}
+
+    for(int i=0; i <=numPoints(); i++)
+    {
+        getPoint
+        glVertex3f(p1->getX(), p1->getY());
+    }
+
+	Point2D *p1 = (Point2D *)this->getP1();
+	Point2D *p2 = (Point2D *)this->getP2();
+	Point2D *p3 = (Point2D *)this->getP3();
+
+	glVertex3f(p1->getX(), p1->getY());
+	glVertex3f(p2->getX(), p2->getY());
+	glVertex3f(p3->getX(), p3->getY());
+
+	glEnd();
 }
 
 #if USE_GUI

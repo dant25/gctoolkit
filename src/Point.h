@@ -21,6 +21,7 @@ public:
     ~Point();
 
     int getId() {return this->id;};
+    void setId(int i) {this->id = i;};
 
     virtual unsigned int dimension() const;
 

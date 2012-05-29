@@ -68,7 +68,10 @@ bool ResourceManager::loadFromFile(std::string fileName)
         if(this->type != MERGEHULL3D)
             point = new Point2D(x, y, i+1);
         else
+        {
             point = new Point3D(x,y,z);
+            point->setId(i+1);
+        }
 
         pointList.push_back(point);
     }

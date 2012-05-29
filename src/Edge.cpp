@@ -6,7 +6,7 @@ Edge::Edge(Point *p1, Point *p2, long int id)
 
 	this->setPoints(p1, p2);
 
-	this->setWidth(1.0);
+	this->setWidth(1.5);
 
 	r = 0;
 	g = 0;

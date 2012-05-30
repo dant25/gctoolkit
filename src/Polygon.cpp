@@ -271,19 +271,10 @@ void Polygon::draw(bool fill) const
 		glBegin(GL_LINE_LOOP);
 	}
 
-    for(int i=0; i <=numPoints(); i++)
-    {
-        getPoint
-        glVertex3f(p1->getX(), p1->getY());
-    }
-
-	Point2D *p1 = (Point2D *)this->getP1();
-	Point2D *p2 = (Point2D *)this->getP2();
-	Point2D *p3 = (Point2D *)this->getP3();
-
-	glVertex3f(p1->getX(), p1->getY());
-	glVertex3f(p2->getX(), p2->getY());
-	glVertex3f(p3->getX(), p3->getY());
+        for(int i=0; i <numPoints(); i++)
+        {
+            glVertex3f(((Point3D *)getPoint(i))->getX(), ((Point3D *)getPoint(i))->getY(), ((Point3D *)getPoint(i))->getZ());
+        }
 
 	glEnd();
 }

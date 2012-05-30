@@ -48,16 +48,7 @@ Vector3& Vector3::normalize()
 
 double Vector3::angle( const Vector3 &v ) const
 {
-    // if ( Math::comparedouble ( magnitude(), 0.0 ) && Math::comparedouble ( v.magnitude(), 0.0 ) )
-    //     return 0.0;
-        //throw exception();
-    Vector3 diff(*this - v);
-    if (!(diff.x || diff.y || diff.z))
-        return 0.0;
-
-    // The angle between two vector u and v is defined as: acos( u . v / ||u|| . ||v|| )
-    return 90.0 * diff.length();
-    //return Math::acos( (*this * v)  / (magnitude() * v.magnitude() ) );
+    return acos( (*this * v)  / (magnitude() * v.magnitude() ) );
 }
 
 bool Vector3::operator==(const Vector3 &v) const

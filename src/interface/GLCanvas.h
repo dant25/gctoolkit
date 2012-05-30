@@ -1,4 +1,4 @@
-#ifndef _glcanvas_
+#ifndef _glcanvase_
 #define _glcanvas_
 
 #include "wx/wx.h"

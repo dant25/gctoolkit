@@ -4,6 +4,7 @@
 #include "GeometricShape.h"
 #include "Vector3D.h"
 
+
 class Polygon : public GeometricShape
 {
 public:
@@ -59,7 +60,6 @@ public:
         double r;
         double g;
         double b;
-
 };
 
 

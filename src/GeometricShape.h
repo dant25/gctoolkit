@@ -2,7 +2,9 @@
 #define _DATA_GEOMETRIC_SHAPE_H_
 
 #include "Point.h"
+#include "Edge.h"
 #include "Vector.h"
+
 
 class GeometricShape
 #if USE_GUI
@@ -18,8 +20,14 @@ public:
     virtual void setPoint(unsigned int i, Point *p);
     virtual Point *getPoint(unsigned int i) const;
 
+    virtual void setEdge(unsigned int i, Edge *e);
+    virtual Edge *getEdge(unsigned int i) const;
+
     virtual void add(Point *p);
     virtual void remove(Point *p);
+
+    virtual void add(Edge *e);
+    virtual void remove(Edge *e);
 
     virtual unsigned int numPoints() const;
 
@@ -72,6 +80,7 @@ protected:
     Point **points;
 #else
     std::vector<Point *> points;
+    std::vector<Edge *> edges;
 #endif //#if USE_ARRAY
 };
 

@@ -290,10 +290,11 @@ void Edge3D::draw(bool fill) const
 
 	glColor3f(r, g, b);
 
-	glBegin(GL_LINES);
-		glVertex3f(tp1->getX(), tp1->getY(), tp1->getZ());
-		glVertex3f(tp2->getX(), tp2->getY(), tp2->getZ());
-	glEnd();
+    glBegin(GL_LINES);
+        glVertex3f(tp1->getX(), tp1->getY(), tp1->getZ());
+        glVertex3f(tp2->getX(), tp2->getY(), tp2->getZ());
+    glEnd();
+
 
 	glLineWidth(1.0);
 }

@@ -22,6 +22,7 @@ GeometricShape::GeometricShape(unsigned int numPoints)
 	this->points = new Point*[this->numPts];
 #else
 	this->points.resize(numPoints, NULL);
+	this->edges.resize(numPoints, NULL);
 #endif //#if USE_ARRAY
 }
 
@@ -68,6 +69,19 @@ void GeometricShape::setPoint(unsigned int i, Point *p)
 Point *GeometricShape::getPoint(unsigned int i) const
 {
 	return (i < this->numPoints()) ? this->points[i] : NULL;
+}
+
+void GeometricShape::setEdge(unsigned int i, Edge *e)
+{
+	if (i < this->numPoints())
+	{
+		this->edges[i] = e;
+	}
+}
+
+Edge *GeometricShape::getEdge(unsigned int i) const
+{
+	return (i < this->numPoints()) ? this->edges[i] : NULL;
 }
 
 unsigned int GeometricShape::numPoints() const
@@ -251,6 +265,21 @@ void GeometricShape::remove(Point *p)
 	if (it != this->points.end())
 	{
 		this->points.erase(it);
+	}
+}
+
+void GeometricShape::add(Edge *e)
+{
+	this->edges.push_back(e);
+}
+
+void GeometricShape::remove(Edge *e)
+{
+	std::vector<Edge *>::iterator it = std::find(this->edges.begin(), this->edges.end(), e);
+
+	if (it != this->edges.end())
+	{
+		this->edges.erase(it);
 	}
 }
 

@@ -163,11 +163,9 @@ void Point3D::draw() const
 		lighting = true;
 	}
 
-	glPushMatrix();
-		glBegin(GL_POINTS);
-			glVertex3f(this->coords[0], this->coords[1], this->coords[2]);
-		glEnd();
-	glPopMatrix();
+    glBegin(GL_POINTS);
+        glVertex3f(this->coords[0], this->coords[1], this->coords[2]);
+    glEnd();
 
 	if (lighting)
 	{

@@ -27,7 +27,9 @@ class MergeHull3D
         void clear();
         void execute();
 
-        Polygon* initialFace(std::list<Point*> pointList);
+        bool existEdge(Edge3D e);
+        void initialFace(std::list<Point*> pointList);
+        void nextFaces();//(Polygon* face);
 
         static bool compareY(Point* first, Point* second);
 
@@ -39,7 +41,9 @@ class MergeHull3D
         bool renderFacesList;
 
         std::list<Point*> pointList;
+        std::list<Point*> free_pointList;
         std::list<Edge*> edgeList;
+        std::list<Edge*> free_edgeList;
         std::list<Polygon*> facesList;
 };
 

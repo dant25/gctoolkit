@@ -22,7 +22,7 @@ bool ResourceManager::loadFromFile(std::string fileName)
     //std::cout << fileName.c_str() << std::endl;
 
     //std::ifstream file( fileName.c_str(), std::ifstream::in);
-    std::ifstream file( "entrada.txt", std::ifstream::in);
+    std::ifstream file( "macaco3d.txt", std::ifstream::in);
 
     if( !file )
         return false;

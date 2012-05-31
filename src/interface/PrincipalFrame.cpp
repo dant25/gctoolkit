@@ -38,6 +38,7 @@ BEGIN_EVENT_TABLE( PrincipalFrame, wxFrame )
 	EVT_TOGGLEBUTTON( wxID_DELAUNAYEXECUTE, PrincipalFrame::_wxFB_executeDelaunay )
 	EVT_CHECKBOX( wxID_POINTSMERGEHULL3D, PrincipalFrame::_wxFB_setPointsMergeHull3d )
 	EVT_CHECKBOX( wxID_TRIANGLESMERGEHULL3D, PrincipalFrame::_wxFB_setFacesMergeHull3d )
+	EVT_CHECKBOX( wxID_EDGESMERGEHULL3D, PrincipalFrame::_wxFB_setEdgesMergeHull3d )
 	EVT_TOGGLEBUTTON( wxID_MERGEHULL3DCLEAN, PrincipalFrame::_wxFB_clearMergeHull3D )
 	EVT_TOGGLEBUTTON( wxID_MERGEHULL3DEXECUTE, PrincipalFrame::_wxFB_executeMergeHull3D )
 END_EVENT_TABLE()
@@ -200,7 +201,12 @@ PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString&
 	bSizer611->Add( pointsMergeHull3D_checkBox1, 0, wxALL, 5 );
 
 	facesMergeHull3D_checkBox = new wxCheckBox( mergehull3d_panel, wxID_TRIANGLESMERGEHULL3D, wxT("Faces"), wxDefaultPosition, wxDefaultSize, 0 );
+	facesMergeHull3D_checkBox->SetValue(true);
 	bSizer611->Add( facesMergeHull3D_checkBox, 0, wxALL, 5 );
+
+	edgesMergeHull3D_checkBox = new wxCheckBox( mergehull3d_panel, wxID_EDGESMERGEHULL3D, wxT("Edges"), wxDefaultPosition, wxDefaultSize, 0 );
+	edgesMergeHull3D_checkBox->SetValue(true);
+	bSizer611->Add( edgesMergeHull3D_checkBox, 0, wxALL, 5 );
 
 	m_staticline211 = new wxStaticLine( mergehull3d_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer611->Add( m_staticline211, 0, wxEXPAND | wxALL, 5 );

@@ -58,7 +58,7 @@ class ResourceManager
         double boxZmin;
         double boxZmax;
         long int numPoint;
-        std::list<Point*> pointList;
+        std::list< std::list<Point*> > listObj;
 
 };
 

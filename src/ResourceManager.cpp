@@ -27,9 +27,9 @@ bool ResourceManager::loadFromFile(std::string fileName)
     if( !file )
         return false;
 
-    pointList.clear();
+    listObj.clear();
+    std::list<Point*> pointList;
 
-    file >> numPoint;
     double x, y, z;
 
     boxXmin = DBL_MAX;
@@ -39,41 +39,49 @@ bool ResourceManager::loadFromFile(std::string fileName)
     boxZmin = DBL_MAX;
     boxZmax = -DBL_MAX;
 
-    for(int i=0; i<numPoint; i++)
+    file >> numPoint;
+
+    while (file.good())
     {
-        file >> x;
-        file >> y;
-        file >> z;
-
-        if(boxXmin > x)
-            boxXmin = x;
-
-        if(boxXmax < x)
-            boxXmax = x;
-
-        if(boxYmin > y)
-            boxYmin = y;
-
-        if(boxYmax < y)
-            boxYmax = y;
-
-        if(boxZmin > z)
-            boxZmin = z;
-
-        if(boxZmax < z)
-            boxZmax = z;
-
-        Point *point;
-
-        if(this->type != MERGEHULL3D)
-            point = new Point2D(x, y, i+1);
-        else
+        pointList.clear();
+        for(int i=0; i<numPoint; i++)
         {
-            point = new Point3D(x,y,z);
-            point->setId(i+1);
-        }
+            file >> x;
+            file >> y;
+            file >> z;
 
-        pointList.push_back(point);
+            if(boxXmin > x)
+                boxXmin = x;
+
+            if(boxXmax < x)
+                boxXmax = x;
+
+            if(boxYmin > y)
+                boxYmin = y;
+
+            if(boxYmax < y)
+                boxYmax = y;
+
+            if(boxZmin > z)
+                boxZmin = z;
+
+            if(boxZmax < z)
+                boxZmax = z;
+
+            Point *point;
+
+            if(this->type != MERGEHULL3D)
+                point = new Point2D(x, y, i+1);
+            else
+            {
+                point = new Point3D(x,y,z);
+                point->setId(i+1);
+            }
+
+            pointList.push_back(point);
+        }
+        file >> numPoint;
+        listObj.push_back(pointList);
     }
 
     this->bBox = BoundingBox(Vector3(boxXmin, boxYmin, boxZmin), Vector3(boxXmax, boxYmax, boxZmax));
@@ -87,7 +95,7 @@ bool ResourceManager::loadFromFile(std::string fileName)
             delaunay = new Delaunay(pointList);
         break;
         case MERGEHULL3D:
-            mergehull3d = new MergeHull3D(pointList);
+            mergehull3d = new MergeHull3D(listObj);
         break;
     }
 

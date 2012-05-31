@@ -34,11 +34,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// Class PrincipalFrame
 ///////////////////////////////////////////////////////////////////////////////
-class PrincipalFrame : public wxFrame 
+class PrincipalFrame : public wxFrame
 {
 	DECLARE_EVENT_TABLE()
 	private:
-		
+
 		// Private event handlers
 		void _wxFB_newModel( wxCommandEvent& event ){ newModel( event ); }
 		void _wxFB_openModel( wxCommandEvent& event ){ openModel( event ); }
@@ -65,10 +65,11 @@ class PrincipalFrame : public wxFrame
 		void _wxFB_executeDelaunay( wxCommandEvent& event ){ executeDelaunay( event ); }
 		void _wxFB_setPointsMergeHull3d( wxCommandEvent& event ){ setPointsMergeHull3d( event ); }
 		void _wxFB_setFacesMergeHull3d( wxCommandEvent& event ){ setFacesMergeHull3d( event ); }
+		void _wxFB_setEdgesMergeHull3d( wxCommandEvent& event ){ setEdgesMergeHull3d( event ); }
 		void _wxFB_clearMergeHull3D( wxCommandEvent& event ){ clearMergeHull3D( event ); }
 		void _wxFB_executeMergeHull3D( wxCommandEvent& event ){ executeMergeHull3D( event ); }
-		
-	
+
+
 	protected:
 		enum
 		{
@@ -97,10 +98,11 @@ class PrincipalFrame : public wxFrame
 			wxID_DELAUNAYEXECUTE,
 			wxID_POINTSMERGEHULL3D,
 			wxID_TRIANGLESMERGEHULL3D,
+			wxID_EDGESMERGEHULL3D,
 			wxID_MERGEHULL3DCLEAN,
 			wxID_MERGEHULL3DEXECUTE,
 		};
-		
+
 		wxStatusBar* statusBar;
 		wxMenuBar* menubar;
 		wxMenu* file_menu;
@@ -134,11 +136,12 @@ class PrincipalFrame : public wxFrame
 		wxStaticLine* m_staticline111;
 		wxCheckBox* pointsMergeHull3D_checkBox1;
 		wxCheckBox* facesMergeHull3D_checkBox;
+		wxCheckBox* edgesMergeHull3D_checkBox;
 		wxStaticLine* m_staticline211;
 		wxToggleButton* mergehull3dClean_toggleBtn;
 		wxToggleButton* mergehull3dExecute_toggleBtn;
 		GLCanvas *canvas;
-		
+
 		// Virtual event handlers, overide them in your derived class
 		virtual void newModel( wxCommandEvent& event ) { event.Skip(); }
 		virtual void openModel( wxCommandEvent& event ) { event.Skip(); }
@@ -165,15 +168,16 @@ class PrincipalFrame : public wxFrame
 		virtual void executeDelaunay( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setPointsMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setFacesMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setEdgesMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
 		virtual void clearMergeHull3D( wxCommandEvent& event ) { event.Skip(); }
 		virtual void executeMergeHull3D( wxCommandEvent& event ) { event.Skip(); }
-		
-	
+
+
 	public:
-		
+
 		PrincipalFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("GC Toolkit"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,688 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		~PrincipalFrame();
-	
+
 };
 
 #endif //__PrincipalFrame__

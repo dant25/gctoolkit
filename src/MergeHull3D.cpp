@@ -3,12 +3,13 @@
 #include <fstream>
 #include <GL/gl.h>
 
-MergeHull3D::MergeHull3D(std::list<Point*> pointList)
+MergeHull3D::MergeHull3D(std::list< std::list<Point*> > list)
 {
     renderPointList = true;
-    renderFacesList = false;
+    renderFacesList = true;
+    renderEdgesList = true;
 
-    this->pointList = pointList;
+    this->listObj = list;
 }
 
 MergeHull3D::~MergeHull3D()
@@ -20,15 +21,23 @@ void MergeHull3D::draw()
 {
    if(renderPointList == true)
     {
-        for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
-            (*it)->draw();
+        for (std::list< std::list<Point*> >::iterator iter=listObj.begin(); iter!=listObj.end(); iter++)
+            for (std::list<Point*>::iterator it=(*iter).begin(); it!=(*iter).end(); it++)
+                (*it)->draw();
     }
 
-    for (std::list<Edge*>::iterator it=edgeList.begin(); it!=edgeList.end(); it++)
-        (*it)->draw(true);
+    if(renderFacesList == true)
+    {
+        for (std::list<Polygon*>::iterator it=facesList.begin(); it!=facesList.end(); it++)
+            (*it)->draw(true);
+    }
 
-    for (std::list<Polygon*>::iterator it=facesList.begin(); it!=facesList.end(); it++)
-        (*it)->draw(true);
+    if(renderEdgesList == true)
+    {
+        for (std::list<Edge*>::iterator it=edgeList.begin(); it!=edgeList.end(); it++)
+            (*it)->draw(true);
+    }
+
 }
 
 bool MergeHull3D::save(std::string fileName)
@@ -55,11 +64,17 @@ void MergeHull3D::setPoint()
 
 void MergeHull3D::setFace()
 {
-       renderFacesList = !renderFacesList;
+   renderFacesList = !renderFacesList;
+}
+
+void MergeHull3D::setEdge()
+{
+    renderEdgesList = !renderEdgesList;
 }
 
 void MergeHull3D::clear()
 {
+    listObj.clear();
     pointList.clear();
     edgeList.clear();
     free_edgeList.clear();
@@ -68,16 +83,21 @@ void MergeHull3D::clear()
 
 void MergeHull3D::execute()
 {
-    initialFace(pointList);
+    std::cout << "Num lists: " << listObj.size() << std::endl;
+    for (std::list< std::list<Point*> >::iterator iter=listObj.begin(); iter!=listObj.end(); iter++)
+    {
+        pointList = (*iter);
+        std::cout << "Num points: " << pointList.size() << std::endl;
+        initialFace(pointList);
 
-    //nextFaces();
+        while( free_edgeList.size() > 0)
+            nextFaces();
 
-    while( free_edgeList.size() > 0)
-        nextFaces();
-
-    std::cout << "Num faces: " << facesList.size() << std::endl;
-    std::cout << "Num edge: " << edgeList.size() << std::endl;
-    std::cout << "Num edge FREE: " << free_edgeList.size() << std::endl;
+        std::cout << "Num faces: " << facesList.size() << std::endl;
+        std::cout << "Num edge: " << edgeList.size() << std::endl;
+        std::cout << "Num edge FREE: " << free_edgeList.size() << std::endl;
+        pointList.clear();
+    }
 }
 
 bool MergeHull3D::existEdge(Edge3D e)

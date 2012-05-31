@@ -69,7 +69,8 @@ canvas->manager.loadFromFile( std::string( "" ) );
             break;
             case 2:
                 pointsMergeHull3D_checkBox1->SetValue(true);
-                facesMergeHull3D_checkBox->SetValue(false);
+                facesMergeHull3D_checkBox->SetValue(true);
+                edgesMergeHull3D_checkBox->SetValue(true);
             break;
         }
 
@@ -117,11 +118,7 @@ void LohnerFrame::about( wxCommandEvent& event )
 {
     wxString text = _("");
     text << _("GC Toolkit\n\n")
-        << _("By Daniel N Teixeira\n\n")
-        << _("Special Thanks:\n")
-        << _("\t Markos Freitas\n")
-        << _("\t and Jonas Deyson\n\n");
-
+        << _("By Daniel N Teixeira\n\n");
 
 	wxMessageDialog dialog(this, text, _("About"));
     dialog.ShowModal();
@@ -317,7 +314,15 @@ void LohnerFrame::setFacesMergeHull3d( wxCommandEvent& event )
         canvas->manager.mergehull3d->setFace();
         Refresh();
     }
+}
 
+void LohnerFrame::setEdgesMergeHull3d( wxCommandEvent& event )
+{
+    if(canvas->manager.mergehull3d != NULL)
+    {
+        canvas->manager.mergehull3d->setEdge();
+        Refresh();
+    }
 }
 
 void LohnerFrame::clearMergeHull3D( wxCommandEvent& event )

@@ -44,6 +44,7 @@ protected:
     void setMergeHull3D( wxCommandEvent& event );
     void setPointsMergeHull3d( wxCommandEvent& event );
     void setFacesMergeHull3d( wxCommandEvent& event );
+    void setEdgesMergeHull3d( wxCommandEvent& event );
     void clearMergeHull3D( wxCommandEvent& event );
     void executeMergeHull3D( wxCommandEvent& event );
 

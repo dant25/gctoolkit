@@ -15,7 +15,7 @@
 class MergeHull3D
 {
     public:
-        MergeHull3D(std::list<Point*> pointList);
+        MergeHull3D(std::list< std::list<Point*> > list);
         virtual ~MergeHull3D();
 
         void draw();
@@ -23,6 +23,7 @@ class MergeHull3D
 
         void setPoint();
         void setFace();
+        void setEdge();
 
         void clear();
         void execute();
@@ -30,7 +31,7 @@ class MergeHull3D
         bool existEdge(Edge3D e);
         void addEdge(Edge3D* e);
         void initialFace(std::list<Point*> pointList);
-        void nextFaces();//(Polygon* face);
+        void nextFaces();
 
         static bool compareY(Point* first, Point* second);
 
@@ -40,9 +41,10 @@ class MergeHull3D
     private:
         bool renderPointList;
         bool renderFacesList;
+        bool renderEdgesList;
 
+        std::list< std::list<Point*> > listObj;
         std::list<Point*> pointList;
-        //std::list<Point*> free_pointList;
         std::list<Edge*> edgeList;
         std::list<Edge*> free_edgeList;
         std::list<Polygon*> facesList;

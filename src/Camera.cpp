@@ -162,8 +162,8 @@ void Camera::setProjection( double left, double right, double bottom, double top
 void Camera::fit( const BoundingBox& bb )
 {
     //reset();
-    double width2 = (bb.pMax.x - bb.pMin.x) * 3.0;
-    double height2= (bb.pMax.y - bb.pMin.y) * 3.0;
+    double width2 = (bb.pMax.x - bb.pMin.x);
+    double height2= (bb.pMax.y - bb.pMin.y);
     double near, ffar;
 
     Vector3 bbCenter = (bb.pMax-bb.pMin)*0.5;
@@ -172,7 +172,7 @@ void Camera::fit( const BoundingBox& bb )
     ( width2 >= height2 ) ? height2 = width2 * 0.75 : width2 = height2 * 1.333;
 
     // fovy of 45º
-    near = height2 / 2.0;
+    near = height2;// / 2.0;
     ffar = 2.3 * ( bb.pMax.z - bb.pMin.z );
     if ( ffar < 1000 )
         ffar = 10000.0;

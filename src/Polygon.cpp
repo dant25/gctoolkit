@@ -271,7 +271,7 @@ void Polygon::draw(bool fill) const
 		glBegin(GL_LINE_LOOP);
 	}
 
-        for(int i=0; i <numPoints(); i++)
+        for(unsigned int i=0; i <numPoints(); i++)
         {
             glVertex3f(((Point3D *)getPoint(i))->getX(), ((Point3D *)getPoint(i))->getY(), ((Point3D *)getPoint(i))->getZ());
         }

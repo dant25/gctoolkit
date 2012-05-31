@@ -9,7 +9,6 @@ MergeHull3D::MergeHull3D(std::list<Point*> pointList)
     renderFacesList = false;
 
     this->pointList = pointList;
-    free_pointList = pointList;
 }
 
 MergeHull3D::~MergeHull3D()
@@ -62,7 +61,6 @@ void MergeHull3D::setFace()
 void MergeHull3D::clear()
 {
     pointList.clear();
-    free_pointList.clear();
     edgeList.clear();
     free_edgeList.clear();
     facesList.clear();
@@ -72,17 +70,14 @@ void MergeHull3D::execute()
 {
     initialFace(pointList);
 
-    nextFaces();
-    nextFaces();
-    nextFaces();
-    nextFaces();
+    //nextFaces();
 
-/*
-    while( free_edgeList.size() > 0 )
-    {
-        facesList.push_back( nextFace( free_edgeList.front() ) );
-    }
-    */
+    while( free_edgeList.size() > 0)
+        nextFaces();
+
+    std::cout << "Num faces: " << facesList.size() << std::endl;
+    std::cout << "Num edge: " << edgeList.size() << std::endl;
+    std::cout << "Num edge FREE: " << free_edgeList.size() << std::endl;
 }
 
 bool MergeHull3D::existEdge(Edge3D e)
@@ -98,6 +93,23 @@ bool MergeHull3D::existEdge(Edge3D e)
    return false;
 }
 
+void MergeHull3D::addEdge(Edge3D* e)
+{
+    for (std::list<Edge*>::iterator it=edgeList.begin(); it!=edgeList.end(); it++)
+    {
+        if( e->equal((*it)) )
+        {
+            e = (Edge3D*)(*it);
+            //if( ((Edge3D*)*it)->getAdjFaceList().size() > 1)
+                free_edgeList.remove( (*it) );
+
+            return;
+        }
+    }
+    edgeList.push_back(e);
+    free_edgeList.push_back(e);
+}
+
 void MergeHull3D::initialFace(std::list<Point*> pointList)
 {
     pointList.sort(compareY);
@@ -111,7 +123,6 @@ void MergeHull3D::initialFace(std::list<Point*> pointList)
                 ^Vector3(p0_2->getCoord(0) - p0->getCoord(0), p0_2->getCoord(1) - p0->getCoord(1), p0_2->getCoord(2) - p0->getCoord(2));
 
     n1.normalize();
-//std::cout << "VEja : " << n1.x << " " << n1.y << " " << n1.z << std::endl;
 
     double ang = 360.0;
 
@@ -133,7 +144,7 @@ void MergeHull3D::initialFace(std::list<Point*> pointList)
             p0_1 = (*it);
         }
     }
-//std::cout << ang << std::endl;
+
 
     n1 = Vector3(p0_1->getCoord(0) - p0->getCoord(0), p0_1->getCoord(1) - p0->getCoord(1), p0_1->getCoord(2) - p0->getCoord(2))
         ^Vector3(p0_2->getCoord(0) - p0->getCoord(0), p0_2->getCoord(1) - p0->getCoord(1), p0_2->getCoord(2) - p0->getCoord(2));
@@ -161,44 +172,19 @@ void MergeHull3D::initialFace(std::list<Point*> pointList)
         }
 
     }
-/*
-std::cout << ang << std::endl;
-
-std::cout << p0->getId() << " " << p0_1->getId() << " " << p0_2->getId()  << std::endl;
 
 
-    std::cout << p0->getCoord(0) << " ";
-    std::cout << p0->getCoord(1) << " ";
-    std::cout << p0->getCoord(2) << std::endl;
-
-    std::cout << p0_1->getCoord(0) << " ";
-    std::cout << p0_1->getCoord(1) << " ";
-    std::cout << p0_1->getCoord(2) << std::endl;
-
-    std::cout << p0_2->getCoord(0) << " ";
-    std::cout << p0_2->getCoord(1) << " ";
-    std::cout << p0_2->getCoord(2) << std::endl;
-*/
-
-p0->setColorR(1);
-p0_1->setColorG(1);
-p0_2->setColorB(1);
+    p0->setColorR(1);
+    p0_1->setColorG(1);
+    p0_2->setColorB(1);
 
     Edge *e0 = new Edge3D((Point3D*)p0_1, (Point3D*)p0, edgeList.size()+1);
     Edge *e1 = new Edge3D((Point3D*)p0, (Point3D*)p0_2, edgeList.size()+1);
     Edge *e2 = new Edge3D((Point3D*)p0_2, (Point3D*)p0_1, edgeList.size()+1);
 
-    edgeList.push_back( e0 );
-    edgeList.push_back( e1 );
-    edgeList.push_back( e2 );
-
-    free_edgeList.push_back( e0 );
-    free_edgeList.push_back( e1 );
-    free_edgeList.push_back( e2 );
-
-    free_pointList.remove(p0);
-    free_pointList.remove(p0_1);
-    free_pointList.remove(p0_2);
+    addEdge( (Edge3D*)e0 );
+    addEdge( (Edge3D*)e1 );
+    addEdge( (Edge3D*)e2 );
 
     GeometricShape *face_aux = new Polygon(3);
 
@@ -237,27 +223,25 @@ void MergeHull3D::nextFaces()
         double ang = 360.0;
 
         Point *p = NULL;
-int j=0;
+
         for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
         {
-std::cout << "Prox :" << j <<std::endl; j++;
+/*
+            if( ((Edge3D*)edge_aux)->getAdjFaceList().front()->getPoint(0)->getId() == (*it)->getId()
+               || ((Edge3D*)edge_aux)->getAdjFaceList().front()->getPoint(1)->getId() == (*it)->getId()
+               || ((Edge3D*)edge_aux)->getAdjFaceList().front()->getPoint(2)->getId() == (*it)->getId() )
+                continue;
+
             if( existEdge( Edge3D( (Point3D*)(*it), (Point3D*)edge_aux->getP1()) )
                 && existEdge( Edge3D( (Point3D*)(*it), (Point3D*)edge_aux->getP2()) ) )
-            {
-                std::cout << "Ponto ja foi tratado.." <<std::endl;
                 continue;
-            }
-std::cout << "ok" <<std::endl;
-
-
+*/
             Vector3 n2 = Vector3( edge_aux->getP2()->getCoord(0) - (*it)->getCoord(0), edge_aux->getP2()->getCoord(1) - (*it)->getCoord(1), edge_aux->getP2()->getCoord(2) - (*it)->getCoord(2))
                         ^Vector3( edge_aux->getP1()->getCoord(0) - (*it)->getCoord(0), edge_aux->getP1()->getCoord(1) - (*it)->getCoord(1), edge_aux->getP1()->getCoord(2) - (*it)->getCoord(2));
 
             n2.normalize();
 
             double ang_temp = n1.angle(n2);
-
-std::cout << ang_temp << std::endl;
 
             if(ang >= ang_temp)
             {
@@ -267,21 +251,14 @@ std::cout << ang_temp << std::endl;
         }
         if(p == NULL) return;
 
-std::cout << "ANG: " << ang << std::endl;
 
-        free_pointList.remove(p);
+        Edge *e0 = new Edge3D( (Point3D*)edge_aux->getP2(), (Point3D*)edge_aux->getP1(), edgeList.size()+1);;
+        Edge *e1 = new Edge3D( (Point3D*)edge_aux->getP1(), (Point3D*)p, edgeList.size()+1);
+        Edge *e2 = new Edge3D( (Point3D*)p, (Point3D*)edge_aux->getP2(), edgeList.size()+1);
 
-        Edge *e0 = edge_aux;
-        Edge *e1 = new Edge3D( (Point3D*)edge_aux->getP2(), (Point3D*)p, edgeList.size()+1);
-        Edge *e2 = new Edge3D( (Point3D*)p, (Point3D*)edge_aux->getP1(), edgeList.size()+1);
-
-        edgeList.push_back( e0 );   //JA ESTA NA LISTA
-        edgeList.push_back( e1 );
-        edgeList.push_back( e2 );
-
-        free_edgeList.push_back( e0 );  //JA ESTA NA LISTA
-        free_edgeList.push_back( e1 );
-        free_edgeList.push_back( e2 );
+        addEdge( (Edge3D*)e0 );
+        addEdge( (Edge3D*)e1 );
+        addEdge( (Edge3D*)e2 );
 
         GeometricShape *face_aux = new Polygon(3);
 

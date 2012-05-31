@@ -13,6 +13,7 @@ public:
     virtual ~Edge();
 
     long int getId() {return id;};
+    void setId(long int i) {id=i;};
 
     virtual void setPoints(Point *p1, Point *p2);
 

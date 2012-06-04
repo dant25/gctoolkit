@@ -46,12 +46,16 @@ bool MergeHull3D::save(std::string fileName)
     arquivo.open( fileName.c_str() , std::ios::trunc | std::ios::out);// | ios::in);
 
     arquivo << std::endl << "METODO MERGE HULL 3D" << std::endl  << std::endl;
-    arquivo << "PONTOS" << std::endl;
-    arquivo << pointList.size()-1 << std::endl;
+    arquivo << "PONTOS DAS FACES" << std::endl;
+    arquivo << facesList.size()-1 << std::endl;
 
-    for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
+    for (std::list<Polygon*>::iterator it=facesList.begin(); it!=facesList.end(); it++)
     {
-        arquivo << (*it)->getCoord(0) << "\t" << (*it)->getCoord(1) << "\t" << (*it)->getCoord(2) << std::endl;
+        for(unsigned int i = 0; i < (*it)->numPoints(); i++)
+        {
+            arquivo << (*it)->getPoint(i)->getCoord(0) << "\t" << (*it)->getPoint(i)->getCoord(1) << "\t" << (*it)->getPoint(i)->getCoord(2) << "\t";
+        }
+            arquivo << std::endl;
     }
 
     return true;
@@ -83,19 +87,19 @@ void MergeHull3D::clear()
 
 void MergeHull3D::execute()
 {
-    std::cout << "Num lists: " << listObj.size() << std::endl;
     for (std::list< std::list<Point*> >::iterator iter=listObj.begin(); iter!=listObj.end(); iter++)
     {
         pointList = (*iter);
-        std::cout << "Num points: " << pointList.size() << std::endl;
+
         initialFace(pointList);
 
         while( free_edgeList.size() > 0)
             nextFaces();
-
+        /*
         std::cout << "Num faces: " << facesList.size() << std::endl;
         std::cout << "Num edge: " << edgeList.size() << std::endl;
         std::cout << "Num edge FREE: " << free_edgeList.size() << std::endl;
+        */
         pointList.clear();
     }
 }

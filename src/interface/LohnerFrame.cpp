@@ -25,7 +25,7 @@ void LohnerFrame::newModel( wxCommandEvent& event )
 
 void LohnerFrame::openModel( wxCommandEvent& event )
 {
-/*
+
     // TODO: Implement openModel
     static const wxChar *FILETYPES  = _("TXT files (*.txt)|*.txt|"
                                         "All files (*.*)|*.*");
@@ -49,8 +49,8 @@ void LohnerFrame::openModel( wxCommandEvent& event )
             wxMessageBox( _("Could not open file: Invalid format."),_("File error"), wxOK | wxICON_ERROR );
             return;
         }
-*/
-canvas->manager.loadFromFile( std::string( "" ) );
+
+//canvas->manager.loadFromFile( std::string( "" ) );
 
         switch(options_notebook->GetSelection())
         {
@@ -77,7 +77,7 @@ canvas->manager.loadFromFile( std::string( "" ) );
         canvas->fitCam();
 
         Refresh();
-    //}
+    }
 }
 
 void LohnerFrame::saveModel( wxCommandEvent& event )

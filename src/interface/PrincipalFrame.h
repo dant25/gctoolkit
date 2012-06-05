@@ -63,11 +63,20 @@ class PrincipalFrame : public wxFrame
 		void _wxFB_setCircumference( wxCommandEvent& event ){ setCircumference( event ); }
 		void _wxFB_clearDelaunay( wxCommandEvent& event ){ clearDelaunay( event ); }
 		void _wxFB_executeDelaunay( wxCommandEvent& event ){ executeDelaunay( event ); }
+		void _wxFB_setPointsVoronoi( wxCommandEvent& event ){ setPointsVoronoi( event ); }
+		void _wxFB_setEdgesVoronoi( wxCommandEvent& event ){ setEdgesVoronoi( event ); }
+		void _wxFB_clearVoronoi( wxCommandEvent& event ){ clearVoronoi( event ); }
+		void _wxFB_executeVoronoi( wxCommandEvent& event ){ executeVoronoi( event ); }
 		void _wxFB_setPointsMergeHull3d( wxCommandEvent& event ){ setPointsMergeHull3d( event ); }
 		void _wxFB_setFacesMergeHull3d( wxCommandEvent& event ){ setFacesMergeHull3d( event ); }
 		void _wxFB_setEdgesMergeHull3d( wxCommandEvent& event ){ setEdgesMergeHull3d( event ); }
 		void _wxFB_clearMergeHull3D( wxCommandEvent& event ){ clearMergeHull3D( event ); }
 		void _wxFB_executeMergeHull3D( wxCommandEvent& event ){ executeMergeHull3D( event ); }
+		void _wxFB_setPointsDelaunay3D( wxCommandEvent& event ){ setPointsDelaunay3D( event ); }
+		void _wxFB_setEdgesDelaunay3D( wxCommandEvent& event ){ setEdgesDelaunay3D( event ); }
+		void _wxFB_setTrianglesDelaunay3D( wxCommandEvent& event ){ setTrianglesDelaunay3D( event ); }
+		void _wxFB_clearDelaunay3D( wxCommandEvent& event ){ clearDelaunay3D( event ); }
+		void _wxFB_executeDelaunay3D( wxCommandEvent& event ){ executeDelaunay3D( event ); }
 
 
 	protected:
@@ -96,11 +105,20 @@ class PrincipalFrame : public wxFrame
 			wxID_CIRCUMFERENCEDELAUNAY,
 			wxID_DELAUNAYCLEAN,
 			wxID_DELAUNAYEXECUTE,
+			wxID_POINTSVORONOI,
+			wxID_EDGESVORONIO,
+			wxID_VORONOICLEAN,
+			wxID_VORONOIEXECUTE,
 			wxID_POINTSMERGEHULL3D,
 			wxID_TRIANGLESMERGEHULL3D,
 			wxID_EDGESMERGEHULL3D,
 			wxID_MERGEHULL3DCLEAN,
 			wxID_MERGEHULL3DEXECUTE,
+			wxID_POINTSDELAUNAY3D,
+			wxID_EDGESDELAUNAY3D,
+			wxID_TRIANGLESDELAUNAY3D,
+			wxID_DELAUNAY3DCLEAN,
+			wxID_DELAUNAY3DEXECUTE,
 		};
 
 		wxStatusBar* statusBar;
@@ -131,6 +149,14 @@ class PrincipalFrame : public wxFrame
 		wxStaticLine* m_staticline21;
 		wxToggleButton* delaunayClean_toggleBtn;
 		wxToggleButton* delaunayExecute_toggleBtn;
+		wxPanel* voronoi_painel;
+		wxStaticText* show_staticText23;
+		wxStaticLine* m_staticline113;
+		wxCheckBox* pointsDelaunay_checkBox1;
+		wxCheckBox* edgesVoronoi_checkBox;
+		wxStaticLine* m_staticline213;
+		wxToggleButton* voronioClean_toggleBtn;
+		wxToggleButton* voronoiExecute_toggleBtn;
 		wxPanel* mergehull3d_panel;
 		wxStaticText* show_staticText21;
 		wxStaticLine* m_staticline111;
@@ -140,6 +166,15 @@ class PrincipalFrame : public wxFrame
 		wxStaticLine* m_staticline211;
 		wxToggleButton* mergehull3dClean_toggleBtn;
 		wxToggleButton* mergehull3dExecute_toggleBtn;
+		wxPanel* delaynay3d_painel;
+		wxStaticText* show_staticText22;
+		wxStaticLine* m_staticline112;
+		wxCheckBox* pointsDelaunay3D_checkBox;
+		wxCheckBox* edgesDelaunay3D_checkBox;
+		wxCheckBox* trianglesDelaunay3D_checkBox;
+		wxStaticLine* m_staticline212;
+		wxToggleButton* delaunay3DClean_toggleBtn;
+		wxToggleButton* delaunay3DExecute_toggleBtn;
 		GLCanvas *canvas;
 
 		// Virtual event handlers, overide them in your derived class
@@ -166,11 +201,20 @@ class PrincipalFrame : public wxFrame
 		virtual void setCircumference( wxCommandEvent& event ) { event.Skip(); }
 		virtual void clearDelaunay( wxCommandEvent& event ) { event.Skip(); }
 		virtual void executeDelaunay( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setPointsVoronoi( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setEdgesVoronoi( wxCommandEvent& event ) { event.Skip(); }
+		virtual void clearVoronoi( wxCommandEvent& event ) { event.Skip(); }
+		virtual void executeVoronoi( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setPointsMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setFacesMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setEdgesMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
 		virtual void clearMergeHull3D( wxCommandEvent& event ) { event.Skip(); }
 		virtual void executeMergeHull3D( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setPointsDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setEdgesDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setTrianglesDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
+		virtual void clearDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
+		virtual void executeDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

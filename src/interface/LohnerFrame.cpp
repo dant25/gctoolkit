@@ -345,3 +345,48 @@ void LohnerFrame::executeMergeHull3D( wxCommandEvent& event )
         Refresh();
     }
 }
+
+void LohnerFrame::setPointsVoronoi( wxCommandEvent& event )
+{
+	// TODO: Implement setPointsVoronoi
+}
+
+void LohnerFrame::setEdgesVoronoi( wxCommandEvent& event )
+{
+	// TODO: Implement setEdgesVoronoi
+}
+
+void LohnerFrame::clearVoronoi( wxCommandEvent& event )
+{
+	// TODO: Implement clearVoronoi
+}
+
+void LohnerFrame::executeVoronoi( wxCommandEvent& event )
+{
+	// TODO: Implement executeVoronoi
+}
+
+void LohnerFrame::setPointsDelaunay3D( wxCommandEvent& event )
+{
+	// TODO: Implement setPointsDelaunay3D
+}
+
+void LohnerFrame::setTrianglesDelaunay3D( wxCommandEvent& event )
+{
+	// TODO: Implement setTrianglesDelaunay3D
+}
+
+void LohnerFrame::clearDelaunay3D( wxCommandEvent& event )
+{
+	// TODO: Implement clearDelaunay3D
+}
+
+void LohnerFrame::executeDelaunay3D( wxCommandEvent& event )
+{
+	// TODO: Implement executeDelaunay3D
+}
+
+void LohnerFrame::setEdgesDelaunay3D( wxCommandEvent& event )
+{
+
+}

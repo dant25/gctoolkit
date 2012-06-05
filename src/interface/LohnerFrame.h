@@ -48,6 +48,17 @@ protected:
     void clearMergeHull3D( wxCommandEvent& event );
     void executeMergeHull3D( wxCommandEvent& event );
 
+	void setPointsVoronoi( wxCommandEvent& event );
+	void setEdgesVoronoi( wxCommandEvent& event );
+	void clearVoronoi( wxCommandEvent& event );
+	void executeVoronoi( wxCommandEvent& event );
+
+	void setPointsDelaunay3D( wxCommandEvent& event );
+	void setEdgesDelaunay3D( wxCommandEvent& event );
+	void setTrianglesDelaunay3D( wxCommandEvent& event );
+	void clearDelaunay3D( wxCommandEvent& event );
+	void executeDelaunay3D( wxCommandEvent& event );
+
 public:
 
 	void init();

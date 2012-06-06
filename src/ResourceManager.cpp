@@ -7,7 +7,10 @@ ResourceManager::ResourceManager()
     graham = NULL;
     delaunay = NULL;
     mergehull3d = NULL;
-    type = MERGEHULL3D;
+    mergehull3d = NULL;
+    voronoi = NULL;
+
+    type = DELAUNAY3D;
 
     this->bBox = BoundingBox(Vector3(-10, -10, -10), Vector3(10, 10, 10));
 }
@@ -21,8 +24,8 @@ bool ResourceManager::loadFromFile(std::string fileName)
 {
     //std::cout << fileName.c_str() << std::endl;
 
-    std::ifstream file( fileName.c_str(), std::ifstream::in);
-    //std::ifstream file( "macaco3d.txt", std::ifstream::in);
+    //std::ifstream file( fileName.c_str(), std::ifstream::in);
+    std::ifstream file( "entrada.txt", std::ifstream::in);
 
     if( !file )
         return false;
@@ -70,7 +73,8 @@ bool ResourceManager::loadFromFile(std::string fileName)
 
             Point *point;
 
-            if(this->type != MERGEHULL3D)
+            //MELHORAR ISSO!
+            if(this->type != MERGEHULL3D && this->type != DELAUNAY3D)
                 point = new Point2D(x, y, i+1);
             else
             {
@@ -96,6 +100,12 @@ bool ResourceManager::loadFromFile(std::string fileName)
         break;
         case MERGEHULL3D:
             mergehull3d = new MergeHull3D(listObj);
+        break;
+        case DELAUNAY3D:
+            delaunay3d = new Delaunay3D(pointList);
+        break;
+        case VORONOI:
+            voronoi = new Voronoi(pointList);
         break;
     }
 
@@ -136,6 +146,14 @@ void ResourceManager::setType(int type)
             delete mergehull3d;
             mergehull3d = NULL;
         break;
+        case DELAUNAY3D:
+            delete delaunay3d;
+            delaunay3d = NULL;
+        break;
+        case VORONOI:
+            delete voronoi;
+            voronoi = NULL;
+        break;
     }
 
     switch(type)          //SET NO NOVO TIPO
@@ -149,6 +167,12 @@ void ResourceManager::setType(int type)
         case 2:
             this->type = MERGEHULL3D;
         break;
+        case 3:
+            this->type = DELAUNAY3D;
+        break;
+        case 4:
+            this->type = VORONOI;
+        break;
     }
 }
 
@@ -156,17 +180,25 @@ void ResourceManager::render()
 {
     switch(this->type)
     {
-        case 0:
+        case GRAHAM2D:
             if(graham != NULL)
                 graham->draw();
         break;
-        case 1:
+        case DELAUNAY:
             if(delaunay != NULL)
                 delaunay->draw();
         break;
-        case 2:
+        case MERGEHULL3D:
             if(mergehull3d != NULL)
                 mergehull3d->draw();
+        break;
+        case DELAUNAY3D:
+            if(delaunay3d != NULL)
+                delaunay3d->draw();
+        break;
+        case VORONOI:
+            if(voronoi != NULL)
+                voronoi->draw();
         break;
     }
 }

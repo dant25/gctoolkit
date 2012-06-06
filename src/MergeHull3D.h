@@ -10,7 +10,6 @@
 #include "Point3D.h"
 #include "Edge3D.h"
 #include "Polygon.h"
-#include "math/Vector3.h"
 
 class MergeHull3D
 {
@@ -30,7 +29,7 @@ class MergeHull3D
 
         bool existEdge(Edge3D e);
         void addEdge(Edge3D* e);
-        void initialFace(std::list<Point*> pointList);
+        void initialFace();
         void nextFaces();
 
         static bool compareY(Point* first, Point* second);

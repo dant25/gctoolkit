@@ -10,7 +10,8 @@ LohnerFrame::LohnerFrame( wxWindow* parent )
 :
 PrincipalFrame( parent )
 {
-
+    canvas->manager.setType( options_notebook->GetSelection() );
+    options_notebook->SetSelection( options_notebook->GetSelection() );
 }
 
 void LohnerFrame::init()
@@ -25,7 +26,7 @@ void LohnerFrame::newModel( wxCommandEvent& event )
 
 void LohnerFrame::openModel( wxCommandEvent& event )
 {
-
+/*
     // TODO: Implement openModel
     static const wxChar *FILETYPES  = _("TXT files (*.txt)|*.txt|"
                                         "All files (*.*)|*.*");
@@ -49,8 +50,8 @@ void LohnerFrame::openModel( wxCommandEvent& event )
             wxMessageBox( _("Could not open file: Invalid format."),_("File error"), wxOK | wxICON_ERROR );
             return;
         }
-
-//canvas->manager.loadFromFile( std::string( "" ) );
+*/
+canvas->manager.loadFromFile( std::string( "" ) );
 
         switch(options_notebook->GetSelection())
         {
@@ -72,12 +73,17 @@ void LohnerFrame::openModel( wxCommandEvent& event )
                 facesMergeHull3D_checkBox->SetValue(true);
                 edgesMergeHull3D_checkBox->SetValue(true);
             break;
+            case 3:
+                pointsDelaunay3D_checkBox->SetValue(true);
+                trianglesDelaunay3D_checkBox->SetValue(true);
+                edgesDelaunay3D_checkBox->SetValue(true);
+            break;
         }
 
         canvas->fitCam();
 
         Refresh();
-    }
+    //}
 }
 
 void LohnerFrame::saveModel( wxCommandEvent& event )
@@ -141,6 +147,14 @@ void LohnerFrame::setPage( wxNotebookEvent& event )
         case 2:
             canvas->manager.setType(2);
             operations_menu->FindItemByPosition(2)->Check( true );
+        break;
+        case 3:
+            canvas->manager.setType(3);
+            operations_menu->FindItemByPosition(3)->Check( true );
+        break;
+        case 4:
+            canvas->manager.setType(4);
+            operations_menu->FindItemByPosition(4)->Check( true );
         break;
     }
 
@@ -346,6 +360,15 @@ void LohnerFrame::executeMergeHull3D( wxCommandEvent& event )
     }
 }
 
+void LohnerFrame::setVoronoi( wxCommandEvent& event )
+{
+    canvas->manager.setType(4);
+
+    options_notebook->SetSelection( 4 );
+
+    Refresh();
+}
+
 void LohnerFrame::setPointsVoronoi( wxCommandEvent& event )
 {
 	// TODO: Implement setPointsVoronoi
@@ -358,17 +381,42 @@ void LohnerFrame::setEdgesVoronoi( wxCommandEvent& event )
 
 void LohnerFrame::clearVoronoi( wxCommandEvent& event )
 {
-	// TODO: Implement clearVoronoi
+    if(canvas->manager.voronoi!= NULL)
+    {
+        canvas->manager.voronoi->clear();
+        delete canvas->manager.voronoi;
+        canvas->manager.voronoi = NULL;
+
+        Refresh();
+    }
 }
 
 void LohnerFrame::executeVoronoi( wxCommandEvent& event )
 {
-	// TODO: Implement executeVoronoi
+    if(canvas->manager.voronoi!= NULL)
+    {
+        canvas->manager.voronoi->execute();
+        Refresh();
+    }
+}
+
+void LohnerFrame::setDelauny3D( wxCommandEvent& event )
+{
+    canvas->manager.setType(3);
+
+    options_notebook->SetSelection( 3 );
+
+    Refresh();
 }
 
 void LohnerFrame::setPointsDelaunay3D( wxCommandEvent& event )
 {
 	// TODO: Implement setPointsDelaunay3D
+}
+
+void LohnerFrame::setEdgesDelaunay3D( wxCommandEvent& event )
+{
+
 }
 
 void LohnerFrame::setTrianglesDelaunay3D( wxCommandEvent& event )
@@ -378,15 +426,21 @@ void LohnerFrame::setTrianglesDelaunay3D( wxCommandEvent& event )
 
 void LohnerFrame::clearDelaunay3D( wxCommandEvent& event )
 {
-	// TODO: Implement clearDelaunay3D
+    if(canvas->manager.delaunay3d!= NULL)
+    {
+        canvas->manager.delaunay3d->clear();
+        delete canvas->manager.delaunay3d;
+        canvas->manager.delaunay3d = NULL;
+
+        Refresh();
+    }
 }
 
 void LohnerFrame::executeDelaunay3D( wxCommandEvent& event )
 {
-	// TODO: Implement executeDelaunay3D
-}
-
-void LohnerFrame::setEdgesDelaunay3D( wxCommandEvent& event )
-{
-
+    if(canvas->manager.delaunay3d!= NULL)
+    {
+        canvas->manager.delaunay3d->execute();
+        Refresh();
+    }
 }

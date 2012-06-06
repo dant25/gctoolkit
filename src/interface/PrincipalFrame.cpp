@@ -17,6 +17,8 @@ BEGIN_EVENT_TABLE( PrincipalFrame, wxFrame )
 	EVT_MENU( wxID_GRAHAM, PrincipalFrame::_wxFB_setGraham )
 	EVT_MENU( wxID_DELAUNAY, PrincipalFrame::_wxFB_setDelaunay )
 	EVT_MENU( wxID_MERGEHULL3D, PrincipalFrame::_wxFB_setMergeHull3D )
+	EVT_MENU( wxID_DELAUNAY3D, PrincipalFrame::_wxFB_setDelauny3D )
+	EVT_MENU( wxID_VORONOI, PrincipalFrame::_wxFB_setVoronoi )
 	EVT_MENU( ID_ABOUT, PrincipalFrame::_wxFB_about )
 	EVT_TOOL( ID_NEW_MODEL, PrincipalFrame::_wxFB_newModel )
 	EVT_TOOL( ID_OPEN_MODEL, PrincipalFrame::_wxFB_openModel )
@@ -36,10 +38,6 @@ BEGIN_EVENT_TABLE( PrincipalFrame, wxFrame )
 	EVT_CHECKBOX( wxID_CIRCUMFERENCEDELAUNAY, PrincipalFrame::_wxFB_setCircumference )
 	EVT_TOGGLEBUTTON( wxID_DELAUNAYCLEAN, PrincipalFrame::_wxFB_clearDelaunay )
 	EVT_TOGGLEBUTTON( wxID_DELAUNAYEXECUTE, PrincipalFrame::_wxFB_executeDelaunay )
-	EVT_CHECKBOX( wxID_POINTSVORONOI, PrincipalFrame::_wxFB_setPointsVoronoi )
-	EVT_CHECKBOX( wxID_EDGESVORONIO, PrincipalFrame::_wxFB_setEdgesVoronoi )
-	EVT_TOGGLEBUTTON( wxID_VORONOICLEAN, PrincipalFrame::_wxFB_clearVoronoi )
-	EVT_TOGGLEBUTTON( wxID_VORONOIEXECUTE, PrincipalFrame::_wxFB_executeVoronoi )
 	EVT_CHECKBOX( wxID_POINTSMERGEHULL3D, PrincipalFrame::_wxFB_setPointsMergeHull3d )
 	EVT_CHECKBOX( wxID_TRIANGLESMERGEHULL3D, PrincipalFrame::_wxFB_setFacesMergeHull3d )
 	EVT_CHECKBOX( wxID_EDGESMERGEHULL3D, PrincipalFrame::_wxFB_setEdgesMergeHull3d )
@@ -50,6 +48,10 @@ BEGIN_EVENT_TABLE( PrincipalFrame, wxFrame )
 	EVT_CHECKBOX( wxID_TRIANGLESDELAUNAY3D, PrincipalFrame::_wxFB_setTrianglesDelaunay3D )
 	EVT_TOGGLEBUTTON( wxID_DELAUNAY3DCLEAN, PrincipalFrame::_wxFB_clearDelaunay3D )
 	EVT_TOGGLEBUTTON( wxID_DELAUNAY3DEXECUTE, PrincipalFrame::_wxFB_executeDelaunay3D )
+	EVT_CHECKBOX( wxID_POINTSVORONOI, PrincipalFrame::_wxFB_setPointsVoronoi )
+	EVT_CHECKBOX( wxID_EDGESVORONIO, PrincipalFrame::_wxFB_setEdgesVoronoi )
+	EVT_TOGGLEBUTTON( wxID_VORONOICLEAN, PrincipalFrame::_wxFB_clearVoronoi )
+	EVT_TOGGLEBUTTON( wxID_VORONOIEXECUTE, PrincipalFrame::_wxFB_executeVoronoi )
 END_EVENT_TABLE()
 
 PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
@@ -81,17 +83,23 @@ PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString&
 	wxMenuItem* graham_menuItem;
 	graham_menuItem = new wxMenuItem( operations_menu, wxID_GRAHAM, wxString( wxT("Graham") ) , wxEmptyString, wxITEM_RADIO );
 	operations_menu->Append( graham_menuItem );
-	graham_menuItem->Check( true );
 
 	wxMenuItem* delaunay_menuItem;
 	delaunay_menuItem = new wxMenuItem( operations_menu, wxID_DELAUNAY, wxString( wxT("Delaunay") ) , wxEmptyString, wxITEM_RADIO );
 	operations_menu->Append( delaunay_menuItem );
-	delaunay_menuItem->Check( true );
 
 	wxMenuItem* mergehull3d_menuItem;
 	mergehull3d_menuItem = new wxMenuItem( operations_menu, wxID_MERGEHULL3D, wxString( wxT("Merge Hull 3D") ) , wxEmptyString, wxITEM_RADIO );
 	operations_menu->Append( mergehull3d_menuItem );
-	mergehull3d_menuItem->Check( true );
+
+	wxMenuItem* delaunay3d_menuItem;
+	delaunay3d_menuItem = new wxMenuItem( operations_menu, wxID_DELAUNAY3D, wxString( wxT("Delauney 3D") ) , wxEmptyString, wxITEM_RADIO );
+	operations_menu->Append( delaunay3d_menuItem );
+	delaunay3d_menuItem->Check( true );
+
+	wxMenuItem* voronoi_menuItem;
+	voronoi_menuItem = new wxMenuItem( operations_menu, wxID_VORONOI, wxString( wxT("Voronoi") ) , wxEmptyString, wxITEM_RADIO );
+	operations_menu->Append( voronoi_menuItem );
 
 	menubar->Append( operations_menu, wxT("Operations") );
 
@@ -161,69 +169,39 @@ PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString&
 	graham_panel->Layout();
 	bSizer6->Fit( graham_panel );
 	options_notebook->AddPage( graham_panel, wxT("Graham"), false );
-	delaynay_painel = new wxPanel( options_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	delaunay_painel = new wxPanel( options_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer61;
 	bSizer61 = new wxBoxSizer( wxVERTICAL );
 
-	show_staticText2 = new wxStaticText( delaynay_painel, wxID_ANY, wxT("Show"), wxDefaultPosition, wxDefaultSize, 0 );
+	show_staticText2 = new wxStaticText( delaunay_painel, wxID_ANY, wxT("Show"), wxDefaultPosition, wxDefaultSize, 0 );
 	show_staticText2->Wrap( -1 );
 	bSizer61->Add( show_staticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	m_staticline11 = new wxStaticLine( delaynay_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	m_staticline11 = new wxStaticLine( delaunay_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer61->Add( m_staticline11, 0, wxEXPAND | wxALL, 5 );
 
-	pointsDelaunay_checkBox = new wxCheckBox( delaynay_painel, wxID_POINTSDELAUNAY, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
+	pointsDelaunay_checkBox = new wxCheckBox( delaunay_painel, wxID_POINTSDELAUNAY, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer61->Add( pointsDelaunay_checkBox, 0, wxALL, 5 );
 
-	trianglesDelaunay_checkBox = new wxCheckBox( delaynay_painel, wxID_TRIANGLESDELAUNAY, wxT("Triangles"), wxDefaultPosition, wxDefaultSize, 0 );
+	trianglesDelaunay_checkBox = new wxCheckBox( delaunay_painel, wxID_TRIANGLESDELAUNAY, wxT("Triangles"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer61->Add( trianglesDelaunay_checkBox, 0, wxALL, 5 );
 
-	circumferenceDelaunay_checkBox = new wxCheckBox( delaynay_painel, wxID_CIRCUMFERENCEDELAUNAY, wxT("Circumference"), wxDefaultPosition, wxDefaultSize, 0 );
+	circumferenceDelaunay_checkBox = new wxCheckBox( delaunay_painel, wxID_CIRCUMFERENCEDELAUNAY, wxT("Circumference"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer61->Add( circumferenceDelaunay_checkBox, 0, wxALL, 5 );
 
-	m_staticline21 = new wxStaticLine( delaynay_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	m_staticline21 = new wxStaticLine( delaunay_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer61->Add( m_staticline21, 0, wxEXPAND | wxALL, 5 );
 
-	delaunayClean_toggleBtn = new wxToggleButton( delaynay_painel, wxID_DELAUNAYCLEAN, wxT("Clean"), wxDefaultPosition, wxDefaultSize, 0 );
+	delaunayClean_toggleBtn = new wxToggleButton( delaunay_painel, wxID_DELAUNAYCLEAN, wxT("Clean"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer61->Add( delaunayClean_toggleBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	delaunayExecute_toggleBtn = new wxToggleButton( delaynay_painel, wxID_DELAUNAYEXECUTE, wxT("Execute"), wxDefaultPosition, wxDefaultSize, 0 );
+	delaunayExecute_toggleBtn = new wxToggleButton( delaunay_painel, wxID_DELAUNAYEXECUTE, wxT("Execute"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer61->Add( delaunayExecute_toggleBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	delaynay_painel->SetSizer( bSizer61 );
-	delaynay_painel->Layout();
-	bSizer61->Fit( delaynay_painel );
-	options_notebook->AddPage( delaynay_painel, wxT("Delaunay"), false );
-	voronoi_painel = new wxPanel( options_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer613;
-	bSizer613 = new wxBoxSizer( wxVERTICAL );
-
-	show_staticText23 = new wxStaticText( voronoi_painel, wxID_ANY, wxT("Show"), wxDefaultPosition, wxDefaultSize, 0 );
-	show_staticText23->Wrap( -1 );
-	bSizer613->Add( show_staticText23, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	m_staticline113 = new wxStaticLine( voronoi_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer613->Add( m_staticline113, 0, wxEXPAND | wxALL, 5 );
-
-	pointsDelaunay_checkBox1 = new wxCheckBox( voronoi_painel, wxID_POINTSVORONOI, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer613->Add( pointsDelaunay_checkBox1, 0, wxALL, 5 );
-
-	edgesVoronoi_checkBox = new wxCheckBox( voronoi_painel, wxID_EDGESVORONIO, wxT("Edges"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer613->Add( edgesVoronoi_checkBox, 0, wxALL, 5 );
-
-	m_staticline213 = new wxStaticLine( voronoi_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer613->Add( m_staticline213, 0, wxEXPAND | wxALL, 5 );
-
-	voronioClean_toggleBtn = new wxToggleButton( voronoi_painel, wxID_VORONOICLEAN, wxT("Clean"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer613->Add( voronioClean_toggleBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	voronoiExecute_toggleBtn = new wxToggleButton( voronoi_painel, wxID_VORONOIEXECUTE, wxT("Execute"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer613->Add( voronoiExecute_toggleBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	voronoi_painel->SetSizer( bSizer613 );
-	voronoi_painel->Layout();
-	bSizer613->Fit( voronoi_painel );
-	options_notebook->AddPage( voronoi_painel, wxT("Voronoi"), false );
+	delaunay_painel->SetSizer( bSizer61 );
+	delaunay_painel->Layout();
+	bSizer61->Fit( delaunay_painel );
+	options_notebook->AddPage( delaunay_painel, wxT("Delaunay"), false );
 	mergehull3d_panel = new wxPanel( options_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer611;
 	bSizer611 = new wxBoxSizer( wxVERTICAL );
@@ -260,42 +238,72 @@ PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString&
 	mergehull3d_panel->Layout();
 	bSizer611->Fit( mergehull3d_panel );
 	options_notebook->AddPage( mergehull3d_panel, wxT("Merge Hull 3D"), false );
-	delaynay3d_painel = new wxPanel( options_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	delaunay3d_painel = new wxPanel( options_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer612;
 	bSizer612 = new wxBoxSizer( wxVERTICAL );
 
-	show_staticText22 = new wxStaticText( delaynay3d_painel, wxID_ANY, wxT("Show"), wxDefaultPosition, wxDefaultSize, 0 );
+	show_staticText22 = new wxStaticText( delaunay3d_painel, wxID_ANY, wxT("Show"), wxDefaultPosition, wxDefaultSize, 0 );
 	show_staticText22->Wrap( -1 );
 	bSizer612->Add( show_staticText22, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	m_staticline112 = new wxStaticLine( delaynay3d_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	m_staticline112 = new wxStaticLine( delaunay3d_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer612->Add( m_staticline112, 0, wxEXPAND | wxALL, 5 );
 
-	pointsDelaunay3D_checkBox = new wxCheckBox( delaynay3d_painel, wxID_POINTSDELAUNAY3D, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
+	pointsDelaunay3D_checkBox = new wxCheckBox( delaunay3d_painel, wxID_POINTSDELAUNAY3D, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
 	pointsDelaunay3D_checkBox->SetValue(true);
 	bSizer612->Add( pointsDelaunay3D_checkBox, 0, wxALL, 5 );
 
-	edgesDelaunay3D_checkBox = new wxCheckBox( delaynay3d_painel, wxID_EDGESDELAUNAY3D, wxT("Edges"), wxDefaultPosition, wxDefaultSize, 0 );
+	edgesDelaunay3D_checkBox = new wxCheckBox( delaunay3d_painel, wxID_EDGESDELAUNAY3D, wxT("Edges"), wxDefaultPosition, wxDefaultSize, 0 );
 	edgesDelaunay3D_checkBox->SetValue(true);
 	bSizer612->Add( edgesDelaunay3D_checkBox, 0, wxALL, 5 );
 
-	trianglesDelaunay3D_checkBox = new wxCheckBox( delaynay3d_painel, wxID_TRIANGLESDELAUNAY3D, wxT("Tetrahedrons"), wxDefaultPosition, wxDefaultSize, 0 );
+	trianglesDelaunay3D_checkBox = new wxCheckBox( delaunay3d_painel, wxID_TRIANGLESDELAUNAY3D, wxT("Tetrahedrons"), wxDefaultPosition, wxDefaultSize, 0 );
 	trianglesDelaunay3D_checkBox->SetValue(true);
 	bSizer612->Add( trianglesDelaunay3D_checkBox, 0, wxALL, 5 );
 
-	m_staticline212 = new wxStaticLine( delaynay3d_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	m_staticline212 = new wxStaticLine( delaunay3d_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer612->Add( m_staticline212, 0, wxEXPAND | wxALL, 5 );
 
-	delaunay3DClean_toggleBtn = new wxToggleButton( delaynay3d_painel, wxID_DELAUNAY3DCLEAN, wxT("Clean"), wxDefaultPosition, wxDefaultSize, 0 );
+	delaunay3DClean_toggleBtn = new wxToggleButton( delaunay3d_painel, wxID_DELAUNAY3DCLEAN, wxT("Clean"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer612->Add( delaunay3DClean_toggleBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	delaunay3DExecute_toggleBtn = new wxToggleButton( delaynay3d_painel, wxID_DELAUNAY3DEXECUTE, wxT("Execute"), wxDefaultPosition, wxDefaultSize, 0 );
+	delaunay3DExecute_toggleBtn = new wxToggleButton( delaunay3d_painel, wxID_DELAUNAY3DEXECUTE, wxT("Execute"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer612->Add( delaunay3DExecute_toggleBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	delaynay3d_painel->SetSizer( bSizer612 );
-	delaynay3d_painel->Layout();
-	bSizer612->Fit( delaynay3d_painel );
-	options_notebook->AddPage( delaynay3d_painel, wxT("Delaynay 3D"), true );
+	delaunay3d_painel->SetSizer( bSizer612 );
+	delaunay3d_painel->Layout();
+	bSizer612->Fit( delaunay3d_painel );
+	options_notebook->AddPage( delaunay3d_painel, wxT("Delaunay 3D"), true );
+	voronoi_painel = new wxPanel( options_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer613;
+	bSizer613 = new wxBoxSizer( wxVERTICAL );
+
+	show_staticText23 = new wxStaticText( voronoi_painel, wxID_ANY, wxT("Show"), wxDefaultPosition, wxDefaultSize, 0 );
+	show_staticText23->Wrap( -1 );
+	bSizer613->Add( show_staticText23, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	m_staticline113 = new wxStaticLine( voronoi_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer613->Add( m_staticline113, 0, wxEXPAND | wxALL, 5 );
+
+	pointsDelaunay_checkBox1 = new wxCheckBox( voronoi_painel, wxID_POINTSVORONOI, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer613->Add( pointsDelaunay_checkBox1, 0, wxALL, 5 );
+
+	edgesVoronoi_checkBox = new wxCheckBox( voronoi_painel, wxID_EDGESVORONIO, wxT("Edges"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer613->Add( edgesVoronoi_checkBox, 0, wxALL, 5 );
+
+	m_staticline213 = new wxStaticLine( voronoi_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer613->Add( m_staticline213, 0, wxEXPAND | wxALL, 5 );
+
+	voronioClean_toggleBtn = new wxToggleButton( voronoi_painel, wxID_VORONOICLEAN, wxT("Clean"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer613->Add( voronioClean_toggleBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	voronoiExecute_toggleBtn = new wxToggleButton( voronoi_painel, wxID_VORONOIEXECUTE, wxT("Execute"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer613->Add( voronoiExecute_toggleBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	voronoi_painel->SetSizer( bSizer613 );
+	voronoi_painel->Layout();
+	bSizer613->Fit( voronoi_painel );
+	options_notebook->AddPage( voronoi_painel, wxT("Voronoi"), false );
 
 	bSizer_Options->Add( options_notebook, 1, wxALL|wxEXPAND, 5 );
 

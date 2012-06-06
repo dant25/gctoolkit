@@ -12,10 +12,12 @@
 
 #include "Graham2D.h"
 #include "Delaunay.h"
+#include "Delaunay3D.h"
 #include "MergeHull3D.h"
+#include "Voronoi.h"
 
 
-enum enumType { GRAHAM2D, DELAUNAY, MERGEHULL3D};
+enum enumType { GRAHAM2D, DELAUNAY, MERGEHULL3D, DELAUNAY3D, VORONOI};
 
 
 class ResourceManager
@@ -33,7 +35,9 @@ class ResourceManager
 
         Graham2D *graham;
         Delaunay *delaunay;
+        Delaunay3D *delaunay3d;
         MergeHull3D * mergehull3d;
+        Voronoi *voronoi;
 
         double getBoxXmin() { return boxXmin; };
         double getBoxXmax() { return boxXmax; };

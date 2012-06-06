@@ -24,6 +24,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="`wx-config --cflags`" />
+			<Add option="-std=gnu++0x" />
 		</Compiler>
 		<Linker>
 			<Add option="`wx-config --libs --gl-libs`" />
@@ -34,6 +35,8 @@
 		<Unit filename="src/Camera.h" />
 		<Unit filename="src/Delaunay.cpp" />
 		<Unit filename="src/Delaunay.h" />
+		<Unit filename="src/Delaunay3D.cpp" />
+		<Unit filename="src/Delaunay3D.h" />
 		<Unit filename="src/Edge.cpp" />
 		<Unit filename="src/Edge.h" />
 		<Unit filename="src/Edge2D.cpp" />
@@ -60,12 +63,16 @@
 		<Unit filename="src/Triangle.h" />
 		<Unit filename="src/Triangle2D.cpp" />
 		<Unit filename="src/Triangle2D.h" />
+		<Unit filename="src/Triangle3D.cpp" />
+		<Unit filename="src/Triangle3D.h" />
 		<Unit filename="src/Vector.cpp" />
 		<Unit filename="src/Vector.h" />
 		<Unit filename="src/Vector2D.cpp" />
 		<Unit filename="src/Vector2D.h" />
 		<Unit filename="src/Vector3D.cpp" />
 		<Unit filename="src/Vector3D.h" />
+		<Unit filename="src/Voronoi.cpp" />
+		<Unit filename="src/Voronoi.h" />
 		<Unit filename="src/interface/GLCanvas.cpp" />
 		<Unit filename="src/interface/GLCanvas.h" />
 		<Unit filename="src/interface/LohnerFrame.cpp" />

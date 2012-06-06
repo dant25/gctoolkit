@@ -91,7 +91,7 @@ void MergeHull3D::execute()
     {
         pointList = (*iter);
 
-        initialFace(pointList);
+        initialFace();
 
         while( free_edgeList.size() > 0)
             nextFaces();
@@ -134,7 +134,7 @@ void MergeHull3D::addEdge(Edge3D* e)
     free_edgeList.push_back(e);
 }
 
-void MergeHull3D::initialFace(std::list<Point*> pointList)
+void MergeHull3D::initialFace()
 {
     pointList.sort(compareY);
 
@@ -142,9 +142,7 @@ void MergeHull3D::initialFace(std::list<Point*> pointList)
     Point *p0_1 = new Point3D( p0->getCoord(0) + 1.0, p0->getCoord(1), p0->getCoord(2) );
     Point *p0_2 = new Point3D( p0->getCoord(0), p0->getCoord(1), p0->getCoord(2) - 1.0 );
 
-
-    Vector3 n1 = Vector3(p0_1->getCoord(0) - p0->getCoord(0), p0_1->getCoord(1) - p0->getCoord(1), p0_1->getCoord(2) - p0->getCoord(2))
-                ^Vector3(p0_2->getCoord(0) - p0->getCoord(0), p0_2->getCoord(1) - p0->getCoord(1), p0_2->getCoord(2) - p0->getCoord(2));
+    Vector3D n1 = Vector3D( p0, p0_1 ).cross( Vector3D(p0, p0_2) );
 
     n1.normalize();
 
@@ -155,8 +153,7 @@ void MergeHull3D::initialFace(std::list<Point*> pointList)
         if( (*it)->getId() == p0->getId() )
             continue;
 
-        Vector3 n2 = Vector3( p0->getCoord(0) - (*it)->getCoord(0), p0->getCoord(1) - (*it)->getCoord(1), p0->getCoord(2) - (*it)->getCoord(2))
-                    ^Vector3(p0_2->getCoord(0) - (*it)->getCoord(0), p0_2->getCoord(1) - (*it)->getCoord(1), p0_2->getCoord(2) - (*it)->getCoord(2));
+        Vector3D n2 = Vector3D( (*it) , p0 ).cross( Vector3D((*it), p0_2) );
 
         n2.normalize();
 
@@ -170,8 +167,7 @@ void MergeHull3D::initialFace(std::list<Point*> pointList)
     }
 
 
-    n1 = Vector3(p0_1->getCoord(0) - p0->getCoord(0), p0_1->getCoord(1) - p0->getCoord(1), p0_1->getCoord(2) - p0->getCoord(2))
-        ^Vector3(p0_2->getCoord(0) - p0->getCoord(0), p0_2->getCoord(1) - p0->getCoord(1), p0_2->getCoord(2) - p0->getCoord(2));
+    n1 = Vector3D( p0, p0_1 ).cross( Vector3D(p0, p0_2) );
 
     n1.normalize();
 
@@ -182,8 +178,7 @@ void MergeHull3D::initialFace(std::list<Point*> pointList)
         if( (*it)->getId() == p0->getId() || (*it)->getId() == p0_1->getId() )
             continue;
 
-        Vector3 n2 = Vector3( p0->getCoord(0) - (*it)->getCoord(0), p0->getCoord(1) - (*it)->getCoord(1), p0->getCoord(2) - (*it)->getCoord(2))
-                    ^Vector3(p0_1->getCoord(0) - (*it)->getCoord(0), p0_1->getCoord(1) - (*it)->getCoord(1), p0_1->getCoord(2) - (*it)->getCoord(2));
+        Vector3D n2 = Vector3D( (*it) , p0 ).cross( Vector3D((*it), p0_1) );
 
         n2.normalize();
 
@@ -239,8 +234,7 @@ void MergeHull3D::nextFaces()
     {
         Polygon* face = ((Edge3D*)edge_aux)->getAdjFaceList().front();
 
-        Vector3 n1 = Vector3( face->getPoint(1)->getCoord(0) - face->getPoint(0)->getCoord(0), face->getPoint(1)->getCoord(1) - face->getPoint(0)->getCoord(1), face->getPoint(1)->getCoord(2) - face->getPoint(0)->getCoord(2))
-                    ^Vector3( face->getPoint(2)->getCoord(0) - face->getPoint(0)->getCoord(0), face->getPoint(2)->getCoord(1) - face->getPoint(0)->getCoord(1), face->getPoint(2)->getCoord(2) - face->getPoint(0)->getCoord(2));
+        Vector3D n1 = Vector3D( face->getPoint(0) , face->getPoint(1) ).cross( Vector3D(face->getPoint(0), face->getPoint(2)) );
 
         n1.normalize();
 
@@ -260,8 +254,7 @@ void MergeHull3D::nextFaces()
                 && existEdge( Edge3D( (Point3D*)(*it), (Point3D*)edge_aux->getP2()) ) )
                 continue;
 */
-            Vector3 n2 = Vector3( edge_aux->getP2()->getCoord(0) - (*it)->getCoord(0), edge_aux->getP2()->getCoord(1) - (*it)->getCoord(1), edge_aux->getP2()->getCoord(2) - (*it)->getCoord(2))
-                        ^Vector3( edge_aux->getP1()->getCoord(0) - (*it)->getCoord(0), edge_aux->getP1()->getCoord(1) - (*it)->getCoord(1), edge_aux->getP1()->getCoord(2) - (*it)->getCoord(2));
+            Vector3D n2 = Vector3D( (*it) , edge_aux->getP2() ).cross( Vector3D((*it), edge_aux->getP1()) );
 
             n2.normalize();
 

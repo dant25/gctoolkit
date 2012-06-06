@@ -47,6 +47,8 @@ class PrincipalFrame : public wxFrame
 		void _wxFB_setGraham( wxCommandEvent& event ){ setGraham( event ); }
 		void _wxFB_setDelaunay( wxCommandEvent& event ){ setDelaunay( event ); }
 		void _wxFB_setMergeHull3D( wxCommandEvent& event ){ setMergeHull3D( event ); }
+		void _wxFB_setDelauny3D( wxCommandEvent& event ){ setDelauny3D( event ); }
+		void _wxFB_setVoronoi( wxCommandEvent& event ){ setVoronoi( event ); }
 		void _wxFB_about( wxCommandEvent& event ){ about( event ); }
 		void _wxFB_fitCam( wxCommandEvent& event ){ fitCam( event ); }
 		void _wxFB_setPage( wxNotebookEvent& event ){ setPage( event ); }
@@ -63,10 +65,6 @@ class PrincipalFrame : public wxFrame
 		void _wxFB_setCircumference( wxCommandEvent& event ){ setCircumference( event ); }
 		void _wxFB_clearDelaunay( wxCommandEvent& event ){ clearDelaunay( event ); }
 		void _wxFB_executeDelaunay( wxCommandEvent& event ){ executeDelaunay( event ); }
-		void _wxFB_setPointsVoronoi( wxCommandEvent& event ){ setPointsVoronoi( event ); }
-		void _wxFB_setEdgesVoronoi( wxCommandEvent& event ){ setEdgesVoronoi( event ); }
-		void _wxFB_clearVoronoi( wxCommandEvent& event ){ clearVoronoi( event ); }
-		void _wxFB_executeVoronoi( wxCommandEvent& event ){ executeVoronoi( event ); }
 		void _wxFB_setPointsMergeHull3d( wxCommandEvent& event ){ setPointsMergeHull3d( event ); }
 		void _wxFB_setFacesMergeHull3d( wxCommandEvent& event ){ setFacesMergeHull3d( event ); }
 		void _wxFB_setEdgesMergeHull3d( wxCommandEvent& event ){ setEdgesMergeHull3d( event ); }
@@ -77,6 +75,10 @@ class PrincipalFrame : public wxFrame
 		void _wxFB_setTrianglesDelaunay3D( wxCommandEvent& event ){ setTrianglesDelaunay3D( event ); }
 		void _wxFB_clearDelaunay3D( wxCommandEvent& event ){ clearDelaunay3D( event ); }
 		void _wxFB_executeDelaunay3D( wxCommandEvent& event ){ executeDelaunay3D( event ); }
+		void _wxFB_setPointsVoronoi( wxCommandEvent& event ){ setPointsVoronoi( event ); }
+		void _wxFB_setEdgesVoronoi( wxCommandEvent& event ){ setEdgesVoronoi( event ); }
+		void _wxFB_clearVoronoi( wxCommandEvent& event ){ clearVoronoi( event ); }
+		void _wxFB_executeVoronoi( wxCommandEvent& event ){ executeVoronoi( event ); }
 
 
 	protected:
@@ -89,6 +91,8 @@ class PrincipalFrame : public wxFrame
 			wxID_GRAHAM,
 			wxID_DELAUNAY,
 			wxID_MERGEHULL3D,
+			wxID_DELAUNAY3D,
+			wxID_VORONOI,
 			ID_ABOUT,
 			wxID_FITCAM,
 			wxID_NOTEBOOK,
@@ -105,10 +109,6 @@ class PrincipalFrame : public wxFrame
 			wxID_CIRCUMFERENCEDELAUNAY,
 			wxID_DELAUNAYCLEAN,
 			wxID_DELAUNAYEXECUTE,
-			wxID_POINTSVORONOI,
-			wxID_EDGESVORONIO,
-			wxID_VORONOICLEAN,
-			wxID_VORONOIEXECUTE,
 			wxID_POINTSMERGEHULL3D,
 			wxID_TRIANGLESMERGEHULL3D,
 			wxID_EDGESMERGEHULL3D,
@@ -119,6 +119,10 @@ class PrincipalFrame : public wxFrame
 			wxID_TRIANGLESDELAUNAY3D,
 			wxID_DELAUNAY3DCLEAN,
 			wxID_DELAUNAY3DEXECUTE,
+			wxID_POINTSVORONOI,
+			wxID_EDGESVORONIO,
+			wxID_VORONOICLEAN,
+			wxID_VORONOIEXECUTE,
 		};
 
 		wxStatusBar* statusBar;
@@ -140,7 +144,7 @@ class PrincipalFrame : public wxFrame
 		wxStaticLine* m_staticline2;
 		wxToggleButton* grahamClean_toggleBtn;
 		wxToggleButton* grahamExecute_toggleBtn;
-		wxPanel* delaynay_painel;
+		wxPanel* delaunay_painel;
 		wxStaticText* show_staticText2;
 		wxStaticLine* m_staticline11;
 		wxCheckBox* pointsDelaunay_checkBox;
@@ -149,14 +153,6 @@ class PrincipalFrame : public wxFrame
 		wxStaticLine* m_staticline21;
 		wxToggleButton* delaunayClean_toggleBtn;
 		wxToggleButton* delaunayExecute_toggleBtn;
-		wxPanel* voronoi_painel;
-		wxStaticText* show_staticText23;
-		wxStaticLine* m_staticline113;
-		wxCheckBox* pointsDelaunay_checkBox1;
-		wxCheckBox* edgesVoronoi_checkBox;
-		wxStaticLine* m_staticline213;
-		wxToggleButton* voronioClean_toggleBtn;
-		wxToggleButton* voronoiExecute_toggleBtn;
 		wxPanel* mergehull3d_panel;
 		wxStaticText* show_staticText21;
 		wxStaticLine* m_staticline111;
@@ -166,7 +162,7 @@ class PrincipalFrame : public wxFrame
 		wxStaticLine* m_staticline211;
 		wxToggleButton* mergehull3dClean_toggleBtn;
 		wxToggleButton* mergehull3dExecute_toggleBtn;
-		wxPanel* delaynay3d_painel;
+		wxPanel* delaunay3d_painel;
 		wxStaticText* show_staticText22;
 		wxStaticLine* m_staticline112;
 		wxCheckBox* pointsDelaunay3D_checkBox;
@@ -175,6 +171,14 @@ class PrincipalFrame : public wxFrame
 		wxStaticLine* m_staticline212;
 		wxToggleButton* delaunay3DClean_toggleBtn;
 		wxToggleButton* delaunay3DExecute_toggleBtn;
+		wxPanel* voronoi_painel;
+		wxStaticText* show_staticText23;
+		wxStaticLine* m_staticline113;
+		wxCheckBox* pointsDelaunay_checkBox1;
+		wxCheckBox* edgesVoronoi_checkBox;
+		wxStaticLine* m_staticline213;
+		wxToggleButton* voronioClean_toggleBtn;
+		wxToggleButton* voronoiExecute_toggleBtn;
 		GLCanvas *canvas;
 
 		// Virtual event handlers, overide them in your derived class
@@ -185,6 +189,8 @@ class PrincipalFrame : public wxFrame
 		virtual void setGraham( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setDelaunay( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setMergeHull3D( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setDelauny3D( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setVoronoi( wxCommandEvent& event ) { event.Skip(); }
 		virtual void about( wxCommandEvent& event ) { event.Skip(); }
 		virtual void fitCam( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setPage( wxNotebookEvent& event ) { event.Skip(); }
@@ -201,10 +207,6 @@ class PrincipalFrame : public wxFrame
 		virtual void setCircumference( wxCommandEvent& event ) { event.Skip(); }
 		virtual void clearDelaunay( wxCommandEvent& event ) { event.Skip(); }
 		virtual void executeDelaunay( wxCommandEvent& event ) { event.Skip(); }
-		virtual void setPointsVoronoi( wxCommandEvent& event ) { event.Skip(); }
-		virtual void setEdgesVoronoi( wxCommandEvent& event ) { event.Skip(); }
-		virtual void clearVoronoi( wxCommandEvent& event ) { event.Skip(); }
-		virtual void executeVoronoi( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setPointsMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setFacesMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setEdgesMergeHull3d( wxCommandEvent& event ) { event.Skip(); }
@@ -215,6 +217,10 @@ class PrincipalFrame : public wxFrame
 		virtual void setTrianglesDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
 		virtual void clearDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
 		virtual void executeDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setPointsVoronoi( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setEdgesVoronoi( wxCommandEvent& event ) { event.Skip(); }
+		virtual void clearVoronoi( wxCommandEvent& event ) { event.Skip(); }
+		virtual void executeVoronoi( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

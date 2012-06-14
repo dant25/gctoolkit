@@ -3,6 +3,7 @@
 
 #include "GeometricShape.h"
 #include "Vector3D.h"
+#include<list>
 
 
 class Polygon : public GeometricShape
@@ -51,8 +52,6 @@ public:
 #endif //#if USE_ARRAY
 
 #if USE_GUI
-    //virtual void draw() const = 0;
-
     virtual std::string text() const;
 #endif //#if USE_GUI
 

@@ -40,6 +40,8 @@ public:
 
     double distance(const Point &p) const;
 
+    void setColorRGB(double color_R, double color_G ,double color_B) {r = color_R; g = color_G; b = color_B;};
+
     void setColorR(double color) {r = color;};
     void setColorG(double color) {g = color;};
     void setColorB(double color) {b = color;};

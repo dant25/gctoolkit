@@ -26,6 +26,10 @@ public:
 
     virtual void setP3(Point *p);
     virtual Point *getP3() const;
+
+    virtual bool equal(const Triangle *t) const;
+    virtual bool have(const Point *p) const;
+
 /*
     virtual bool in(const Point &p) const = 0;
     virtual bool in(const Point *p) const = 0;
@@ -40,6 +44,8 @@ public:
     virtual Point incenter() const = 0;
 
     int numPoints;
+
+    void setColorRGB(double color_R, double color_G ,double color_B) {r = color_R; g = color_G; b = color_B;};
 
     void setColorR(double color) {r = color;};
     void setColorG(double color) {g = color;};

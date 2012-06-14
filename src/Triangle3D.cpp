@@ -6,6 +6,7 @@
 #include "Edge.h"
 
 #include <float.h>
+#include <GL/gl.h>
 
 Triangle3D::Triangle3D(Point3D *p1, Point3D *p2, Point3D *p3) :
 	Triangle(p1, p2, p3)
@@ -194,24 +195,19 @@ bool Triangle3D::accordingToNormal(const Point3D *p, bool insideTest) const
 	return (insideTest) ? n.dot(v) > -0.0001 : n.dot(v) > 0.0001;
 }
 
-#if USE_GUI
-//void Triangle3D::draw(bool fill) const
-void Triangle3D::draw() const
-{
-	if (!getState().isInVisibleSpace(this))
-	{
-		return;
-	}
 
+//void Triangle3D::draw(bool fill) const
+void Triangle3D::draw(bool fill) const
+{
 	/*if ((!fill) && (!this->isHighlighted()))
 	{
 		return;
 	}*/
 
-	glColor(this->getR(), this->getG(), this->getB());
+	glColor3f(r, g, b);
 
-	Vector3D n = this->normal();
-	glNormal(n.getX(), n.getY(), n.getZ());
+	//Vector3D n = this->normal();
+	//glNormal3f(n.getX(), n.getY(), n.getZ());
 
 	Point3D *p1 = static_cast<Point3D *>(this->getP1());
 	Point3D *p2 = static_cast<Point3D *>(this->getP2());
@@ -224,19 +220,12 @@ void Triangle3D::draw() const
 
 	bool wireframe = ((modes[0] != GL_FILL) || (modes[1] != GL_FILL));
 
-	if ((this->isHighlighted()) && (wireframe))
-	{
-		changed = true;
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-
-	glPushMatrix();
-		this->explodeAndShrink(this->mid());
+	//glPushMatrix();
 
 		glBegin(GL_TRIANGLES);
-			glVertex(p1->getX(), p1->getY(), p1->getZ());
-			glVertex(p2->getX(), p2->getY(), p2->getZ());
-			glVertex(p3->getX(), p3->getY(), p3->getZ());
+			glVertex3f(p1->getX(), p1->getY(), p1->getZ());
+			glVertex3f(p2->getX(), p2->getY(), p2->getZ());
+			glVertex3f(p3->getX(), p3->getY(), p3->getZ());
 		glEnd();
 
 		if (!wireframe)
@@ -251,9 +240,9 @@ void Triangle3D::draw() const
 			glLineWidth(1.0);
 
 			glBegin(GL_LINE_LOOP);
-				glVertex(p1->getX(), p1->getY(), p1->getZ());
-				glVertex(p2->getX(), p2->getY(), p2->getZ());
-				glVertex(p3->getX(), p3->getY(), p3->getZ());
+				glVertex3f(p1->getX(), p1->getY(), p1->getZ());
+				glVertex3f(p2->getX(), p2->getY(), p2->getZ());
+				glVertex3f(p3->getX(), p3->getY(), p3->getZ());
 			glEnd();
 
 			if (lighting)
@@ -261,7 +250,7 @@ void Triangle3D::draw() const
 				glEnable(GL_LIGHTING);
 			}
 		}
-	glPopMatrix();
+	//glPopMatrix();
 
 	if (changed)
 	{
@@ -270,20 +259,15 @@ void Triangle3D::draw() const
 	}
 }
 
-unsigned int Triangle3D::fill(GLfloat *coord, GLfloat *color, GLfloat *normal) const
+unsigned int Triangle3D::fill(double *coord, double *color, double *normal) const
 {
-	if (!getState().isInVisibleSpace(this))
-	{
-		return 0;
-	}
-
 	if (color)
 	{
-		color[0] = color[3] = color[6] = static_cast<GLfloat>(this->getR());
-		color[1] = color[4] = color[7] = static_cast<GLfloat>(this->getG());
-		color[2] = color[5] = color[8] = static_cast<GLfloat>(this->getB());
+		color[0] = color[3] = color[6] = static_cast<GLfloat>(r);
+		color[1] = color[4] = color[7] = static_cast<GLfloat>(g);
+		color[2] = color[5] = color[8] = static_cast<GLfloat>(b);
 	}
-
+/*
 	if (normal)
 	{
 		Vector3D n = this->normal();
@@ -292,7 +276,7 @@ unsigned int Triangle3D::fill(GLfloat *coord, GLfloat *color, GLfloat *normal) c
 		normal[1] = normal[4] = normal[7] = static_cast<GLfloat>(n.getY());
 		normal[2] = normal[5] = normal[8] = static_cast<GLfloat>(n.getZ());
 	}
-
+*/
 	coord[0] = static_cast<GLfloat>(static_cast<Point3D *>(this->getP1())->getX());
 	coord[1] = static_cast<GLfloat>(static_cast<Point3D *>(this->getP1())->getY());
 	coord[2] = static_cast<GLfloat>(static_cast<Point3D *>(this->getP1())->getZ());
@@ -305,12 +289,5 @@ unsigned int Triangle3D::fill(GLfloat *coord, GLfloat *color, GLfloat *normal) c
 	coord[7] = static_cast<GLfloat>(static_cast<Point3D *>(this->getP3())->getY());
 	coord[8] = static_cast<GLfloat>(static_cast<Point3D *>(this->getP3())->getZ());
 
-	Point mid = this->mid();
-
-	this->explodeAndShrink(coord, mid);
-	this->explodeAndShrink(coord + 3, mid);
-	this->explodeAndShrink(coord + 6, mid);
-
 	return 3;
 }
-#endif //#if USE_GUI

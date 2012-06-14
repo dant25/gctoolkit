@@ -17,7 +17,7 @@ public:
 
     Triangle3D(Point3D *p1 = NULL, Point3D *p2 = NULL, Point3D *p3 = NULL);
     Triangle3D(const Point3D &p1, const Point3D &p2, const Point3D &p3);
-    virtual ~Triangle3D();
+    ~Triangle3D();
 
     virtual unsigned int dimension() const;
 
@@ -28,6 +28,9 @@ public:
     virtual bool out(const Point *p) const;
     virtual bool out(const Point3D &p) const;
     virtual bool out(const Point3D *p) const;
+
+    virtual Point circumcenter() const {};     //TO DO
+    virtual Point incenter() const {};         //TO DO
 
     virtual double solidAngle(const Point3D &p) const;
     virtual double solidAngle(const Point3D *p) const;
@@ -41,20 +44,22 @@ public:
 
     virtual double surface() const;
 
+    std::list<Triangle*> getAdjTriangleList() {return adjTriangleList;};
+
 #if USE_ARRAY
     using Triangle::operator=;
 #endif //#if USE_ARRAY
 
-#if USE_GUI
+
     using Triangle::draw;
-    //virtual void draw(bool fill) const;
-    virtual void draw() const;
+    virtual void draw(bool fill) const;
+    //virtual void draw() const;
 
-    virtual UInt fill(GLfloat *coord = NULL, GLfloat *color = NULL, GLfloat *normal = NULL) const;
-#endif //#if USE_GUI
+    virtual unsigned int fill(double *coord = NULL, double *color = NULL, double *normal = NULL) const;
 
-protected:
 
+private:
+    std::list<Triangle*> adjTriangleList;
 };
 
 

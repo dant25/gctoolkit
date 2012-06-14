@@ -19,9 +19,11 @@ class Delaunay3D
 
         void draw();
 
-        void initialFace(std::list<Point*> pointList);
+        void initialTriangle();
+        void initialPolygon();
+        void nextPolygon();
 
-        void addEdge(Edge3D* e);
+        void addTriangle(Triangle* f);
 
         static bool compareX(Point* first, Point* second);
         static bool compareY(Point* first, Point* second);
@@ -34,9 +36,10 @@ class Delaunay3D
 
         std::list<Point*> pointList;
         std::list<Edge*> edgeList;
-        std::list<Edge*> free_edgeList;
-        std::list<Polygon*> facesList;
-        std::list<Triangle3D*> trianglesList;
+        std::list<Triangle*> triangleList;
+        std::list<Triangle*> free_triangleList;
+        std::list<Polygon*> polygonList;
 };
 
 #endif // DELAUNAY3D_H
+

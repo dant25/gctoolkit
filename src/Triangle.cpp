@@ -107,3 +107,21 @@ Point *Triangle::getP3() const
     else
         return NULL;
 }
+
+bool Triangle::equal(const Triangle *t) const
+{
+    if(     ( t->getP1()->equal(this->getP1()) || t->getP2()->equal(this->getP1()) || t->getP3()->equal(this->getP1()) )
+       &&   ( t->getP1()->equal(this->getP2()) || t->getP2()->equal(this->getP2()) || t->getP3()->equal(this->getP2()) )
+       &&   ( t->getP1()->equal(this->getP3()) || t->getP2()->equal(this->getP3()) || t->getP3()->equal(this->getP3()) ) )
+        return true;
+
+    return false;
+}
+
+bool Triangle::have(const Point *p) const
+{
+    if( this->getP1()->match(p) || this->getP2()->match(p) || this->getP3()->match(p) )
+        return true;
+
+    return false;
+}

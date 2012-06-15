@@ -1,5 +1,7 @@
 #include "Delaunay3D.h"
 
+#include <fstream>
+
 Delaunay3D::Delaunay3D(std::list<Point*> list)
 {
     renderPointList = true;
@@ -39,6 +41,43 @@ void Delaunay3D::draw()
 
 }
 
+bool Delaunay3D::save(std::string fileName)
+{
+    std::fstream arquivo;
+    arquivo.open( fileName.c_str() , std::ios::trunc | std::ios::out);// | ios::in);
+
+    arquivo << std::endl << "METODO DELAUNAY 3D" << std::endl  << std::endl;
+    arquivo << std::endl;
+
+    arquivo << "PONTOS" << std::endl;
+    arquivo << pointList.size() << std::endl;
+
+    for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
+    {
+            arquivo << (*it)->getId()  << "\t";
+            arquivo << (*it)->getCoord(0) << "\t" << (*it)->getCoord(1) << "\t" << (*it)->getCoord(2) << "\t";
+            arquivo << std::endl;
+    }
+
+    arquivo << std::endl;
+    arquivo << "PONTOS DAS FACES" << std::endl;
+    arquivo << polygonList.size() << std::endl;
+
+    int id=1;
+
+    for (std::list<Polygon*>::iterator it=polygonList.begin(); it!=polygonList.end(); it++)
+    {
+        arquivo << id << "\t";
+        id++;
+        for(unsigned int i = 0; i < (*it)->numPoints(); i++)
+        {
+            arquivo << (*it)->getPoint(i)->getId() << "\t";
+        }
+            arquivo << std::endl;
+    }
+
+    return true;
+}
 
 void Delaunay3D::clear()
 {
@@ -50,11 +89,17 @@ void Delaunay3D::execute()
     initialTriangle();
     initialPolygon();
 
-    //while(free_triangleList.size() > 0)
+    while(free_triangleList.size() > 0)
+    {
+std::cout << "FREE:   " << free_triangleList.size() << std::endl;
         nextPolygon();
+    }
 
 
-    std::cout << triangleList.size() << std::endl;
+
+
+    std::cout << "FACES: " << triangleList.size() << std::endl;
+    std::cout << "Tetraedros: " << polygonList.size() << std::endl;
 }
 
 void Delaunay3D::addTriangle(Triangle* t)
@@ -65,7 +110,6 @@ void Delaunay3D::addTriangle(Triangle* t)
         {
             t = (Triangle*)(*it);
                 free_triangleList.remove( (*it) );
-std::cout << "IGUAL" << std::endl;
 
             return;
         }
@@ -220,8 +264,8 @@ void Delaunay3D::nextPolygon()
             continue;
 
         double ang = ((Triangle3D*)t0)->orientedSolidAngle( (Point3D*)(*it) );
-std::cout << ang << std::endl;
-        if( max_ang >= ang )
+//std::cout << ang << std::endl;
+        if( max_ang > ang )
         {
             max_ang = ang;
             p = (*it);
@@ -230,13 +274,13 @@ std::cout << ang << std::endl;
 
     if(p == NULL)
     {
-std::cout << "VAZOU......................................." << std::endl;
+//std::cout << "VAZOU......................................." << std::endl;
         free_triangleList.remove(t0);
         return;
     }
 
 
-std::cout << max_ang << " " << p->getCoord(0) << " " << p->getCoord(1) << " " << p->getCoord(2) << std::endl;
+//std::cout << max_ang << " " << p->getCoord(0) << " " << p->getCoord(1) << " " << p->getCoord(2) << std::endl;
 
     Edge *e0 = new Edge3D((Point3D*)p, (Point3D*)t0->getP1());
     Edge *e1 = new Edge3D((Point3D*)p, (Point3D*)t0->getP2());

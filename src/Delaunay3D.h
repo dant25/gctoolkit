@@ -18,6 +18,7 @@ class Delaunay3D
         void execute();
 
         void draw();
+        bool save(std::string fileName);
 
         void initialTriangle();
         void initialPolygon();

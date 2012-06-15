@@ -162,8 +162,8 @@ void Camera::setProjection( double left, double right, double bottom, double top
 void Camera::fit( const BoundingBox& bb )
 {
     //reset();
-    double width2 = (bb.pMax.x - bb.pMin.x);
-    double height2= (bb.pMax.y - bb.pMin.y);
+    double width2 = (bb.pMax.x - bb.pMin.x) + 1;
+    double height2= (bb.pMax.y - bb.pMin.y) + 1;
     double near, ffar;
 
     Vector3 bbCenter = (bb.pMax-bb.pMin)*0.5;

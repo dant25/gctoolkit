@@ -95,12 +95,9 @@ void Delaunay3D::execute()
 
     while(free_triangleList.size() > 0)
     {
-std::cout << "FREE:   " << free_triangleList.size() << std::endl;
+//std::cout << "FREE:   " << free_triangleList.size() << std::endl;
         nextPolygon();
     }
-
-
-
 
     std::cout << "FACES: " << triangleList.size() << std::endl;
     std::cout << "Tetraedros: " << polygonList.size() << std::endl;
@@ -121,7 +118,6 @@ bool Delaunay3D::interceptTriangle(Triangle* t)
 
         if( ((Triangle3D*)t)->intercept( (Triangle3D*)(*it)) )
         {
-std::cout << "TOCOU" << std::endl;
             return true;
         }
 
@@ -313,14 +309,6 @@ void Delaunay3D::nextPolygon()
 
 //std::cout << max_ang << " " << p->getCoord(0) << " " << p->getCoord(1) << " " << p->getCoord(2) << std::endl;
 
-    Edge *e0 = new Edge3D((Point3D*)p, (Point3D*)t0->getP1());
-    Edge *e1 = new Edge3D((Point3D*)p, (Point3D*)t0->getP2());
-    Edge *e2 = new Edge3D((Point3D*)p, (Point3D*)t0->getP3());
-
-    edgeList.push_back( (Edge3D*)e0 );
-    edgeList.push_back( (Edge3D*)e1 );
-    edgeList.push_back( (Edge3D*)e2 );
-
     Triangle *t0_1 = new Triangle3D( (Point3D*)t0->getP1(), (Point3D*)p, (Point3D*)t0->getP3() );
     Triangle *t0_2 = new Triangle3D( (Point3D*)t0->getP1(), (Point3D*)t0->getP2(), (Point3D*)p );
     Triangle *t0_3 = new Triangle3D( (Point3D*)t0->getP2(), (Point3D*)t0->getP3(), (Point3D*)p );
@@ -335,6 +323,14 @@ void Delaunay3D::nextPolygon()
         addTriangle(t0_1);
         addTriangle(t0_2);
         addTriangle(t0_3);
+
+        Edge *e0 = new Edge3D((Point3D*)p, (Point3D*)t0->getP1());
+        Edge *e1 = new Edge3D((Point3D*)p, (Point3D*)t0->getP2());
+        Edge *e2 = new Edge3D((Point3D*)p, (Point3D*)t0->getP3());
+
+        edgeList.push_back( (Edge3D*)e0 );
+        edgeList.push_back( (Edge3D*)e1 );
+        edgeList.push_back( (Edge3D*)e2 );
 
 
         GeometricShape *polygon = new Polygon(4);

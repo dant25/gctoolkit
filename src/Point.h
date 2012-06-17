@@ -46,6 +46,9 @@ public:
     void setColorG(double color) {g = color;};
     void setColorB(double color) {b = color;};
 
+    virtual void sum(const Vector &v);
+    virtual void sum(const Vector *v);
+
     virtual void draw() const;
 
 protected:

@@ -24,7 +24,8 @@ class Delaunay3D
         void initialPolygon();
         void nextPolygon();
 
-        void addTriangle(Triangle* f);
+        bool addTriangle(Triangle* t);
+        bool interceptTriangle(Triangle* t);
 
         static bool compareX(Point* first, Point* second);
         static bool compareY(Point* first, Point* second);

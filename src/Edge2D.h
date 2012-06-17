@@ -9,6 +9,7 @@ class Edge2D : public Edge
 {
 public:
 
+    Edge2D();
     Edge2D(Point2D *p1, Point2D *p2, long int id = 0);
     virtual ~Edge2D();
 

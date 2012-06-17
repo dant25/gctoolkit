@@ -81,7 +81,11 @@ bool Delaunay3D::save(std::string fileName)
 
 void Delaunay3D::clear()
 {
-
+        pointList.clear();
+        edgeList.clear();
+        triangleList.clear();
+        free_triangleList.clear();
+        polygonList.clear();
 }
 
 void Delaunay3D::execute()
@@ -102,7 +106,31 @@ std::cout << "FREE:   " << free_triangleList.size() << std::endl;
     std::cout << "Tetraedros: " << polygonList.size() << std::endl;
 }
 
-void Delaunay3D::addTriangle(Triangle* t)
+bool Delaunay3D::interceptTriangle(Triangle* t)
+{
+    for (std::list<Triangle*>::iterator it=triangleList.begin(); it!=triangleList.end(); it++)
+    {
+        if( t->equal((*it)) ||
+           ( t->have( (*it)->getP1() ) && t->have( (*it)->getP2() ) ) ||
+           ( t->have( (*it)->getP1() ) && t->have( (*it)->getP3() ) ) ||
+           ( t->have( (*it)->getP2() ) && t->have( (*it)->getP3() ) ) )
+        {
+            continue;
+        }
+
+
+        if( ((Triangle3D*)t)->intercept( (Triangle3D*)(*it)) )
+        {
+std::cout << "TOCOU" << std::endl;
+            return true;
+        }
+
+    }
+
+    return false;
+}
+
+bool Delaunay3D::addTriangle(Triangle* t)
 {
     for (std::list<Triangle*>::iterator it=triangleList.begin(); it!=triangleList.end(); it++)
     {
@@ -111,11 +139,14 @@ void Delaunay3D::addTriangle(Triangle* t)
             t = (Triangle*)(*it);
                 free_triangleList.remove( (*it) );
 
-            return;
+            return false;
         }
     }
+
     triangleList.push_back(t);
     free_triangleList.push_back(t);
+
+    return true;
 }
 
 void Delaunay3D::initialTriangle()
@@ -298,20 +329,26 @@ void Delaunay3D::nextPolygon()
     t0_2->setColorRGB(0.5, 0.0, 0.5);
     t0_3->setColorRGB(0.5, 0.5, 0.0);
 
-    addTriangle(t0_1);
-    addTriangle(t0_2);
-    addTriangle(t0_3);
+
+    if( !interceptTriangle(t0_1) && !interceptTriangle(t0_2) && !interceptTriangle(t0_3) )
+    {
+        addTriangle(t0_1);
+        addTriangle(t0_2);
+        addTriangle(t0_3);
+
+
+        GeometricShape *polygon = new Polygon(4);
+
+        polygon->setPoint(0, t0->getP1());
+        polygon->setPoint(1, t0->getP2());
+        polygon->setPoint(2, t0->getP3());
+        polygon->setPoint(3, p);
+
+        polygonList.push_back((Polygon*)polygon);
+
+    }
 
     free_triangleList.remove(t0);
-
-    GeometricShape *polygon = new Polygon(4);
-
-    polygon->setPoint(0, t0->getP1());
-    polygon->setPoint(1, t0->getP2());
-    polygon->setPoint(2, t0->getP3());
-    polygon->setPoint(3, p);
-
-    polygonList.push_back((Polygon*)polygon);
 }
 
 bool Delaunay3D::compareZ(Point* first, Point* second)

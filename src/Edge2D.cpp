@@ -5,6 +5,11 @@
 #include "Point.h"
 #include <GL/gl.h>
 
+Edge2D::Edge2D()
+{
+
+}
+
 Edge2D::Edge2D(Point2D *p1, Point2D *p2, long int id) :
 	Edge(p1, p2, id)
 {

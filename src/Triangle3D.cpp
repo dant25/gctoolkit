@@ -5,6 +5,8 @@
 #include "Vector3D.h"
 #include "Edge.h"
 
+#include <limits.h>
+
 #include <float.h>
 #include <GL/gl.h>
 
@@ -84,9 +86,9 @@ bool Triangle3D::out(const Point3D *p) const
 {
 	/*R3Tuple t = this->barycentricCoordinates(p);
 
-	Real l1 = std::get<0>(t);
-	Real l2 = std::get<1>(t);
-	Real l3 = std::get<2>(t);*/
+	double l1 = std::get<0>(t);
+	double l2 = std::get<1>(t);
+	double l3 = std::get<2>(t);*/
 
 	double l1, l2, l3;
 
@@ -191,7 +193,7 @@ bool Triangle3D::accordingToNormal(const Point3D *p, bool insideTest) const
 
 	//since both n and v are normalized, the cosAngle need not to be called, because
 	//  n.cosAngle(v) = n.dot(v)/(n.norm()*v.norm())
-	//return (insideTest) ? n.cosAngle(v) > -Data::getTolerance() : n.cosAngle(v) > Data::getTolerance();
+	//return (insideTest) ? n.cosAngle(v) > -0.0001 : n.cosAngle(v) > 0.0001;
 	return (insideTest) ? n.dot(v) > -0.0001 : n.dot(v) > 0.0001;
 }
 
@@ -290,4 +292,594 @@ unsigned int Triangle3D::fill(double *coord, double *color, double *normal) cons
 	coord[8] = static_cast<GLfloat>(static_cast<Point3D *>(this->getP3())->getZ());
 
 	return 3;
+}
+
+Vector3D Triangle3D::normal() const
+{
+    return Vector3D(this->getP2(), this->getP1()).cross( Vector3D(this->getP3(), this->getP1()) );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bool Triangle3D::intercept(const Triangle3D &t) const
+{
+	return this->intercept(&t);
+}
+
+bool Triangle3D::intercept(const Triangle3D *t) const
+{
+	bool shareOne = false;
+
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		Point3D *p = (Point3D*)this->getPoint(i);
+
+		if ((t->have(p)) || (t->have(*p)))
+		{
+			if (!shareOne)
+			{
+				shareOne = true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
+	//std::cout << "shareOne = " << shareOne << std::endl;
+
+	//Code based on book Geometric Tools for Computer Graphics
+	Vector3D n = this->normal();
+	//std::cout << "n = " << n.text() << std::endl;
+	n.normalize();
+	//std::cout << "n = " << n.text() << std::endl;
+
+	Vector3D p(this->getP1());
+	//std::cout << "p = " << p.text() << std::endl;
+
+	double d = -n.dot(p);
+	//std::cout << "d = " << d << std::endl;
+
+	double tdists[3];
+
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		tdists[i] = Triangle3D::signedPlaneDistance(static_cast<Point3D *>(t->getPoint(i)), &n, d);
+		//std::cout << "tdists[" << i << "] = " << tdists[i] << std::endl;
+	}
+
+	//if (((tdists[0] < 0.0) && (tdists[1] < 0.0) && (tdists[2] < 0.0)) ||
+	//	((tdists[0] > 0.0) && (tdists[1] > 0.0) && (tdists[2] > 0.0)))
+	if (((tdists[0] < -0.0001) && (tdists[1] < -0.0001) && (tdists[2] < -0.0001)) ||
+		((tdists[0] >  0.0001) && (tdists[1] >  0.0001) && (tdists[2] >  0.0001)))
+	{
+		//std::cout << "returning false" << std::endl;
+		return false;
+	}
+
+	Vector3D tn = t->normal();
+	//std::cout << "tn = " << tn.text() << std::endl;
+	tn.normalize();
+	//std::cout << "tn = " << tn.text() << std::endl;
+
+	Vector3D tp(t->getP1());
+	//std::cout << "tp = " << tp.text() << std::endl;
+
+	double td = -tn.dot(tp);
+	//std::cout << "td = " << td << std::endl;
+
+	double n1n2 = n.dot(tn);
+	//std::cout << "n1n2 = " << n1n2 << std::endl;
+
+	//if both triangles lie in parallel planes
+	//if (1.0 - std::fabs(tn.dot(n)) < 0.0001)
+	if (1.0 - fabs(n1n2) < 0.0001)
+	{
+		//std::cout << "parallel planes" << std::endl;
+
+		//if the planes are not the same
+		if (fabs(td - d) > 0.0001)
+		{
+			return false;
+		}
+
+		//project the points of the triangles in the plane (x, y or z) that
+		//  is the most parallel to the triangles
+		Vector3D u[3];
+
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			u[i].setCoord(i, 1.0);
+		}
+
+		unsigned int max = 3;
+		double maxValue = -DBL_MAX;
+
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			double dot = fabs(u[i].dot(n));
+
+			if (dot > maxValue)
+			{
+				maxValue = dot;
+				max = i;
+			}
+		}
+
+		Point2D p[3], tp[3];
+
+		unsigned int coord = 0;
+
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			if (i == max)
+			{
+				continue;
+			}
+
+			for (unsigned int j = 0; j < 3; j++)
+			{
+				p[j].setCoord(coord, this->getPoint(j)->getCoord(i));
+				tp[j].setCoord(coord, t->getPoint(j)->getCoord(i));
+			}
+
+			coord++;
+		}
+
+		//create 2D edges for the triangles
+		Edge2D e[3] , te[3];
+
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			e[i].setPoints(&p[i], &p[(i + 1)%3]);
+			te[i].setPoints(&tp[i], &tp[(i + 1)%3]);
+		}
+
+		//test for 2D edge interceptions
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			for (unsigned int j = 0; j < 3; j++)
+			{
+				if (e[i].intercept(te[j]))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	double dists[3];
+
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		dists[i] = Triangle3D::signedPlaneDistance(static_cast<Point3D *>(this->getPoint(i)), &tn, td);
+		//std::cout << "dists[" << i << "] = " << dists[i] << std::endl;
+	}
+
+	//if (((dists[0] < 0.0) && (dists[1] < 0.0) && (dists[2] < 0.0)) ||
+	//	((dists[0] > 0.0) && (dists[1] > 0.0) && (dists[2] > 0.0)))
+	if (((dists[0] < -0.0001) && (dists[1] < -0.0001) && (dists[2] < -0.0001)) ||
+		((dists[0] >  0.0001) && (dists[1] >  0.0001) && (dists[2] >  0.0001)))
+	{
+		//std::cout << "returning false" << std::endl;
+		return false;
+	}
+
+	//line direction and point
+	Vector3D ld = n.cross(tn);
+	//std::cout << "ld = " << ld.text() << std::endl;
+
+	//double n1n2 = n.dot(tn);
+	double n1 = 1.0; //n.dot(n);
+	//std::cout << "n1 = " << n1 << std::endl;
+	double n2 = 1.0; //tn.dot(tn);
+	//std::cout << "n2 = " << n2 << std::endl;
+
+	double den = n1n2*n1n2 - n1*n2;
+	//std::cout << "den = " << den << std::endl;
+
+	d *= -1.0;
+	td *= -1.0;
+
+	double a = (td*n1n2 - d*n2)/(den);
+	//std::cout << "a = " << a << std::endl;
+	double b = (d*n1n2 - td*n1)/(den);
+	//std::cout << "b = " << b << std::endl;
+
+	Vector3D ln1(n), ln2(tn);
+	//std::cout << "ln1 = " << ln1.text() << std::endl;
+	//std::cout << "ln2 = " << ln2.text() << std::endl;
+	ln1.multiply(a);
+	//std::cout << "ln1 = " << ln1.text() << std::endl;
+	ln2.multiply(b);
+	//std::cout << "ln2 = " << ln2.text() << std::endl;
+
+
+	Point3D lp(ln1);
+
+	lp.sum(ln2);
+	//std::cout << "lp = " << lp.text() << std::endl;
+
+	double proj[3], tproj[3];
+
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		proj[i] = ld.dot(Vector3D(&lp, static_cast<Point3D *>(this->getPoint(i))));
+		//std::cout << "proj[" << i << "] = " << proj[i] << std::endl;
+		tproj[i] = ld.dot(Vector3D(&lp, static_cast<Point3D *>(t->getPoint(i))));
+		//std::cout << "tproj[" << i << "] = " << tproj[i] << std::endl;
+	}
+
+	//these are the parameters of the line that is the intersection of a
+	//  triangle and the plane of the other triangle
+	double param[2], tparam[2];
+	param[0] = param[1] = tparam[0] = tparam[1] = 0.0;
+
+	//this boolean means that at least one of the distances of the points to the
+	//  interception line is 0
+	bool zero = false, tzero = false;
+
+	for (unsigned int i = 0; i < 3; i++)
+	{
+		if (fabs(dists[i]) < 0.0001)
+		{
+			dists[i] = 0.0;
+
+			zero = true;
+		}
+
+		if (fabs(tdists[i]) < 0.0001)
+		{
+			tdists[i] = 0.0;
+
+			tzero = true;
+		}
+	}
+
+	//std::cout << "zero = " << std::boolalpha << zero << std::endl;
+	//for the this triangle:
+
+	//if one or two points hit the other plane
+	if (zero)
+	{
+		unsigned int z1 = 4, z2 = 4;
+
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			//if (dists[i] < 0.0001)
+			if (dists[i] == 0.0)
+			{
+				if (z1 == 4)
+				{
+					z1 = i;
+				}
+				else
+				{
+					z2 = i;
+
+					break;
+				}
+			}
+		}
+
+		//std::cout << "z1 = " << z1 << std::endl;
+		//std::cout << "z2 = " << z2 << std::endl;
+
+		param[0] = proj[z1];
+		//std::cout << "param[0] = " << param[0] << std::endl;
+
+		//if two points hit the other plane
+		if (z2 != 4)
+		{
+			param[1] = proj[z2];
+			//std::cout << "param[1] = " << param[1] << std::endl;
+		}
+		else
+		{
+			//if there are two points in the same side
+			if (((dists[(z1 + 1)%3] < 0.0) && (dists[(z1 + 2)%3] < 0.0)) ||
+				((dists[(z1 + 1)%3] > 0.0) && (dists[(z1 + 2)%3] > 0.0)))
+			{
+				param[1] = proj[z1];
+				//std::cout << "param[1] = " << param[1] << std::endl;
+			}
+			else
+			{
+				z2 = (z1 + 1)%3;
+				//std::cout << "z2 = " << z2 << std::endl;
+				z1 = (z1 + 2)%3;
+				//std::cout << "z1 = " << z1 << std::endl;
+
+				param[1] = proj[z2] + (proj[z1] - proj[z2])*dists[z2]/(dists[z2] - dists[z1]);
+				//std::cout << "param[1] = " << param[1] << std::endl;
+			}
+		}
+	}
+	else
+	{
+		unsigned int different = 4;
+
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			if (((dists[i] < 0.0) && (dists[(i+1)%3] > 0.0) && (dists[(i+2)%3] > 0.0)) ||
+				((dists[i] > 0.0) && (dists[(i+1)%3] < 0.0) && (dists[(i+2)%3] < 0.0)))
+			{
+				different = i;
+
+				break;
+			}
+		}
+
+		//std::cout << "different = " << different << std::endl;
+
+		unsigned int z2 = (different + 1)%3;
+		//std::cout << "z2 = " << z2 << std::endl;
+		unsigned int z1 = (different + 2)%3;
+		//std::cout << "z1 = " << z1 << std::endl;
+
+		param[0] = proj[z1] + (proj[different] - proj[z1])*dists[z1]/(dists[z1] - dists[different]);
+		//std::cout << "param[0] = " << param[0] << std::endl;
+		param[1] = proj[z2] + (proj[different] - proj[z2])*dists[z2]/(dists[z2] - dists[different]);
+		//std::cout << "param[1] = " << param[1] << std::endl;
+	}
+
+	if (param[0] > param[1])
+	{
+		double tmp = param[0];
+		param[0] = param[1];
+		param[1] = tmp;
+	}
+
+	//std::cout << "param[0] = " << param[0] << std::endl;
+	//std::cout << "param[1] = " << param[1] << std::endl;
+
+	//std::cout << "tzero = " << std::boolalpha << tzero << std::endl;
+	//for the other triangle:
+
+	//if one or two points hit the other plane
+	if (tzero)
+	{
+		unsigned int z1 = 4, z2 = 4;
+
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			//if (tdists[i] < 0.0001)
+			if (tdists[i] == 0.0)
+			{
+				if (z1 == 4)
+				{
+					z1 = i;
+				}
+				else
+				{
+					z2 = i;
+
+					break;
+				}
+			}
+		}
+
+		//std::cout << "z1 = " << z1 << std::endl;
+		//std::cout << "z2 = " << z2 << std::endl;
+
+		tparam[0] = tproj[z1];
+		//std::cout << "tparam[0] = " << tparam[0] << std::endl;
+
+		//if two points hit the other plane
+		if (z2 != 4)
+		{
+			tparam[1] = tproj[z2];
+			//std::cout << "tparam[1] = " << tparam[1] << std::endl;
+		}
+		else
+		{
+			//if there are two points in the same side
+			if (((tdists[(z1 + 1)%3] < 0.0) && (tdists[(z1 + 2)%3] < 0.0)) ||
+				((tdists[(z1 + 1)%3] > 0.0) && (tdists[(z1 + 2)%3] > 0.0)))
+			{
+				tparam[1] = tproj[z1];
+				//std::cout << "tparam[1] = " << tparam[1] << std::endl;
+			}
+			else
+			{
+				z2 = (z1 + 1)%3;
+				//std::cout << "z2 = " << z2 << std::endl;
+				z1 = (z1 + 2)%3;
+				//std::cout << "z1 = " << z1 << std::endl;
+
+				tparam[1] = tproj[z2] + (tproj[z1] - tproj[z2])*tdists[z2]/(tdists[z2] - tdists[z1]);
+				//std::cout << "tparam[1] = " << tparam[1] << std::endl;
+			}
+		}
+	}
+	else
+	{
+		unsigned int different = 4;
+
+		for (unsigned int i = 0; i < 3; i++)
+		{
+			if (((tdists[i] < 0.0) && (tdists[(i+1)%3] > 0.0) && (tdists[(i+2)%3] > 0.0)) ||
+				((tdists[i] > 0.0) && (tdists[(i+1)%3] < 0.0) && (tdists[(i+2)%3] < 0.0)))
+			{
+				different = i;
+
+				break;
+			}
+		}
+
+		//std::cout << "different = " << different << std::endl;
+
+		unsigned int z2 = (different + 1)%3;
+		//std::cout << "z2 = " << z2 << std::endl;
+		unsigned int z1 = (different + 2)%3;
+		//std::cout << "z1 = " << z1 << std::endl;
+
+		tparam[0] = tproj[z1] + (tproj[different] - tproj[z1])*tdists[z1]/(tdists[z1] - tdists[different]);
+		//std::cout << "tparam[0] = " << tparam[0] << std::endl;
+		tparam[1] = tproj[z2] + (tproj[different] - tproj[z2])*tdists[z2]/(tdists[z2] - tdists[different]);
+		//std::cout << "tparam[1] = " << tparam[1] << std::endl;
+	}
+
+	if (tparam[0] > tparam[1])
+	{
+		double tmp = tparam[0];
+		tparam[0] = tparam[1];
+		tparam[1] = tmp;
+	}
+
+	//std::cout << "tparam[0] = " << tparam[0] << std::endl;
+	//std::cout << "tparam[1] = " << tparam[1] << std::endl;
+
+	if ((shareOne) &&
+		((((param[0] == tparam[0]) || (param[1] == tparam[1])) &&
+		  ((param[0] == param[1]) || (tparam[0] == tparam[1]))) ||
+		 (param[1] == tparam[0]) ||
+		 (param[0] == tparam[1])))
+		/*(param[0] == param[1]) &&
+		(tparam[0] == tparam[1]) &&
+		(param[0] == tparam[0]))*/
+		/*(std::fabs(param[0] - param[1]) < 0.0001) &&
+		(std::fabs(tparam[0] - tparam[1]) < 0.0001) &&
+		(std::fabs(param[0] - tparam[0]) < 0.0001))*/
+	{
+		//std::cout << "return false 1" << std::endl;
+		return false;
+	}
+
+	if ((param[1] < tparam[0] + 0.0001) ||
+		(tparam[1] < param[0] + 0.0001))
+	{
+		//std::cout << "return false 2" << std::endl;
+		return false;
+	}
+
+	//std::cout << "return true" << std::endl;
+	return true;
+}
+
+bool Triangle3D::intercept(const Edge &e) const
+{
+	return this->intercept(&e);
+}
+
+bool Triangle3D::intercept(const Edge *e) const
+{
+	//Code based on book Geometric Tools for Computer Graphics
+	Vector3D d(e->getP1(), e->getP2());
+	Vector3D e1(this->getP1(), this->getP2());
+	Vector3D e2(this->getP1(), this->getP3());
+
+	double dnorm = d.norm();
+	d.multiply(1.0/dnorm);
+
+	Vector3D p = d.cross(e2);
+
+	double m = p.dot(e1);
+
+	if (fabs(m) < 0.0001)
+	{
+		return false;
+	}
+
+	m = 1.0/m;
+
+	Vector3D s(this->getP1(), e->getP1());
+
+	double u = m*s.dot(p);
+
+	if ((u < 0.0001) || (u > (1.0 - 0.0001)))
+	//if ((u < 0.0) || (u > 1.0))
+	{
+		return false;
+	}
+
+	Vector3D q = s.cross(e1);
+
+	double v = m*d.dot(q);
+
+	if ((v < 0.0001) || (v > (1.0 - 0.0001)))
+	//if ((v < 0.0) || (v > 1.0))
+	{
+		return false;
+	}
+
+	if ((u + v) > (1.0 - 0.0001))
+	//if (u + v > 1.0)
+	{
+		return false;
+	}
+
+	double t = m*e2.dot(q);
+
+	if ((t < 0.0001) || (t > dnorm - 0.0001))
+	//if ((t < 0.0001) || (t > 1.0 - 0.0001))
+	//if ((t < 0.0) || (t > 1.0))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool Triangle3D::intercept(const Point3D &p1, const Point3D &p2, const Point3D &p3) const
+{
+	return this->intercept(&p1, &p2, &p3);
+}
+
+bool Triangle3D::intercept(const Point3D *p1, const Point3D *p2, const Point3D *p3) const
+{
+	Triangle3D t(p1, p2, p3);
+
+	bool intercept = this->intercept(t);
+
+	t.setPoints(NULL, NULL, NULL);
+
+	return intercept;
+}
+
+double Triangle3D::signedPlaneDistance(const Point3D &p, const Vector3D &n, double d)
+{
+	return Triangle3D::signedPlaneDistance(&p, &n, d);
+}
+
+double Triangle3D::signedPlaneDistance(const Point3D *p, const Vector3D *n, double d)
+{
+	return n->dot(p) + d;
+}
+
+double Triangle3D::signedPlaneDistance(const Point3D &p) const
+{
+	return this->signedPlaneDistance(&p);
+}
+
+double Triangle3D::signedPlaneDistance(const Point3D *p) const
+{
+	Vector3D n = this->normal();
+
+	n.normalize();
+
+	double d = -n.dot(this->getP1());
+
+	return this->signedPlaneDistance(p, &n, d);
+}
+
+double Triangle3D::signedPlaneDistance(double x, double y, double z) const
+{
+	return this->signedPlaneDistance(Point3D(x, y, z));
 }

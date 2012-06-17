@@ -14,30 +14,40 @@ Point3D::Point3D(double x, double y, double z) :
 Point3D::Point3D(const Point &p) :
 	Point(3)
 {
+    this->coords.resize(3, 0.0);
+
 	this->setPosition(p.getCoord(0), p.getCoord(1), p.getCoord(2));
 }
 
 Point3D::Point3D(const Point *p) :
 	Point(3)
 {
+    this->coords.resize(3, 0.0);
+
 	this->setPosition(p->getCoord(0), p->getCoord(1), p->getCoord(2));
 }
 
 Point3D::Point3D(const Vector &v) :
 	Point(3)
 {
+    this->coords.resize(3, 0.0);
+
 	this->setPosition(v.getCoord(0), v.getCoord(1), v.getCoord(2));
 }
 
 Point3D::Point3D(const Vector *v) :
 	Point(3)
 {
+    this->coords.resize(3, 0.0);
+
 	this->setPosition(v->getCoord(0), v->getCoord(1), v->getCoord(2));
 }
 
 Point3D::Point3D(const Point &p, const Vector &v) :
 	Point(3)
 {
+    this->coords.resize(3, 0.0);
+
 	this->setPosition(p.getCoord(0) + v.getCoord(0), p.getCoord(1) + v.getCoord(1), p.getCoord(2) + v.getCoord(2));
 }
 

@@ -130,6 +130,9 @@ bool ResourceManager::saveToFile(std::string fileName)
         case DELAUNAY3D:
             return delaunay3d->save(fileName);
         break;
+        case VORONOI:
+            //return voronoi->save(fileName);
+        break;
     }
     return false;
 }

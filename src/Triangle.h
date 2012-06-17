@@ -29,6 +29,7 @@ public:
 
     virtual bool equal(const Triangle *t) const;
     virtual bool have(const Point *p) const;
+    virtual bool have(const Point p) const;
 
 /*
     virtual bool in(const Point &p) const = 0;

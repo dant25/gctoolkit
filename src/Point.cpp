@@ -139,8 +139,26 @@ bool Point::equal(const Point *p) const
 	return this->equal(*p);
 }
 
+void Point::sum(const Vector &v)
+{
+	this->sum(&v);
+}
+
+void Point::sum(const Vector *v)
+{
+	unsigned int dim = std::max(v->dimension(), this->dimension());
+
+	//this->setDimension(dim);
+
+	for (unsigned int i = 0; i < dim; i++)
+	{
+		//this->coords[i] += v.getCoord(i);
+		this->setCoord(i, this->getCoord(i) + v->getCoord(i));
+	}
+}
+
+
 void Point::draw() const
 {
 
 }
-

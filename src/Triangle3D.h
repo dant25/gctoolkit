@@ -29,8 +29,10 @@ public:
     virtual bool out(const Point3D &p) const;
     virtual bool out(const Point3D *p) const;
 
-    virtual Point circumcenter() const {};     //TO DO
-    virtual Point incenter() const {};         //TO DO
+    virtual Point circumcenter() const {return Point();};     //TO DO
+    virtual Point incenter() const {return Point();};         //TO DO
+
+    virtual Vector3D normal() const;
 
     virtual double solidAngle(const Point3D &p) const;
     virtual double solidAngle(const Point3D *p) const;
@@ -41,6 +43,20 @@ public:
     virtual R3Tuple barycentricCoordinates(const Point *p) const;
     virtual R3Tuple barycentricCoordinates(const Point3D &p) const;
     virtual R3Tuple barycentricCoordinates(const Point3D *p) const;
+
+    virtual bool intercept(const Triangle3D &t) const;
+    virtual bool intercept(const Triangle3D *t) const;
+    virtual bool intercept(const Edge &e) const;
+    virtual bool intercept(const Edge *e) const;
+    virtual bool intercept(const Point3D &p1, const Point3D &p2, const Point3D &p3) const;
+    virtual bool intercept(const Point3D *p1, const Point3D *p2, const Point3D *p3) const;
+
+    static double signedPlaneDistance(const Point3D &p, const Vector3D &n, double d);
+    static double signedPlaneDistance(const Point3D *p, const Vector3D *n, double d);
+
+    virtual double signedPlaneDistance(const Point3D &p) const;
+    virtual double signedPlaneDistance(const Point3D *p) const;
+    virtual double signedPlaneDistance(double x, double y, double z) const;
 
     virtual double surface() const;
 

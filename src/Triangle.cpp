@@ -125,3 +125,12 @@ bool Triangle::have(const Point *p) const
 
     return false;
 }
+
+bool Triangle::have(const Point p) const
+{
+    if( this->getP1()->match(p) || this->getP2()->match(p) || this->getP3()->match(p) )
+        return true;
+
+    return false;
+}
+

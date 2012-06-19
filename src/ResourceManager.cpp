@@ -26,7 +26,8 @@ bool ResourceManager::loadFromFile(std::string fileName)
 
     //std::ifstream file( fileName.c_str(), std::ifstream::in);
     //std::ifstream file( "entrada.txt", std::ifstream::in);
-    std::ifstream file( "macaco_duplicado.txt", std::ifstream::in);
+    //std::ifstream file( "macaco_duplicado.txt", std::ifstream::in);
+    std::ifstream file( "macaco3d.txt", std::ifstream::in);
 
     if( !file )
         return false;
@@ -103,7 +104,7 @@ bool ResourceManager::loadFromFile(std::string fileName)
             mergehull3d = new MergeHull3D(listObj);
         break;
         case DELAUNAY3D:
-            delaunay3d = new Delaunay3D(pointList);
+            delaunay3d = new Delaunay3D(listObj);
         break;
         case VORONOI:
             voronoi = new Voronoi(pointList);

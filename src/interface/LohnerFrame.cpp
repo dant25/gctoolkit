@@ -411,17 +411,29 @@ void LohnerFrame::setDelauny3D( wxCommandEvent& event )
 
 void LohnerFrame::setPointsDelaunay3D( wxCommandEvent& event )
 {
-	// TODO: Implement setPointsDelaunay3D
+    if(canvas->manager.delaunay3d != NULL)
+    {
+        canvas->manager.delaunay3d->setPoint();
+        Refresh();
+    }
 }
 
 void LohnerFrame::setEdgesDelaunay3D( wxCommandEvent& event )
 {
-
+    if(canvas->manager.delaunay3d != NULL)
+    {
+        canvas->manager.delaunay3d->setEdge();
+        Refresh();
+    }
 }
 
 void LohnerFrame::setTrianglesDelaunay3D( wxCommandEvent& event )
 {
-	// TODO: Implement setTrianglesDelaunay3D
+    if(canvas->manager.delaunay3d != NULL)
+    {
+        canvas->manager.delaunay3d->setTetrahedron();
+        Refresh();
+    }
 }
 
 void LohnerFrame::clearDelaunay3D( wxCommandEvent& event )
@@ -438,7 +450,7 @@ void LohnerFrame::clearDelaunay3D( wxCommandEvent& event )
 
 void LohnerFrame::executeDelaunay3D( wxCommandEvent& event )
 {
-    if(canvas->manager.delaunay3d!= NULL)
+    if(canvas->manager.delaunay3d != NULL)
     {
         canvas->manager.delaunay3d->execute();
         Refresh();

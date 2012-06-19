@@ -11,7 +11,7 @@
 class Delaunay3D
 {
     public:
-        Delaunay3D(std::list<Point*> list);
+        Delaunay3D(std::list< std::list<Point*> > list);
         virtual ~Delaunay3D();
 
         void clear();
@@ -19,6 +19,10 @@ class Delaunay3D
 
         void draw();
         bool save(std::string fileName);
+
+        void setPoint();
+        void setTetrahedron();
+        void setEdge();
 
         void initialTriangle();
         void initialPolygon();
@@ -36,8 +40,10 @@ class Delaunay3D
         bool renderEdgesList;
         bool renderTetrahedronsList;
 
+        std::list< std::list<Point*> > listObj;
         std::list<Point*> pointList;
         std::list<Edge*> edgeList;
+        std::list<Triangle*> global_triangleList;
         std::list<Triangle*> triangleList;
         std::list<Triangle*> free_triangleList;
         std::list<Polygon*> polygonList;

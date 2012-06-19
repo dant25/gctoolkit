@@ -2,13 +2,13 @@
 
 #include <fstream>
 
-Delaunay3D::Delaunay3D(std::list<Point*> list)
+Delaunay3D::Delaunay3D(std::list< std::list<Point*> > list)
 {
     renderPointList = true;
     renderEdgesList = true;
     renderTetrahedronsList = true;
 
-    pointList = list;
+    listObj = list;
 }
 
 Delaunay3D::~Delaunay3D()
@@ -20,25 +20,38 @@ void Delaunay3D::draw()
 {
    if(renderPointList == true)
     {
-        for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
-            (*it)->draw();
+        for (std::list< std::list<Point*> >::iterator iter=listObj.begin(); iter!=listObj.end(); iter++)
+            for (std::list<Point*>::iterator it=(*iter).begin(); it!=(*iter).end(); it++)
+                (*it)->draw();
     }
-/*
-    if(renderTetrahedronsList == true)
-    {
-        for (std::list<Polygon*>::iterator it=polygonList.begin(); it!=polygonList.end(); it++)
-            (*it)->draw(true);
-    }
-*/
+
     if(renderEdgesList == true)
     {
         for (std::list<Edge*>::iterator it=edgeList.begin(); it!=edgeList.end(); it++)
             (*it)->draw(true);
     }
 
-    for (std::list<Triangle*>::iterator it=triangleList.begin(); it!=triangleList.end(); it++)
-        (*it)->draw(true);
+    if(renderTetrahedronsList == true)
+    {
+        for (std::list<Triangle*>::iterator it=global_triangleList.begin(); it!=global_triangleList.end(); it++)
+            (*it)->draw(true);
+    }
 
+}
+
+void Delaunay3D::setPoint()
+{
+   renderPointList = !renderPointList;
+}
+
+void Delaunay3D::setTetrahedron()
+{
+   renderTetrahedronsList = !renderTetrahedronsList;
+}
+
+void Delaunay3D::setEdge()
+{
+    renderEdgesList = !renderEdgesList;
 }
 
 bool Delaunay3D::save(std::string fileName)
@@ -50,13 +63,21 @@ bool Delaunay3D::save(std::string fileName)
     arquivo << std::endl;
 
     arquivo << "PONTOS" << std::endl;
-    arquivo << pointList.size() << std::endl;
 
-    for (std::list<Point*>::iterator it=pointList.begin(); it!=pointList.end(); it++)
+    long int tam = 0;
+    for (std::list< std::list<Point*> >::iterator iter=listObj.begin(); iter!=listObj.end(); iter++)
+        tam += (*iter).size();
+
+    arquivo << tam << std::endl;
+
+    for (std::list< std::list<Point*> >::iterator iter=listObj.begin(); iter!=listObj.end(); iter++)
     {
+        for (std::list<Point*>::iterator it=(*iter).begin(); it!=(*iter).end(); it++)
+        {
             arquivo << (*it)->getId()  << "\t";
             arquivo << (*it)->getCoord(0) << "\t" << (*it)->getCoord(1) << "\t" << (*it)->getCoord(2) << "\t";
             arquivo << std::endl;
+        }
     }
 
     arquivo << std::endl;
@@ -83,6 +104,7 @@ void Delaunay3D::clear()
 {
         pointList.clear();
         edgeList.clear();
+        global_triangleList.clear();
         triangleList.clear();
         free_triangleList.clear();
         polygonList.clear();
@@ -90,13 +112,21 @@ void Delaunay3D::clear()
 
 void Delaunay3D::execute()
 {
-    initialTriangle();
-    initialPolygon();
-
-    while(free_triangleList.size() > 0)
+    for (std::list< std::list<Point*> >::iterator iter=listObj.begin(); iter!=listObj.end(); iter++)
     {
-//std::cout << "FREE:   " << free_triangleList.size() << std::endl;
-        nextPolygon();
+        pointList = (*iter);
+
+        initialTriangle();
+        initialPolygon();
+
+        while(free_triangleList.size() > 0)
+        {
+            nextPolygon();
+        }
+
+        pointList.clear();
+        triangleList.clear();
+        free_triangleList.clear();
     }
 
     std::cout << "FACES: " << triangleList.size() << std::endl;
@@ -139,6 +169,7 @@ bool Delaunay3D::addTriangle(Triangle* t)
         }
     }
 
+    global_triangleList.push_back(t);
     triangleList.push_back(t);
     free_triangleList.push_back(t);
 
@@ -218,6 +249,7 @@ void Delaunay3D::initialTriangle()
 
     ((Triangle*)triangle_aux)->setColorRGB(0.5, 0.5, 0.5);
 
+    global_triangleList.push_back( triangle_aux );
     free_triangleList.push_back( triangle_aux );
     triangleList.push_back( triangle_aux );
 }

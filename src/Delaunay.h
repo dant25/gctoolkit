@@ -26,11 +26,14 @@ class Delaunay
         void clear();
         void execute();
 
+        std::list<Triangle*> getTriangulation() { return triangleList; };
+        std::list<Edge*> getEdges()  { return edgeList; };
+
     protected:
         void triangulate();
         Edge* initialEdge();
         Point* bestPoint(Edge* e);
-        bool insertEdge(Point* p1, Point* p2);
+        bool insertEdge(Point* p1, Point* p2, Triangle* triangle);
 
     private:
 
@@ -40,6 +43,7 @@ class Delaunay
 
         std::list<Point*> pointList;
         std::list<Edge*> edgeList;
+        std::list<Edge*> free_edgeList;
         std::list<Triangle*> triangleList;
 
         std::list<Point*> circumferencePointList;

@@ -1,9 +1,12 @@
 #ifndef _EDGE2D_H_
 #define _EDGE2D_H_
 
+#include<list>
+
 #include "Edge.h"
 #include "Point2D.h"
 #include "Vector2D.h"
+#include "Triangle.h"
 
 class Edge2D : public Edge
 {
@@ -52,6 +55,12 @@ public:
     virtual Vector2D normal() const;
 
     virtual void draw(bool fill) const;
+
+    std::list<Triangle*> getAdjTriangleList() { return this->adj_triangles; };
+    void addAdjTriangle(Triangle* t) { this->adj_triangles.push_back(t); };
+
+protected:
+    std::list<Triangle*> adj_triangles;
 };
 
 

@@ -42,6 +42,7 @@ bool Delaunay::save(std::string fileName)
 void Delaunay::triangulate()
 {
     edgeList.clear();
+    free_edgeList.clear();
 
     Triangle* auxTriangle;
     Edge* auxEdge;
@@ -51,14 +52,15 @@ void Delaunay::triangulate()
     edge = initialEdge();       //ARESTA INICIAL
 
     edgeList.push_back(edge);
+    free_edgeList.push_back(edge);
 
 
 int passos = 0;
-    while( edgeList.size() > 0 )
+    while( free_edgeList.size() > 0 )
     {
         passos++;
-        auxEdge = edgeList.front();
-        edgeList.pop_front();
+        auxEdge = free_edgeList.front();
+        free_edgeList.pop_front();
 
         auxPoint = bestPoint(auxEdge);
         if(auxPoint==NULL)
@@ -68,8 +70,9 @@ int passos = 0;
 
         triangleList.push_back(auxTriangle);
 
-        insertEdge( auxEdge->getP1(), auxPoint );
-        insertEdge( auxPoint , auxEdge->getP2() );
+        ((Edge2D*)auxEdge)->addAdjTriangle(auxTriangle);
+        insertEdge( auxEdge->getP1(), auxPoint, auxTriangle );
+        insertEdge( auxPoint , auxEdge->getP2(), auxTriangle );
     }
 std::cout << "Fim do algoritmo!!!" << std::endl;
 
@@ -141,20 +144,23 @@ Point* Delaunay::bestPoint(Edge* e)
     return point;
 }
 
-bool Delaunay::insertEdge(Point* p1, Point* p2)
+bool Delaunay::insertEdge(Point* p1, Point* p2, Triangle* triangle)
 {
-    for (std::list<Edge*>::iterator it=edgeList.begin(); it!=edgeList.end(); it++)
+    for (std::list<Edge*>::iterator it=free_edgeList.begin(); it!=free_edgeList.end(); it++)
     {
         if( ( ( (*it)->getP1() ==  p1) && ( (*it)->getP2() ==  p2) )
          || ( ( (*it)->getP1() ==  p2) && ( (*it)->getP2() ==  p1) ) )
         {
-            edgeList.erase(it);
+            free_edgeList.erase(it);
+            ((Edge2D*)(*it))->addAdjTriangle(triangle);
             return false;
         }
     }
 
     Edge* edge = new Edge2D( (Point2D*)p1, (Point2D*)p2 );
     edgeList.push_back( edge );
+    free_edgeList.push_back( edge );
+    ((Edge2D*)edge)->addAdjTriangle(triangle);
 
     return true;
 }
@@ -179,6 +185,7 @@ void Delaunay::clear()
     pointList.clear();
     triangleList.clear();
     edgeList.clear();
+    free_edgeList.clear();
     circumferenceList.clear();
     circumferencePointList.clear();
 }
@@ -252,4 +259,3 @@ void Delaunay::draw()
         (*it)->draw(1);
     }
 }
-

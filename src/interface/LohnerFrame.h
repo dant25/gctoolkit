@@ -51,6 +51,7 @@ protected:
     void setVoronoi( wxCommandEvent& event );
 	void setPointsVoronoi( wxCommandEvent& event );
 	void setEdgesVoronoi( wxCommandEvent& event );
+    void setTrianglesVoronoi( wxCommandEvent& event );
 	void clearVoronoi( wxCommandEvent& event );
 	void executeVoronoi( wxCommandEvent& event );
 

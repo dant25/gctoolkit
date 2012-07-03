@@ -16,12 +16,14 @@ Point2D::Point2D(double x, double y, long int id) :
 Point2D::Point2D(const Point &p) :
 	Point(2)
 {
+    this->coords.resize(2, 0.0);
 	this->setPosition(p.getCoord(0), p.getCoord(1));
 }
 
 Point2D::Point2D(const Point *p) :
 	Point(2)
 {
+    this->coords.resize(2, 0.0);
 	this->setPosition(p->getCoord(0), p->getCoord(1));
 }
 

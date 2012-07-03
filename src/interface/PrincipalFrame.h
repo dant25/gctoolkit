@@ -34,11 +34,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 /// Class PrincipalFrame
 ///////////////////////////////////////////////////////////////////////////////
-class PrincipalFrame : public wxFrame
+class PrincipalFrame : public wxFrame 
 {
 	DECLARE_EVENT_TABLE()
 	private:
-
+		
 		// Private event handlers
 		void _wxFB_newModel( wxCommandEvent& event ){ newModel( event ); }
 		void _wxFB_openModel( wxCommandEvent& event ){ openModel( event ); }
@@ -77,10 +77,11 @@ class PrincipalFrame : public wxFrame
 		void _wxFB_executeDelaunay3D( wxCommandEvent& event ){ executeDelaunay3D( event ); }
 		void _wxFB_setPointsVoronoi( wxCommandEvent& event ){ setPointsVoronoi( event ); }
 		void _wxFB_setEdgesVoronoi( wxCommandEvent& event ){ setEdgesVoronoi( event ); }
+		void _wxFB_setTrianglesVoronoi( wxCommandEvent& event ){ setTrianglesVoronoi( event ); }
 		void _wxFB_clearVoronoi( wxCommandEvent& event ){ clearVoronoi( event ); }
 		void _wxFB_executeVoronoi( wxCommandEvent& event ){ executeVoronoi( event ); }
-
-
+		
+	
 	protected:
 		enum
 		{
@@ -121,10 +122,11 @@ class PrincipalFrame : public wxFrame
 			wxID_DELAUNAY3DEXECUTE,
 			wxID_POINTSVORONOI,
 			wxID_EDGESVORONIO,
+			wxID_TRIANGLESVORONIO,
 			wxID_VORONOICLEAN,
 			wxID_VORONOIEXECUTE,
 		};
-
+		
 		wxStatusBar* statusBar;
 		wxMenuBar* menubar;
 		wxMenu* file_menu;
@@ -174,13 +176,14 @@ class PrincipalFrame : public wxFrame
 		wxPanel* voronoi_painel;
 		wxStaticText* show_staticText23;
 		wxStaticLine* m_staticline113;
-		wxCheckBox* pointsDelaunay_checkBox1;
+		wxCheckBox* pointsVoronoi_checkBox;
 		wxCheckBox* edgesVoronoi_checkBox;
+		wxCheckBox* trianglesVoronoi_checkBox;
 		wxStaticLine* m_staticline213;
 		wxToggleButton* voronioClean_toggleBtn;
 		wxToggleButton* voronoiExecute_toggleBtn;
 		GLCanvas *canvas;
-
+		
 		// Virtual event handlers, overide them in your derived class
 		virtual void newModel( wxCommandEvent& event ) { event.Skip(); }
 		virtual void openModel( wxCommandEvent& event ) { event.Skip(); }
@@ -219,15 +222,16 @@ class PrincipalFrame : public wxFrame
 		virtual void executeDelaunay3D( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setPointsVoronoi( wxCommandEvent& event ) { event.Skip(); }
 		virtual void setEdgesVoronoi( wxCommandEvent& event ) { event.Skip(); }
+		virtual void setTrianglesVoronoi( wxCommandEvent& event ) { event.Skip(); }
 		virtual void clearVoronoi( wxCommandEvent& event ) { event.Skip(); }
 		virtual void executeVoronoi( wxCommandEvent& event ) { event.Skip(); }
-
-
+		
+	
 	public:
-
+		
 		PrincipalFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("GC Toolkit"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 900,688 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 		~PrincipalFrame();
-
+	
 };
 
 #endif //__PrincipalFrame__

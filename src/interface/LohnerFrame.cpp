@@ -26,7 +26,7 @@ void LohnerFrame::newModel( wxCommandEvent& event )
 
 void LohnerFrame::openModel( wxCommandEvent& event )
 {
-/*
+
     // TODO: Implement openModel
     static const wxChar *FILETYPES  = _("TXT files (*.txt)|*.txt|"
                                         "All files (*.*)|*.*");
@@ -50,8 +50,8 @@ void LohnerFrame::openModel( wxCommandEvent& event )
             wxMessageBox( _("Could not open file: Invalid format."),_("File error"), wxOK | wxICON_ERROR );
             return;
         }
-*/
-canvas->manager.loadFromFile( std::string( "" ) );
+
+//canvas->manager.loadFromFile( std::string( "" ) );
 
         switch(options_notebook->GetSelection())
         {
@@ -78,12 +78,17 @@ canvas->manager.loadFromFile( std::string( "" ) );
                 trianglesDelaunay3D_checkBox->SetValue(true);
                 edgesDelaunay3D_checkBox->SetValue(true);
             break;
+            case 4:
+                edgesVoronoi_checkBox->SetValue(true);
+                trianglesVoronoi_checkBox->SetValue(true);
+                pointsVoronoi_checkBox->SetValue(true);
+            break;
         }
 
         canvas->fitCam();
 
         Refresh();
-    //}
+    }
 }
 
 void LohnerFrame::saveModel( wxCommandEvent& event )
@@ -371,12 +376,29 @@ void LohnerFrame::setVoronoi( wxCommandEvent& event )
 
 void LohnerFrame::setPointsVoronoi( wxCommandEvent& event )
 {
-	// TODO: Implement setPointsVoronoi
+    if(canvas->manager.voronoi!= NULL)
+    {
+        canvas->manager.voronoi->setPointList();
+        Refresh();
+    }
 }
 
 void LohnerFrame::setEdgesVoronoi( wxCommandEvent& event )
 {
-	// TODO: Implement setEdgesVoronoi
+    if(canvas->manager.voronoi!= NULL)
+    {
+        canvas->manager.voronoi->setVoronoi();
+        Refresh();
+    }
+}
+
+void LohnerFrame::setTrianglesVoronoi( wxCommandEvent& event )
+{
+    if(canvas->manager.voronoi!= NULL)
+    {
+        canvas->manager.voronoi->setTriangleList();
+        Refresh();
+    }
 }
 
 void LohnerFrame::clearVoronoi( wxCommandEvent& event )

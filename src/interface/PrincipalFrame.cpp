@@ -50,6 +50,7 @@ BEGIN_EVENT_TABLE( PrincipalFrame, wxFrame )
 	EVT_TOGGLEBUTTON( wxID_DELAUNAY3DEXECUTE, PrincipalFrame::_wxFB_executeDelaunay3D )
 	EVT_CHECKBOX( wxID_POINTSVORONOI, PrincipalFrame::_wxFB_setPointsVoronoi )
 	EVT_CHECKBOX( wxID_EDGESVORONIO, PrincipalFrame::_wxFB_setEdgesVoronoi )
+	EVT_CHECKBOX( wxID_TRIANGLESVORONIO, PrincipalFrame::_wxFB_setTrianglesVoronoi )
 	EVT_TOGGLEBUTTON( wxID_VORONOICLEAN, PrincipalFrame::_wxFB_clearVoronoi )
 	EVT_TOGGLEBUTTON( wxID_VORONOIEXECUTE, PrincipalFrame::_wxFB_executeVoronoi )
 END_EVENT_TABLE()
@@ -273,7 +274,7 @@ PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString&
 	delaunay3d_painel->SetSizer( bSizer612 );
 	delaunay3d_painel->Layout();
 	bSizer612->Fit( delaunay3d_painel );
-	options_notebook->AddPage( delaunay3d_painel, wxT("Delaunay 3D"), true );
+	options_notebook->AddPage( delaunay3d_painel, wxT("Delaunay 3D"), false );
 	voronoi_painel = new wxPanel( options_notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer613;
 	bSizer613 = new wxBoxSizer( wxVERTICAL );
@@ -285,11 +286,17 @@ PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString&
 	m_staticline113 = new wxStaticLine( voronoi_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer613->Add( m_staticline113, 0, wxEXPAND | wxALL, 5 );
 
-	pointsDelaunay_checkBox1 = new wxCheckBox( voronoi_painel, wxID_POINTSVORONOI, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer613->Add( pointsDelaunay_checkBox1, 0, wxALL, 5 );
+	pointsVoronoi_checkBox = new wxCheckBox( voronoi_painel, wxID_POINTSVORONOI, wxT("Points"), wxDefaultPosition, wxDefaultSize, 0 );
+	pointsVoronoi_checkBox->SetValue(true);
+	bSizer613->Add( pointsVoronoi_checkBox, 0, wxALL, 5 );
 
-	edgesVoronoi_checkBox = new wxCheckBox( voronoi_painel, wxID_EDGESVORONIO, wxT("Edges"), wxDefaultPosition, wxDefaultSize, 0 );
+	edgesVoronoi_checkBox = new wxCheckBox( voronoi_painel, wxID_EDGESVORONIO, wxT("Voronoi"), wxDefaultPosition, wxDefaultSize, 0 );
+	edgesVoronoi_checkBox->SetValue(true);
 	bSizer613->Add( edgesVoronoi_checkBox, 0, wxALL, 5 );
+
+	trianglesVoronoi_checkBox = new wxCheckBox( voronoi_painel, wxID_TRIANGLESVORONIO, wxT("Delaunay"), wxDefaultPosition, wxDefaultSize, 0 );
+	trianglesVoronoi_checkBox->SetValue(true);
+	bSizer613->Add( trianglesVoronoi_checkBox, 0, wxALL, 5 );
 
 	m_staticline213 = new wxStaticLine( voronoi_painel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer613->Add( m_staticline213, 0, wxEXPAND | wxALL, 5 );
@@ -303,7 +310,7 @@ PrincipalFrame::PrincipalFrame( wxWindow* parent, wxWindowID id, const wxString&
 	voronoi_painel->SetSizer( bSizer613 );
 	voronoi_painel->Layout();
 	bSizer613->Fit( voronoi_painel );
-	options_notebook->AddPage( voronoi_painel, wxT("Voronoi"), false );
+	options_notebook->AddPage( voronoi_painel, wxT("Voronoi"), true );
 
 	bSizer_Options->Add( options_notebook, 1, wxALL|wxEXPAND, 5 );
 

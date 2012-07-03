@@ -18,16 +18,22 @@ class Voronoi
         void clear();
         void execute();
 
+        bool save(std::string fileName);
+
         void makeVoronoi();
 
         void draw();
+
+        void setPointList() { this->renderPointList = !renderPointList; };
+        void setTriangleList() { this->renderTriangleList = !renderTriangleList; };
+        void setVoronoi()  { this->renderVoronoi = !renderVoronoi; };
 
     protected:
 
     private:
         bool renderPointList;
         bool renderTriangleList;
-        bool renderEdgeList;
+        bool renderVoronoi;
 
         std::list<Point*> pointList;
         std::list<Point*> voronoi_pointList;

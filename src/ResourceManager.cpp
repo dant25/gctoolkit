@@ -24,8 +24,8 @@ bool ResourceManager::loadFromFile(std::string fileName)
 {
     //std::cout << fileName.c_str() << std::endl;
 
-    //std::ifstream file( fileName.c_str(), std::ifstream::in);
-    std::ifstream file( "entrada.txt", std::ifstream::in);
+    std::ifstream file( fileName.c_str(), std::ifstream::in);
+    //std::ifstream file( "entrada.txt", std::ifstream::in);
     //std::ifstream file( "macaco_duplicado.txt", std::ifstream::in);
     //std::ifstream file( "macaco3d.txt", std::ifstream::in);
 
@@ -132,7 +132,7 @@ bool ResourceManager::saveToFile(std::string fileName)
             return delaunay3d->save(fileName);
         break;
         case VORONOI:
-            //return voronoi->save(fileName);
+            return voronoi->save(fileName);
         break;
     }
     return false;
